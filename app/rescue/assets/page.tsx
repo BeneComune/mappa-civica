@@ -20,7 +20,10 @@ export default function RescueAssetsPage() {
       <ClickPopupLayer layerId="hems-sites" render={assetPopupHTML} />
       <ClickPopupLayer layerId="fire-hydrant-sites" render={assetPopupHTML} />
       <ClickPopupLayer layerId="assembly-point-sites" render={assetPopupHTML} />
-      <h2 className="text-xl font-semibold">{STRINGS.rescueAssets}</h2>
+      <h2 className="flex items-center gap-2 text-xl font-semibold">
+        <ICONS.rescueAssets aria-hidden="true" className="size-5" />
+        {STRINGS.rescueAssets}
+      </h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.rescueAssetsDescription}</p>
       <div className="mt-3 flex flex-wrap gap-2">
         <OverlayToggleBadge label={STRINGS.aed} icon={ICONS.aed} color="#e03131" layerIds={AED_LAYER_IDS} />

@@ -2,6 +2,7 @@
 
 import { Faq } from "@/components/faq"
 import { HoverPopupLayer } from "@/components/hover-popup-layer"
+import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
 function renderShadePopup(props: Record<string, unknown>): string {
@@ -20,7 +21,10 @@ export default function GreenShadePage() {
   return (
     <div>
       <HoverPopupLayer layerId="shade-corridors" render={renderShadePopup} />
-      <h2 className="text-xl font-semibold">{STRINGS.naturalShade}</h2>
+      <h2 className="flex items-center gap-2 text-xl font-semibold">
+        <ICONS.naturalShade aria-hidden="true" className="size-5" />
+        {STRINGS.naturalShade}
+      </h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.naturalShadeDescription}</p>
       <p className="mt-1 text-xs text-muted-foreground">
         Verde scuro = strade ombreggiate · verde chiaro = sentieri ombreggiati · opacità proporzionale alla copertura

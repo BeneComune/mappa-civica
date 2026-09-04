@@ -30,7 +30,10 @@ export default function RescueFirePage() {
       <ClickPopupLayer layerId="fire-danger-fill" render={dangerPopupHTML} />
       <ClickPopupLayer layerId="fire-ignition-points" render={ignitionPopupHTML} />
       <HoverHighlightLayer sourceId="firePerimeters" layerIds={FIRE_PERIMETERS_LAYER_IDS} />
-      <h2 className="text-xl font-semibold">{STRINGS.wildfires}</h2>
+      <h2 className="flex items-center gap-2 text-xl font-semibold">
+        <ICONS.wildfires aria-hidden="true" className="size-5" />
+        {STRINGS.wildfires}
+      </h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.wildfiresDescription}</p>
       <p className="mt-1 text-xs text-muted-foreground">
         Archivio storico (perimetri digitalizzati dai Fogli Notizie Incendi Boschivi, dal 1990): registra dove il

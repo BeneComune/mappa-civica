@@ -3,6 +3,7 @@
 import { Faq } from "@/components/faq"
 import { HoverPopupLayer } from "@/components/hover-popup-layer"
 import { ALL_LST_CLASSES, LST_CLASS_CONFIG, type LstClass } from "@/lib/green-classes"
+import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
 function renderLstPopup(props: Record<string, unknown>): string | null {
@@ -14,7 +15,10 @@ export default function GreenLstPage() {
   return (
     <div>
       <HoverPopupLayer layerId="lst-fill" render={renderLstPopup} />
-      <h2 className="text-xl font-semibold">{STRINGS.soilTemperature}</h2>
+      <h2 className="flex items-center gap-2 text-xl font-semibold">
+        <ICONS.soilTemperature aria-hidden="true" className="size-5" />
+        {STRINGS.soilTemperature}
+      </h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.soilTemperatureDescription}</p>
       <p className="mt-1 text-xs text-muted-foreground">Da Landsat 8 · 30 m · settembre 2023</p>
       <ul className="mt-2 flex flex-col gap-1">

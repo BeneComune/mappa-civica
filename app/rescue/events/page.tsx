@@ -4,6 +4,7 @@ import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
 import { HoverHighlightLayer } from "@/components/hover-highlight-layer"
 import { RiiRecencyFilter } from "@/components/rii-recency-filter"
+import { ICONS } from "@/lib/ICONS"
 import { riiPopupHTML } from "@/lib/rescue-popups"
 import { STRINGS } from "@/lib/strings"
 
@@ -13,7 +14,10 @@ export default function RescueEventsPage() {
       <ClickPopupLayer layerId="rii-points" render={riiPopupHTML} />
       <ClickPopupLayer layerId="rii-line" render={riiPopupHTML} />
       <HoverHighlightLayer sourceId="rii" layerIds={["rii-points", "rii-line"]} />
-      <h2 className="text-xl font-semibold">{STRINGS.riverRisk}</h2>
+      <h2 className="flex items-center gap-2 text-xl font-semibold">
+        <ICONS.riverRisk aria-hidden="true" className="size-5" />
+        {STRINGS.riverRisk}
+      </h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.riverRiskDescription}</p>
       <div className="mt-3">
         <RiiRecencyFilter />

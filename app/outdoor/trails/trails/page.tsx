@@ -14,7 +14,10 @@ const PICNIC_LAYER_IDS = ["water-poi-picnic", "water-poi-labels-picnic"]
 export default function TrailsWaterPage() {
   return (
     <div>
-      <h2 className="text-xl font-semibold">{STRINGS.waterPoints}</h2>
+      <h2 className="flex items-center gap-2 text-xl font-semibold">
+        <ICONS.waterPoints aria-hidden="true" className="size-5" />
+        {STRINGS.waterPoints}
+      </h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.waterPointsDescription}</p>
       <div className="mt-3 flex flex-wrap gap-2">
         <OverlayToggleBadge

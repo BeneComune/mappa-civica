@@ -2,6 +2,7 @@
 
 import { Faq } from "@/components/faq"
 import { FilterCheckboxGroup } from "@/components/filter-checkbox-group"
+import { ICONS } from "@/lib/ICONS"
 import { SLOPE_LAYER_IDS } from "@/lib/map/overlays/slope"
 import { STRINGS } from "@/lib/strings"
 
@@ -17,7 +18,10 @@ const SLOPE_OPTIONS = [
 export default function TrailsSlopePage() {
   return (
     <div>
-      <h2 className="text-xl font-semibold">{STRINGS.slope}</h2>
+      <h2 className="flex items-center gap-2 text-xl font-semibold">
+        <ICONS.slope aria-hidden="true" className="size-5" />
+        {STRINGS.slope}
+      </h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.slopeDescription}</p>
       <div className="mt-3">
         <FilterCheckboxGroup property="slope_class" options={SLOPE_OPTIONS} layerIds={SLOPE_LAYER_IDS} />

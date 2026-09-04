@@ -23,6 +23,7 @@ import {
   type CommunityReport,
 } from "@/lib/community"
 import { loadCommunityReports } from "@/lib/duckdb"
+import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
 export function CommunityPanel() {
@@ -66,7 +67,10 @@ export function CommunityPanel() {
       <CommunityMarkers reports={filteredReports} onSelect={handleSelect} />
 
       <div className="flex items-center justify-between gap-2">
-        <h2 className="text-xl font-semibold">{STRINGS.community}</h2>
+        <h2 className="flex items-center gap-2 text-xl font-semibold">
+          <ICONS.community aria-hidden="true" className="size-5" />
+          {STRINGS.community}
+        </h2>
         <ReportDrawer onSubmitted={handleSubmitted} />
       </div>
       <p className="text-sm text-muted-foreground">{STRINGS.communityDescription}</p>
