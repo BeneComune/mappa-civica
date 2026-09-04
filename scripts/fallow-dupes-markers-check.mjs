@@ -23,7 +23,12 @@ function grepFiles() {
   }
 }
 
-const files = grepFiles().split('\n').filter(Boolean)
+// This script's own header comment spells the marker out in prose to explain
+// the rule, which matches the very shape it looks for - skip itself, or it
+// reports a permanent false positive on its own line 2.
+const selfPath = path.relative(root, fileURLToPath(import.meta.url)).replaceAll('\\', '/')
+
+const files = grepFiles().split('\n').filter(Boolean).filter(file => file !== selfPath)
 
 const broken = []
 for (const file of files) {
