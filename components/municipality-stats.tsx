@@ -1,3 +1,5 @@
+import { ChevronRight } from "lucide-react"
+
 export type MunicipalityStats = {
   municipality: { name: string; province: string; region: string }
   geography: {
@@ -47,8 +49,8 @@ function fmt(v: number | null | undefined, suffix = ""): string {
 function StatSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <details className="group">
-      <summary className="cursor-pointer select-none text-sm font-semibold marker:content-none">
-        <span className="inline-block w-3 transition-transform group-open:rotate-90">›</span> {title}
+      <summary className="flex cursor-pointer select-none items-center gap-1 text-sm font-semibold marker:content-none">
+        <ChevronRight className="size-3.5 shrink-0 transition-transform group-open:rotate-90" /> {title}
       </summary>
       <dl className="mt-1 flex flex-col gap-1 pl-4 text-sm">{children}</dl>
     </details>
