@@ -285,17 +285,35 @@ function buildTransportRoutingGraph(features: TransportFeature[]): RoutingGraph 
       surface: properties.surface ? String(properties.surface) : undefined,
     }
 
-    const edgeIndex = edges.push(edge) - 1
-
-    const fromNode = nodes.get(from) ?? { coord: coords[0], edges: [] }
-    fromNode.edges.push(edgeIndex)
-    nodes.set(from, fromNode)
-
-    const toNode = nodes.get(to) ?? { coord: coords[coords.length - 1], edges: [] }
-    toNode.edges.push(edgeIndex)
-    nodes.set(to, toNode)
+    appendEdge({ nodes, edges }, edge, coords[0], coords[coords.length - 1])
   }
 
+  return finalizeGraph(nodes, edges)
+}
+
+// Append an edge and attach its index to both endpoint nodes, creating either
+// node on first sight at the given coordinate. Both graph builders key their
+// nodes differently (transport by the u/v properties, walking by rounded
+// coordinate) but agree on everything after that, so the id and the coord
+// come in as arguments.
+function appendEdge(
+  graph: { nodes: Map<NodeId, GraphNode>; edges: GraphEdge[] },
+  edge: GraphEdge,
+  fromCoord: Coord,
+  toCoord: Coord
+): void {
+  const edgeIndex = graph.edges.push(edge) - 1
+
+  const fromNode = graph.nodes.get(edge.from) ?? { coord: fromCoord, edges: [] }
+  fromNode.edges.push(edgeIndex)
+  graph.nodes.set(edge.from, fromNode)
+
+  const toNode = graph.nodes.get(edge.to) ?? { coord: toCoord, edges: [] }
+  toNode.edges.push(edgeIndex)
+  graph.nodes.set(edge.to, toNode)
+}
+
+function finalizeGraph(nodes: Map<NodeId, GraphNode>, edges: GraphEdge[]): RoutingGraph {
   const nodeCoords = Array.from(nodes.entries()).map(([id, node]) => ({ id, coord: node.coord }))
   return { nodes, edges, nodeCoords }
 }
@@ -326,15 +344,7 @@ function addSegmentEdge(
     surface: properties.surface,
   }
 
-  const edgeIndex = graph.edges.push(edge) - 1
-
-  const fromNode = graph.nodes.get(from) ?? { coord: fromCoord, edges: [] }
-  fromNode.edges.push(edgeIndex)
-  graph.nodes.set(from, fromNode)
-
-  const toNode = graph.nodes.get(to) ?? { coord: toCoord, edges: [] }
-  toNode.edges.push(edgeIndex)
-  graph.nodes.set(to, toNode)
+  appendEdge(graph, edge, fromCoord, toCoord)
 }
 
 function buildWalkingRoutingGraph(features: CombinedFeature[]): RoutingGraph {
@@ -367,8 +377,7 @@ function buildWalkingRoutingGraph(features: CombinedFeature[]): RoutingGraph {
     }
   }
 
-  const nodeCoords = Array.from(nodes.entries()).map(([id, node]) => ({ id, coord: node.coord }))
-  return { nodes, edges, nodeCoords }
+  return finalizeGraph(nodes, edges)
 }
 
 function findNearestNodeId(graph: RoutingGraph, point: RoutingInputPoint): NodeId | null {
