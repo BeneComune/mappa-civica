@@ -129,6 +129,12 @@
     @apply font-sans;
     font-size: 118%;
   }
+  /* Tailwind v4's preflight no longer sets this - every clickable button
+     (badges/chips included) should show a pointer, not the text-select
+     default cursor. */
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 /* Custom MapLibre controls: basemap style switcher, search, terrain, print.
