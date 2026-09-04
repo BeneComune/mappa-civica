@@ -1,11 +1,12 @@
 // components\rii-recency-filter.tsx
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import type { FilterSpecification } from "maplibre-gl"
 import { Clock, History } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
 import { COLORS } from "@/lib/colors"
+import { useToggleSet } from "@/lib/use-toggle-set"
 
 // Rii's recency filter groups two `stato` values per badge (unlike fire's
 // cause filter, where each badge is one property value), so it doesn't fit
@@ -20,7 +21,7 @@ const RECENCY_GROUPS: Record<string, string[]> = {
 
 export function RiiRecencyFilter() {
   const { setLayersFilter } = useMapContext()
-  const [selected, setSelected] = useState<string[]>(["recenti", "storici"])
+  const { selected, toggle } = useToggleSet(() => ["recenti", "storici"])
 
   useEffect(() => {
     const allowedStati = selected.flatMap((f) => RECENCY_GROUPS[f])
@@ -31,12 +32,6 @@ export function RiiRecencyFilter() {
     setLayersFilter(["rii-points"], ["all", ["==", ["geometry-type"], "Point"], statoMatch])
     setLayersFilter(["rii-labels"], statoMatch)
   }, [selected, setLayersFilter])
-
-  function toggle(value: string): void {
-    setSelected((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    )
-  }
 
   const recenti = selected.includes("recenti")
   const storici = selected.includes("storici")

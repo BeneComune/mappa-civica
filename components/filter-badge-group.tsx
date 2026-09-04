@@ -1,10 +1,11 @@
 // components\filter-badge-group.tsx
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import type { FilterSpecification } from "maplibre-gl"
 import type { LucideIcon } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
+import { useToggleSet } from "@/lib/use-toggle-set"
 
 // Toggleable pills that narrow a single layer set via one shared MapLibre
 // filter (multiple property values selected at once). All options start
@@ -21,7 +22,7 @@ export function FilterBadgeGroup({
   layerIds: string[]
 }) {
   const { setLayersFilter } = useMapContext()
-  const [selected, setSelected] = useState<string[]>(() => options.map((o) => o.value))
+  const { selected, toggle } = useToggleSet(() => options.map((o) => o.value))
 
   useEffect(() => {
     const filter: FilterSpecification =
@@ -30,12 +31,6 @@ export function FilterBadgeGroup({
         : ["==", ["get", property], "__none__"]
     setLayersFilter(layerIds, filter)
   }, [selected, property, layerIds, setLayersFilter])
-
-  function toggle(value: string): void {
-    setSelected((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    )
-  }
 
   return (
     <div className="flex flex-wrap gap-2">
