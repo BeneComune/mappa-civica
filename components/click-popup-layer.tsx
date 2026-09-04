@@ -1,3 +1,4 @@
+// components\click-popup-layer.tsx
 "use client"
 
 import { useEffect } from "react"

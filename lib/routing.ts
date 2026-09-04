@@ -1,3 +1,4 @@
+// lib\routing.ts
 // Port of the old app's lib/routing.ts: an in-browser Dijkstra router over
 // the transport/trails GeoJSON networks, used by the "Pianifica percorso"
 // planners in both Outdoor sections (biking network for Cyclability,

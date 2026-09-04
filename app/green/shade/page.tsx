@@ -1,3 +1,4 @@
+// app\green\shade\page.tsx
 "use client"
 
 import { Faq } from "@/components/faq"

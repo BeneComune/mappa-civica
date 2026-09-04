@@ -1,3 +1,4 @@
+// components\community-panel.tsx
 "use client"
 
 import { useEffect, useState, useSyncExternalStore } from "react"

@@ -1,3 +1,4 @@
+// lib\map\overlays\vegetation.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
 
 // "Vegetazione" (NDVI) from the old app's GreenModule - the default tab,

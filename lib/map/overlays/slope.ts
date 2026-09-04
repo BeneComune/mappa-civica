@@ -1,3 +1,4 @@
+// lib\map\overlays\slope.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
 
 // "Pendenza" from the old app's OutdoorModule: trails/roads coloured by

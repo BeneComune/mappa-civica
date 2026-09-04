@@ -1,3 +1,4 @@
+// lib\strings.ts
 /**
  * Single source of truth for every Italian UI string in the app. Check here
  * before hardcoding new text — reuse an existing constant if the string

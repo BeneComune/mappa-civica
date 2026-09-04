@@ -1,3 +1,4 @@
+// lib\config.ts
 // Single source of truth for municipality-specific values (from the old
 // app's comune.config.json), reused by the map default view and any widget
 // that needs the town's coordinates without depending on lib/map/base.ts

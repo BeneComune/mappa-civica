@@ -1,3 +1,4 @@
+// app\green\ndvi\page.tsx
 import { Faq } from "@/components/faq"
 import { NdviClassesPanel } from "@/components/ndvi-classes-panel"
 import { PageHeader } from "@/components/page-header"

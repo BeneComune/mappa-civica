@@ -1,3 +1,4 @@
+// components\home-panel.tsx
 "use client"
 
 import { useEffect, useState } from "react"

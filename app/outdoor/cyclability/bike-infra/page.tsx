@@ -1,3 +1,4 @@
+// app\outdoor\cyclability\bike-infra\page.tsx
 "use client"
 
 import { Faq } from "@/components/faq"

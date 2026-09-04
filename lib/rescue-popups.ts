@@ -1,3 +1,4 @@
+// lib\rescue-popups.ts
 // Click-popup HTML builders ported from the old app's RescueModule.tsx, for
 // rii, fire perimeters/danger/ignition, and assets (AED/HEMS/hydrant/
 // assembly). Plain string templates (MapLibre popups are HTML, not React).

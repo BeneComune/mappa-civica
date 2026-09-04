@@ -1,3 +1,4 @@
+// components\faq.tsx
 export function Faq({ children }: { children: React.ReactNode }) {
   return (
     <details className="mt-2 text-xs text-muted-foreground">

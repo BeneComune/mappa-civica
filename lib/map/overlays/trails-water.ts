@@ -1,3 +1,4 @@
+// lib\map\overlays\trails-water.ts
 import type { FilterSpecification, Map } from "maplibre-gl"
 
 // "Sentieri e punti acqua" from the old app's OutdoorModule: hiking/MTB

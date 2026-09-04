@@ -1,3 +1,4 @@
+// components\weather-card.tsx
 "use client"
 
 import { useEffect, useState } from "react"

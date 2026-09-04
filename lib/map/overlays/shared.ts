@@ -1,3 +1,4 @@
+// lib\map\overlays\shared.ts
 import type { Map } from "maplibre-gl"
 
 // The old app recreated the whole map per module/section. This app keeps a

@@ -1,3 +1,4 @@
+// components\ndvi-classes-panel.tsx
 "use client"
 
 import { useEffect, useState } from "react"

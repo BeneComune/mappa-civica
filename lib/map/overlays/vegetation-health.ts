@@ -1,3 +1,4 @@
+// lib\map\overlays\vegetation-health.ts
 import type { Map } from "maplibre-gl"
 
 // "Salute vegetazione" (NBR) from the old app's GreenModule. Shares the

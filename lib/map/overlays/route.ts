@@ -1,3 +1,4 @@
+// lib\map\overlays\route.ts
 import type { Map } from "maplibre-gl"
 
 // The computed route's line geometry (see lib/routing.ts). Start/end/

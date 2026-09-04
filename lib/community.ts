@@ -1,3 +1,4 @@
+// lib\community.ts
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 

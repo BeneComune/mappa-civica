@@ -1,3 +1,4 @@
+// components\municipality-stats.tsx
 import { ChevronRight } from "lucide-react"
 
 export type MunicipalityStats = {

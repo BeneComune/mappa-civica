@@ -1,3 +1,4 @@
+// components\lts-embed.tsx
 import { LTS_EMBED_VIEW } from "@/lib/config"
 
 // Replaces the whole map view with the stressinbici.it (LTS) embed, same as

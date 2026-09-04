@@ -1,3 +1,4 @@
+// components\elevation-profile.tsx
 import type { RouteSummary } from "@/lib/routing"
 
 // SVG elevation-vs-distance chart, ported from the old app's ElevationSvg.

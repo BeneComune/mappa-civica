@@ -1,3 +1,4 @@
+// app\page.tsx
 import { HomePanel } from "@/components/home-panel"
 
 export default function Home() {

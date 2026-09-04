@@ -1,3 +1,4 @@
+// lib\map\overlays\home.ts
 import type { Map } from "maplibre-gl"
 
 // Home module from the old app's BaseModule: the municipality boundary

@@ -1,3 +1,4 @@
+// lib\map\overlays\soil-temperature.ts
 import type { Map } from "maplibre-gl"
 
 // "Temperatura suolo" (LST) from the old app's GreenModule.

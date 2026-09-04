@@ -1,3 +1,4 @@
+// lib\map\overlays\bike-infra.ts
 import type { FilterSpecification, Map } from "maplibre-gl"
 
 // "Infrastrutture ciclabili" from the old app's OutdoorModule: the cycle

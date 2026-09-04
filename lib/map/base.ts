@@ -1,3 +1,4 @@
+// lib\map\base.ts
 import * as maplibregl from "maplibre-gl"
 import type { Map, IControl } from "maplibre-gl"
 import { createElement as createLucideElement, ChevronDown, ChevronUp, Mountain, Palette, Printer, Search } from "lucide"

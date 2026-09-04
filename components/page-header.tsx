@@ -1,3 +1,4 @@
+// components\page-header.tsx
 import type { LucideIcon } from "lucide-react"
 
 // Icon + title + description, repeated at the top of nearly every route

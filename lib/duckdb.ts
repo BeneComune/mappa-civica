@@ -1,3 +1,4 @@
+// lib\duckdb.ts
 import * as duckdb from "@duckdb/duckdb-wasm"
 import type { CategoryId, CommunityReport } from "@/lib/community"
 

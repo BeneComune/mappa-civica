@@ -1,3 +1,4 @@
+// app\rescue\fire\page.tsx
 "use client"
 
 import { ClickPopupLayer } from "@/components/click-popup-layer"

@@ -1,3 +1,4 @@
+// components\module-placeholder.tsx
 import type { LucideIcon } from "lucide-react"
 import { STRINGS } from "@/lib/strings"
 

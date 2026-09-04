@@ -1,3 +1,4 @@
+// lib\catasto.ts
 // Lazy loader + nearest-parcel lookup for the cadastral point layer
 // (public/data/catasto.geojson: one interior point per parcel, with foglio +
 // particella). Used by the Home identify toggle and the Segnala autofill.

@@ -1,3 +1,4 @@
+// lib\map\overlays\natural-shade.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
 
 // "Ombra naturale" from the old app's GreenModule - roads/trails coloured

@@ -1,3 +1,4 @@
+// lib\map\index.ts
 import type { Map } from "maplibre-gl"
 
 // This barrel re-exports ./base, which does a real (non-type-only) runtime

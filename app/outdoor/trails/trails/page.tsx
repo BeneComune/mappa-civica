@@ -1,3 +1,4 @@
+// app\outdoor\trails\trails\page.tsx
 "use client"
 
 import { Faq } from "@/components/faq"

@@ -1,3 +1,4 @@
+// lib\map\overlays\assets.ts
 import type { Map } from "maplibre-gl"
 
 // "Presidi di soccorso" from the old app's RescueModule: AED defibrillators,

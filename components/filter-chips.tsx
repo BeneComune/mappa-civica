@@ -1,3 +1,4 @@
+// components\filter-chips.tsx
 "use client"
 
 import { CATEGORIES } from "@/lib/community"

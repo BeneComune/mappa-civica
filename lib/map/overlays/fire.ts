@@ -1,3 +1,4 @@
+// lib\map\overlays\fire.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
 
 // Forest fire perimeters (IRDAT FVG) from the old app's RescueModule.

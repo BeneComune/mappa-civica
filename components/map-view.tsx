@@ -1,3 +1,4 @@
+// components\map-view.tsx
 "use client"
 
 import { useEffect, useRef } from "react"

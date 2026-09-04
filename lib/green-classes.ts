@@ -1,3 +1,4 @@
+// lib\green-classes.ts
 // Class configs from the old app's GreenLegend.tsx - shared by the NDVI
 // checkbox/stats panel and the hover popups on all four Green tabs.
 
