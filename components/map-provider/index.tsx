@@ -1,4 +1,4 @@
-// components\map-provider.tsx
+// components\map-provider\index.tsx
 "use client"
 
 import { createContext, useCallback, useContext, useRef } from "react"
@@ -8,13 +8,13 @@ import type {
   GeoJSONSource,
   LngLat,
   Map,
-  MapLayerMouseEvent,
   MapMouseEvent,
   Marker,
-  Popup,
 } from "maplibre-gl"
-import { onStyleReady, setOverlayVisibility } from "@/lib/map"
+import { setOverlayVisibility } from "@/lib/map"
 import { COLORS } from "@/lib/colors"
+import * as interactions from "./interactions"
+import type { PopupRenderer } from "./interactions"
 
 // Bridges the single persistent map instance (mounted once in the root
 // layout, see MapShell/MapView) to legend-panel checkboxes and forms
@@ -33,16 +33,10 @@ type MapContextValue = {
   // Shows a popup following the cursor while hovering features on `layerId`,
   // via `render(properties)` returning an HTML string, or nothing to skip
   // that hover. Shared by every module's hover-popup (Rescue, Green, ...).
-  attachHoverPopup: (
-    layerId: string,
-    render: (props: Record<string, unknown>) => string | null | undefined
-  ) => () => void
+  attachHoverPopup: (layerId: string, render: PopupRenderer) => () => void
   // Shows a popup at the clicked feature's position on `layerId`. Shared by
   // Rescue's click-to-open popups (rii, fire, assets, ...).
-  attachClickPopup: (
-    layerId: string,
-    render: (props: Record<string, unknown>) => string | null | undefined
-  ) => () => void
+  attachClickPopup: (layerId: string, render: PopupRenderer) => () => void
   // Toggles feature-state `hover` on `sourceId` for whichever of `layerIds`
   // is under the cursor, driving hover-highlight paint expressions (see
   // RII_HOVER/FIRE_HOVER in the overlay definitions). Requires features to
@@ -55,6 +49,8 @@ type MapContextValue = {
 }
 
 const MapContext = createContext<MapContextValue | null>(null)
+
+const noop = () => {}
 
 export function MapProvider({ children }: { children: React.ReactNode }) {
   const mapRef = useRef<Map | null>(null)
@@ -123,130 +119,21 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
 
   const getMap = useCallback(() => mapRef.current, [])
 
-  const attachHoverPopup = useCallback(
-    (layerId: string, render: (props: Record<string, unknown>) => string | null | undefined) => {
-      const map = mapRef.current
-      if (!map) return () => {}
+  // The attach* methods are thin: they resolve the current map, then hand off
+  // to the matching recipe in ./interactions.
+  const attachHoverPopup = useCallback((layerId: string, render: PopupRenderer) => {
+    const map = mapRef.current
+    return map ? interactions.attachHoverPopup(map, layerId, render) : noop
+  }, [])
 
-      let popup: Popup | null = null
-
-      const handleMove = (e: MapLayerMouseEvent) => {
-        const html = render(e.features?.[0]?.properties ?? {})
-        if (!html) {
-          popup?.remove()
-          map.getCanvas().style.cursor = ""
-          return
-        }
-        map.getCanvas().style.cursor = "pointer"
-        if (!popup) {
-          popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false })
-        }
-        popup.setLngLat(e.lngLat).setHTML(html).addTo(map)
-      }
-      const handleLeave = () => {
-        map.getCanvas().style.cursor = ""
-        popup?.remove()
-      }
-
-      const attach = () => {
-        map.on("mousemove", layerId, handleMove)
-        map.on("mouseleave", layerId, handleLeave)
-      }
-      const unsubStyleReady = onStyleReady(map, attach)
-
-      return () => {
-        unsubStyleReady()
-        map.off("mousemove", layerId, handleMove)
-        map.off("mouseleave", layerId, handleLeave)
-        popup?.remove()
-      }
-    },
-    []
-  )
-
-  const attachClickPopup = useCallback(
-    (layerId: string, render: (props: Record<string, unknown>) => string | null | undefined) => {
-      const map = mapRef.current
-      if (!map) return () => {}
-
-      const handleClick = (e: MapLayerMouseEvent) => {
-        const html = render(e.features?.[0]?.properties ?? {})
-        if (!html) return
-        new maplibregl.Popup({ closeButton: true, closeOnClick: true })
-          .setLngLat(e.lngLat)
-          .setHTML(html)
-          .addTo(map)
-      }
-      const handleEnter = () => {
-        map.getCanvas().style.cursor = "pointer"
-      }
-      const handleLeave = () => {
-        map.getCanvas().style.cursor = ""
-      }
-
-      const attach = () => {
-        map.on("click", layerId, handleClick)
-        map.on("mouseenter", layerId, handleEnter)
-        map.on("mouseleave", layerId, handleLeave)
-      }
-      const unsubStyleReady = onStyleReady(map, attach)
-
-      return () => {
-        unsubStyleReady()
-        map.off("click", layerId, handleClick)
-        map.off("mouseenter", layerId, handleEnter)
-        map.off("mouseleave", layerId, handleLeave)
-      }
-    },
-    []
-  )
+  const attachClickPopup = useCallback((layerId: string, render: PopupRenderer) => {
+    const map = mapRef.current
+    return map ? interactions.attachClickPopup(map, layerId, render) : noop
+  }, [])
 
   const attachHoverHighlight = useCallback((sourceId: string, layerIds: string[]) => {
     const map = mapRef.current
-    if (!map) return () => {}
-
-    let hovered: { source: string; id: string | number } | undefined
-
-    const clearHover = () => {
-      if (hovered) {
-        map.setFeatureState(hovered, { hover: false })
-        hovered = undefined
-      }
-      map.getCanvas().style.cursor = ""
-    }
-
-    const handleMove = (e: MapMouseEvent) => {
-      const layers = layerIds.filter((id) => map.getLayer(id))
-      if (layers.length === 0) {
-        clearHover()
-        return
-      }
-      const feature = map.queryRenderedFeatures(e.point, { layers })[0]
-      if (!feature || feature.id === undefined) {
-        clearHover()
-        return
-      }
-      const next = { source: sourceId, id: feature.id }
-      if (hovered && (hovered.source !== next.source || hovered.id !== next.id)) {
-        map.setFeatureState(hovered, { hover: false })
-      }
-      hovered = next
-      map.setFeatureState(hovered, { hover: true })
-      map.getCanvas().style.cursor = "pointer"
-    }
-
-    const attach = () => {
-      map.on("mousemove", handleMove)
-      map.on("mouseout", clearHover)
-    }
-    const unsubStyleReady = onStyleReady(map, attach)
-
-    return () => {
-      unsubStyleReady()
-      map.off("mousemove", handleMove)
-      map.off("mouseout", clearHover)
-      clearHover()
-    }
+    return map ? interactions.attachHoverHighlight(map, sourceId, layerIds) : noop
   }, [])
 
   return (
