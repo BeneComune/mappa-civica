@@ -138,7 +138,8 @@ export function SiteHeader() {
   return (
     <header className="border-b bg-background">
       <div className="mx-auto flex max-w-5xl flex-col gap-2 px-4 py-3">
-        <Link href="/" className="w-fit text-xl font-semibold">
+        <Link href="/" className="flex w-fit items-center gap-2 text-xl font-semibold">
+          <ICONS.appLogo aria-hidden="true" className="size-5" />
           {STRINGS.appName}
         </Link>
         <NavigationMenu className="max-w-none justify-start">

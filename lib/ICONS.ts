@@ -13,6 +13,7 @@ import {
   Lightbulb,
   Map,
   MapPinPlus,
+  MapPlus,
   Megaphone,
   MessageSquare,
   OctagonAlert,
@@ -44,6 +45,9 @@ import {
  * RescueModule.tsx, GreenLegend.tsx).
  */
 export const ICONS = {
+  // App brand mark
+  appLogo: MapPlus,
+
   // Top-level modules
   home: House,
   outdoor: Signpost,
