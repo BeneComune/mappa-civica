@@ -2,6 +2,7 @@
 
 import { Faq } from "@/components/faq"
 import { HoverPopupLayer } from "@/components/hover-popup-layer"
+import { PageHeader } from "@/components/page-header"
 import { ALL_NBR_CLASSES, NBR_CLASS_CONFIG, type NbrClass } from "@/lib/green-classes"
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
@@ -15,11 +16,7 @@ export default function GreenNbrPage() {
   return (
     <div>
       <HoverPopupLayer layerId="green-nbr-fill" render={renderNbrPopup} />
-      <h2 className="flex items-center gap-2 text-xl font-semibold">
-        <ICONS.vegetationHealth aria-hidden="true" className="size-5" />
-        {STRINGS.vegetationHealth}
-      </h2>
-      <p className="mt-2 text-sm text-muted-foreground">{STRINGS.vegetationHealthDescription}</p>
+      <PageHeader icon={ICONS.vegetationHealth} title={STRINGS.vegetationHealth} description={STRINGS.vegetationHealthDescription} />
       <p className="mt-1 text-xs text-muted-foreground">Da Sentinel-2 · 20 m · settembre 2025 · ombre mascherate</p>
       <ul className="mt-2 flex flex-col gap-1">
         {ALL_NBR_CLASSES.map((cls) => {

@@ -2,6 +2,7 @@
 
 import { Faq } from "@/components/faq"
 import { FilterBadgeGroup } from "@/components/filter-badge-group"
+import { PageHeader } from "@/components/page-header"
 import { ICONS } from "@/lib/ICONS"
 import { SLOPE_LAYER_IDS } from "@/lib/map/overlays/slope"
 import { STRINGS } from "@/lib/strings"
@@ -19,11 +20,7 @@ const SLOPE_OPTIONS = [
 export default function TrailsSlopePage() {
   return (
     <div>
-      <h2 className="flex items-center gap-2 text-xl font-semibold">
-        <ICONS.slope aria-hidden="true" className="size-5" />
-        {STRINGS.slope}
-      </h2>
-      <p className="mt-2 text-sm text-muted-foreground">{STRINGS.slopeDescription}</p>
+      <PageHeader icon={ICONS.slope} title={STRINGS.slope} description={STRINGS.slopeDescription} />
       <div className="mt-3">
         <FilterBadgeGroup property="slope_class" options={SLOPE_OPTIONS} layerIds={SLOPE_LAYER_IDS} />
       </div>

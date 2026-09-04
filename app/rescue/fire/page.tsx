@@ -5,6 +5,7 @@ import { Faq } from "@/components/faq"
 import { FilterBadgeGroup } from "@/components/filter-badge-group"
 import { HoverHighlightLayer } from "@/components/hover-highlight-layer"
 import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
+import { PageHeader } from "@/components/page-header"
 import { ICONS } from "@/lib/ICONS"
 import { ALL_NBR_CLASSES, NBR_CLASS_CONFIG } from "@/lib/green-classes"
 import {
@@ -30,11 +31,7 @@ export default function RescueFirePage() {
       <ClickPopupLayer layerId="fire-danger-fill" render={dangerPopupHTML} />
       <ClickPopupLayer layerId="fire-ignition-points" render={ignitionPopupHTML} />
       <HoverHighlightLayer sourceId="firePerimeters" layerIds={FIRE_PERIMETERS_LAYER_IDS} />
-      <h2 className="flex items-center gap-2 text-xl font-semibold">
-        <ICONS.wildfires aria-hidden="true" className="size-5" />
-        {STRINGS.wildfires}
-      </h2>
-      <p className="mt-2 text-sm text-muted-foreground">{STRINGS.wildfiresDescription}</p>
+      <PageHeader icon={ICONS.wildfires} title={STRINGS.wildfires} description={STRINGS.wildfiresDescription} />
       <p className="mt-1 text-xs text-muted-foreground">
         Archivio storico (perimetri digitalizzati dai Fogli Notizie Incendi Boschivi, dal 1990): registra dove il
         fuoco è già passato, non è una mappa previsionale di pericolosità. La precisione dei rilievi più vecchi è

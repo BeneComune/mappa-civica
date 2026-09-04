@@ -2,6 +2,7 @@
 
 import { Faq } from "@/components/faq"
 import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
+import { PageHeader } from "@/components/page-header"
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
@@ -10,11 +11,7 @@ const BIKE_LANE_LAYER_IDS = ["bike-lane-casing", "bike-lane-network", "bike-lane
 export default function CyclabilityBikeInfraPage() {
   return (
     <div>
-      <h2 className="flex items-center gap-2 text-xl font-semibold">
-        <ICONS.bikeInfra aria-hidden="true" className="size-5" />
-        {STRINGS.bikeInfra}
-      </h2>
-      <p className="mt-2 text-sm text-muted-foreground">{STRINGS.bikeInfraDescription}</p>
+      <PageHeader icon={ICONS.bikeInfra} title={STRINGS.bikeInfra} description={STRINGS.bikeInfraDescription} />
       <div className="mt-3 flex flex-wrap gap-2">
         <OverlayToggleBadge
           label={STRINGS.bikeInfraCiclabili}
