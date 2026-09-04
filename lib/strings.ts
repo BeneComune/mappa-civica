@@ -1,0 +1,62 @@
+/**
+ * Single source of truth for every Italian UI string in the app. Check here
+ * before hardcoding new text — reuse an existing constant if the string
+ * already exists, rather than duplicating it inline.
+ */
+export const STRINGS = {
+  appName: "Mappa Civica",
+  portingNotice: "Porting in corso dal prototipo Vite.",
+
+  // Top-level nav / page titles
+  home: "Home",
+  outdoor: "Outdoor",
+  outdoorTitle: "Modulo Outdoor",
+  rescue: "Soccorso ed Emergenza",
+  rescueTitle: "Modulo Soccorso ed Emergenza",
+  green: "Verde",
+  greenTitle: "Modulo Verde",
+  community: "Segnala",
+
+  // Outdoor > Percorsi in bici
+  cyclability: "Percorsi in bici",
+  trafficStress: "Stress da traffico",
+  trafficStressDescription: "Quanto ogni strada è stressante o sicura da percorrere in bici, mappa di stressinbici.it",
+  bikeInfra: "Infrastrutture ciclabili",
+  bikeInfraDescription: "Piste ciclabili, rastrelliere, bike sharing e altri servizi per la bici",
+  bikeRoutePlanner: "Pianifica percorso",
+  bikeRoutePlannerDescription: "Calcola un itinerario in bici, con distanza, tempo e profilo altimetrico",
+
+  // Outdoor > Sentieri
+  trails: "Sentieri",
+  waterPoints: "Sentieri e punti acqua",
+  waterPointsDescription: "Sentieri CAI, percorsi MTB, fontane e aree picnic",
+  slope: "Pendenza",
+  slopeDescription: "Strade e sentieri colorati per pendenza, con etichette pensate per chi cammina",
+  trailsRoutePlanner: "Pianifica percorso",
+  trailsRoutePlannerDescription: "Calcola un itinerario a piedi, con distanza, tempo e profilo altimetrico",
+
+  // Rescue sections
+  riverRisk: "Rii a rischio",
+  riverRiskDescription:
+    "Censimento dei piccoli corsi d'acqua (\"rii\") sopra l'abitato che esondano durante le piogge intense.",
+  wildfires: "Incendi boschivi",
+  wildfiresDescription:
+    "Perimetri degli incendi boschivi rilevati dalle Stazioni Forestali della Regione FVG, colorati per causa dell'innesco.",
+  rescueAssets: "Presidi di soccorso",
+  rescueAssetsDescription: "Defibrillatori, elisoccorso, idranti e punti di raccolta.",
+
+  // Green sections
+  vegetation: "Vegetazione",
+  vegetationDescription:
+    "Quanto è coperto ogni punto del territorio da vegetazione sana, dal suolo nudo alla foresta più densa.",
+  naturalShade: "Ombra naturale",
+  naturalShadeDescription:
+    "Strade e sentieri colorati in base a quanto sono coperti dalle chiome degli alberi, utile per scegliere un percorso fresco nelle giornate calde.",
+  vegetationHealth: "Salute vegetazione",
+  vegetationHealthDescription:
+    "Individua vegetazione in sofferenza, degradata o bruciata: non solo quanto verde c'è, ma come sta.",
+  soilTemperature: "Temperatura suolo",
+  soilTemperatureDescription: "Le zone più calde e quelle più fresche del territorio, misurate dal satellite.",
+} as const
+
+export type StringKey = keyof typeof STRINGS

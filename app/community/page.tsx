@@ -1,6 +1,6 @@
 import { ModulePlaceholder } from "@/components/module-placeholder"
 import { STRINGS } from "@/lib/strings"
 
-export default function Home() {
-  return <ModulePlaceholder title={STRINGS.home} />
+export default function CommunityPage() {
+  return <ModulePlaceholder title={STRINGS.community} />
 }
