@@ -140,4 +140,3 @@ export const STRINGS = {
   reportPending: "In attesa",
 } as const
 
-export type StringKey = keyof typeof STRINGS

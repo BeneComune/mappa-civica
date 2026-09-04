@@ -261,6 +261,25 @@ class MapSearchControl implements IControl {
   }
 }
 
+// Shared onAdd() scaffolding for the single-button IControl classes below:
+// a "maplibregl-ctrl-group" container wrapping one titled, icon-only button.
+function createControlButton(
+  iconNode: Parameters<typeof icon>[0],
+  title: string
+): { container: HTMLDivElement; button: HTMLButtonElement } {
+  const container = document.createElement("div")
+  container.className = "maplibregl-ctrl maplibregl-ctrl-group"
+
+  const button = document.createElement("button")
+  button.type = "button"
+  button.title = title
+  button.setAttribute("aria-label", title)
+  button.appendChild(icon(iconNode))
+
+  container.appendChild(button)
+  return { container, button }
+}
+
 // Custom (not MapLibre's built-in TerrainControl) to match the old app's own
 // terrain button exactly. setStyle() (the basemap switcher) replaces the
 // whole style document, which silently drops map.setTerrain(...) - the
@@ -276,14 +295,7 @@ class MapTerrainControl implements IControl {
   }
 
   onAdd(map: Map): HTMLElement {
-    const container = document.createElement("div")
-    container.className = "maplibregl-ctrl maplibregl-ctrl-group"
-
-    const button = document.createElement("button")
-    button.type = "button"
-    button.title = "Terreno 3D"
-    button.setAttribute("aria-label", "Terreno 3D")
-    button.appendChild(icon(Mountain))
+    const { container, button } = createControlButton(Mountain, "Terreno 3D")
     button.classList.toggle("active", this.initial)
     button.addEventListener("click", () => {
       const isOn = !!map.getTerrain()
@@ -294,7 +306,6 @@ class MapTerrainControl implements IControl {
       this.onTerrainChange(nextOn)
     })
 
-    container.appendChild(button)
     this.container = container
     return container
   }
@@ -378,14 +389,7 @@ class MapPrintControl implements IControl {
   }
 
   onAdd(map: Map): HTMLElement {
-    const container = document.createElement("div")
-    container.className = "maplibregl-ctrl maplibregl-ctrl-group"
-
-    const button = document.createElement("button")
-    button.type = "button"
-    button.title = "Stampa mappa"
-    button.setAttribute("aria-label", "Stampa mappa")
-    button.appendChild(icon(Printer))
+    const { container, button } = createControlButton(Printer, "Stampa mappa")
     button.addEventListener("click", () => {
       button.disabled = true
       exportMapToPdf(map, this.moduleLabel, this.productName)
@@ -395,7 +399,6 @@ class MapPrintControl implements IControl {
         })
     })
 
-    container.appendChild(button)
     this.container = container
     return container
   }

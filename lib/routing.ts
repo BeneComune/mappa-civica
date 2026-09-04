@@ -120,6 +120,12 @@ function coordKey(coord: Coord, digits = 7): NodeId {
   return `${coord[0].toFixed(digits)},${coord[1].toFixed(digits)}`
 }
 
+function hasRoutableGeometry(
+  geometry?: { type?: string; coordinates?: Coord[] }
+): geometry is { type: string; coordinates: Coord[] } {
+  return geometry?.type === "LineString" && !!geometry.coordinates && geometry.coordinates.length >= 2
+}
+
 function segmentLength(coords: Coord[]): number {
   let total = 0
   for (let index = 1; index < coords.length; index += 1) {
@@ -254,7 +260,7 @@ function buildTransportRoutingGraph(features: TransportFeature[]): RoutingGraph 
   for (const feature of features) {
     const properties = feature.properties ?? {}
     const geometry = feature.geometry
-    if (geometry?.type !== "LineString" || !geometry.coordinates || geometry.coordinates.length < 2) {
+    if (!hasRoutableGeometry(geometry)) {
       continue
     }
 
@@ -340,7 +346,7 @@ function buildWalkingRoutingGraph(features: CombinedFeature[]): RoutingGraph {
     const properties = feature.properties ?? {}
     const geometry = feature.geometry
 
-    if (geometry?.type !== "LineString" || !geometry.coordinates || geometry.coordinates.length < 2) {
+    if (!hasRoutableGeometry(geometry)) {
       continue
     }
 

@@ -125,5 +125,3 @@ export const ICONS = {
   newReport: CirclePlus,
   reportLocation: MapPinPlus,
 } as const
-
-export type IconName = keyof typeof ICONS
