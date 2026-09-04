@@ -34,7 +34,7 @@ const BASEMAP_STYLE_LABELS: Record<BasemapStyleKey, string> = {
   dark: "Sfondo scuro",
 }
 
-const DEFAULT_BASEMAP_STYLE: BasemapStyleKey = "summer"
+const DEFAULT_BASEMAP_STYLE: BasemapStyleKey = "dark"
 
 // Free public terrarium-encoded DEM (same source the old app uses) - kept as
 // our own overlay source so 3D terrain works regardless of which Maptoolkit
