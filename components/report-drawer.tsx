@@ -31,6 +31,7 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
   const [location, setLocation] = useState<[number, number] | null>(null)
   const [photo, setPhoto] = useState<{ fileName: string; dataUrl: string } | null>(null)
   const [parcels, setParcels] = useState<ParcelPoint[]>([])
+  const [submitted, setSubmitted] = useState(false)
   const parcel = location ? nearestParcel(parcels, location[0], location[1]) : null
 
   useEffect(() => {
@@ -58,6 +59,7 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
     setDescription("")
     setLocation(null)
     setPhoto(null)
+    setSubmitted(false)
   }
 
   async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>): Promise<void> {
@@ -89,8 +91,11 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
 
     window.location.href = buildReportMailto(report)
     onSubmitted(report)
-    reset()
-    setOpen(false)
+    setSubmitted(true)
+    setTimeout(() => {
+      reset()
+      setOpen(false)
+    }, 2000)
   }
 
   const NewReportIcon = ICONS.newReport
@@ -134,13 +139,14 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="report-title">{STRINGS.reportTitleLabel}</Label>
-            <Input id="report-title" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Input id="report-title" maxLength={100} value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="report-description">{STRINGS.reportDescriptionLabel}</Label>
             <Textarea
               id="report-description"
+              maxLength={500}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
@@ -149,7 +155,7 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="report-photo">{STRINGS.reportPhotoLabel}</Label>
-            <Input id="report-photo" type="file" accept="image/*" onChange={handlePhotoChange} />
+            <Input id="report-photo" type="file" accept="image/*" capture="environment" onChange={handlePhotoChange} />
             {photo && (
               <div className="flex items-center gap-2">
                 {/* eslint-disable-next-line @next/next/no-img-element -- local data URL preview, next/image doesn't apply */}
@@ -174,10 +180,16 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
           </div>
         </div>
         <DrawerFooter>
-          <Button onClick={handleSubmit} disabled={!location || !title.trim()}>
-            {STRINGS.reportSubmit}
-          </Button>
-          <DrawerClose render={<Button variant="outline" />}>{STRINGS.reportCancel}</DrawerClose>
+          {submitted ? (
+            <p className="text-sm text-muted-foreground">{STRINGS.reportSubmitted}</p>
+          ) : (
+            <>
+              <Button onClick={handleSubmit} disabled={!location || !title.trim()}>
+                {STRINGS.reportSubmit}
+              </Button>
+              <DrawerClose render={<Button variant="outline" />}>{STRINGS.reportCancel}</DrawerClose>
+            </>
+          )}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
