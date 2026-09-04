@@ -59,7 +59,22 @@ function StatSection({ title, children }: { title: string; children: React.React
   )
 }
 
-function Stat({ label, children }: { label: string; children: React.ReactNode }) {
+// Short values (numbers, single words) fit a compact label/value row. Long
+// text (addresses, name lists) doesn't - squeezed into a narrow right-aligned
+// column it wraps awkwardly, so those rows span full-width instead: label on
+// its own line, value below it, left-aligned.
+function Stat({ label, long, children }: { label: string; long?: boolean; children: React.ReactNode }) {
+  if (long) {
+    return (
+      <tr className="border-b border-border/50 last:border-0">
+        <td colSpan={2} className="py-1">
+          <div className="text-muted-foreground">{label}</div>
+          <div>{children}</div>
+        </td>
+      </tr>
+    )
+  }
+
   return (
     <tr className="border-b border-border/50 last:border-0">
       <td className="py-1 pr-2 align-baseline text-muted-foreground">{label}</td>
@@ -74,8 +89,10 @@ export function MunicipalityStatsPanel({ stats }: { stats: MunicipalityStats }) 
       <StatSection title="Territorio">
         <Stat label="Superficie">{fmt(stats.demographic.area_km2, " km²")}</Stat>
         <Stat label="Densità">{fmt(stats.demographic.population_density_km2, " ab/km²")}</Stat>
-        <Stat label="Corsi d'acqua">{stats.geography.waterways.join(", ")}</Stat>
-        <Stat label="Cime principali">
+        <Stat label="Corsi d'acqua" long>
+          {stats.geography.waterways.join(", ")}
+        </Stat>
+        <Stat label="Cime principali" long>
           {stats.geography.peaks.map((p) => `${p.name} (${p.elevation_m.toLocaleString("it-IT")} m)`).join(", ")}
         </Stat>
         <Stat label="Vegetazione densa">{fmt(stats.pipeline_derived.green_area_pct, "%")}</Stat>
@@ -128,7 +145,7 @@ export function MunicipalityStatsPanel({ stats }: { stats: MunicipalityStats }) 
       </StatSection>
 
       <StatSection title="Rischio territorio">
-        <Stat label="Zona sismica">
+        <Stat label="Zona sismica" long>
           {stats.risk.seismic_zone != null ? (
             <>
               Zona {stats.risk.seismic_zone}
@@ -145,11 +162,13 @@ export function MunicipalityStatsPanel({ stats }: { stats: MunicipalityStats }) 
 
       <StatSection title="Servizi">
         <Stat label="Sportelli bancari">{fmt(stats.services.bank_branches)}</Stat>
-        <Stat label="Farmacia">
+        <Stat label="Farmacia" long>
           {stats.services.pharmacy_name ?? (stats.services.pharmacy ? "Sì" : stats.services.pharmacy === false ? "No" : "-")}
         </Stat>
-        <Stat label="Scuole">{stats.services.schools ?? "-"}</Stat>
-        <Stat label="Pronto soccorso">
+        <Stat label="Scuole" long>
+          {stats.services.schools ?? "-"}
+        </Stat>
+        <Stat label="Pronto soccorso" long>
           {stats.services.nearest_emergency_room.name ? (
             <>
               {stats.services.nearest_emergency_room.name}
