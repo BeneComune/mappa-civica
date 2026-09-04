@@ -5,10 +5,12 @@ import { usePathname } from "next/navigation"
 import type { Map } from "maplibre-gl"
 import {
   addAssetsOverlay,
+  addBikeInfraOverlay,
   addFireOverlay,
   addRiiOverlay,
   addTrailsWaterOverlay,
   ASSETS_LAYER_IDS,
+  BIKE_INFRA_LAYER_IDS,
   createBaseMap,
   FIRE_LAYER_IDS,
   onStyleReady,
@@ -26,6 +28,7 @@ const ROUTE_OVERLAYS = [
   { path: "/rescue/fire", add: addFireOverlay, layerIds: FIRE_LAYER_IDS },
   { path: "/rescue/assets", add: addAssetsOverlay, layerIds: ASSETS_LAYER_IDS },
   { path: "/outdoor/trails/trails", add: addTrailsWaterOverlay, layerIds: TRAILS_WATER_LAYER_IDS },
+  { path: "/outdoor/cyclability/bike-infra", add: addBikeInfraOverlay, layerIds: BIKE_INFRA_LAYER_IDS },
 ]
 
 function syncOverlayVisibility(map: Map, pathname: string): void {
