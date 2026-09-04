@@ -32,6 +32,9 @@ type MapContextValue = {
   // via `render(properties)` returning an HTML string, or nothing to skip
   // that hover. Shared by every module's hover-popup (Rescue, Green, ...).
   attachHoverPopup: (layerId: string, render: (props: Record<string, unknown>) => string | null | undefined) => () => void
+  // Shows a popup at the clicked feature's position on `layerId`. Shared by
+  // Rescue's click-to-open popups (rii, fire, assets, ...).
+  attachClickPopup: (layerId: string, render: (props: Record<string, unknown>) => string | null | undefined) => () => void
   // Escape hatch for interactions too specific to generalize (e.g. Home's
   // cadastral-parcel identify: click + hover + queryRenderedFeatures). Use
   // the narrower methods above where possible instead.
@@ -146,6 +149,40 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
     []
   )
 
+  const attachClickPopup = useCallback(
+    (layerId: string, render: (props: Record<string, unknown>) => string | null | undefined) => {
+      const map = mapRef.current
+      if (!map) return () => {}
+
+      const handleClick = (e: MapLayerMouseEvent) => {
+        const html = render(e.features?.[0]?.properties ?? {})
+        if (!html) return
+        new maplibregl.Popup({ closeButton: true, closeOnClick: true }).setLngLat(e.lngLat).setHTML(html).addTo(map)
+      }
+      const handleEnter = () => {
+        map.getCanvas().style.cursor = "pointer"
+      }
+      const handleLeave = () => {
+        map.getCanvas().style.cursor = ""
+      }
+
+      const attach = () => {
+        map.on("click", layerId, handleClick)
+        map.on("mouseenter", layerId, handleEnter)
+        map.on("mouseleave", layerId, handleLeave)
+      }
+      const unsubStyleReady = onStyleReady(map, attach)
+
+      return () => {
+        unsubStyleReady()
+        map.off("click", layerId, handleClick)
+        map.off("mouseenter", layerId, handleEnter)
+        map.off("mouseleave", layerId, handleLeave)
+      }
+    },
+    []
+  )
+
   return (
     <MapContext.Provider
       value={{
@@ -158,6 +195,7 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
         setSourceData,
         getMap,
         attachHoverPopup,
+        attachClickPopup,
       }}
     >
       {children}

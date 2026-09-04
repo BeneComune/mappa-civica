@@ -1,3 +1,6 @@
+"use client"
+
+import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { OverlayCheckbox } from "@/components/overlay-checkbox"
 import {
   AED_LAYER_IDS,
@@ -5,11 +8,16 @@ import {
   FIRE_HYDRANT_LAYER_IDS,
   HEMS_LAYER_IDS,
 } from "@/lib/map/overlays/assets"
+import { assetPopupHTML } from "@/lib/rescue-popups"
 import { STRINGS } from "@/lib/strings"
 
 export default function RescueAssetsPage() {
   return (
     <div>
+      <ClickPopupLayer layerId="aed-sites" render={assetPopupHTML} />
+      <ClickPopupLayer layerId="hems-sites" render={assetPopupHTML} />
+      <ClickPopupLayer layerId="fire-hydrant-sites" render={assetPopupHTML} />
+      <ClickPopupLayer layerId="assembly-point-sites" render={assetPopupHTML} />
       <h2 className="text-xl font-semibold">{STRINGS.rescueAssets}</h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.rescueAssetsDescription}</p>
       <div className="mt-3 flex flex-col gap-2">
