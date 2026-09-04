@@ -4,8 +4,10 @@ import { useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import type { Map } from "maplibre-gl"
 import {
+  addAssetsOverlay,
   addFireOverlay,
   addRiiOverlay,
+  ASSETS_LAYER_IDS,
   createBaseMap,
   FIRE_LAYER_IDS,
   onStyleReady,
@@ -20,6 +22,7 @@ import { STRINGS } from "@/lib/strings"
 const ROUTE_OVERLAYS = [
   { path: "/rescue/events", add: addRiiOverlay, layerIds: RII_LAYER_IDS },
   { path: "/rescue/fire", add: addFireOverlay, layerIds: FIRE_LAYER_IDS },
+  { path: "/rescue/assets", add: addAssetsOverlay, layerIds: ASSETS_LAYER_IDS },
 ]
 
 function syncOverlayVisibility(map: Map, pathname: string): void {
