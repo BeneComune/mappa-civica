@@ -44,6 +44,10 @@ export const STRINGS = {
     "Perimetri degli incendi boschivi rilevati dalle Stazioni Forestali della Regione FVG, colorati per causa dell'innesco.",
   rescueAssets: "Presidi di soccorso",
   rescueAssetsDescription: "Defibrillatori, elisoccorso, idranti e punti di raccolta.",
+  aed: "Defibrillatori",
+  hems: "Elisoccorso",
+  fireHydrants: "Idranti",
+  assemblyPoints: "Punti raccolta",
 
   // Green sections
   vegetation: "Vegetazione",

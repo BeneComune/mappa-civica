@@ -1,5 +1,13 @@
 import type { Map } from "maplibre-gl"
 
+// This barrel re-exports ./base, which does a real (non-type-only) runtime
+// `import * as maplibregl from "maplibre-gl"`. Importing anything from this
+// file - even a plain string constant like RII_LAYER_IDS - pulls maplibre-gl
+// into whatever bundle does the importing. That's fine from Client
+// Components (map-view.tsx, map-provider.tsx), but breaks the build if a
+// Server Component (a page.tsx without "use client") imports from here: use
+// `@/lib/map/overlays/<name>` directly instead in that case, since overlay
+// files only import maplibre-gl's types (erased at compile time).
 export { createBaseMap, onStyleReady } from "./base"
 export { setOverlayVisibility } from "./overlays/shared"
 
@@ -7,6 +15,15 @@ import { setOverlayVisibility } from "./overlays/shared"
 import { addRiiOverlay, RII_LAYER_IDS } from "./overlays/rii"
 import { addFireOverlay, FIRE_LAYER_IDS } from "./overlays/fire"
 import { addAssetsOverlay, ASSETS_LAYER_IDS } from "./overlays/assets"
+
+export {
+  addAssetsOverlay,
+  AED_LAYER_IDS,
+  ASSEMBLY_POINT_LAYER_IDS,
+  ASSETS_LAYER_IDS,
+  FIRE_HYDRANT_LAYER_IDS,
+  HEMS_LAYER_IDS,
+} from "./overlays/assets"
 import { addTrailsWaterOverlay, TRAILS_WATER_LAYER_IDS } from "./overlays/trails-water"
 import { addBikeInfraOverlay, BIKE_INFRA_LAYER_IDS } from "./overlays/bike-infra"
 import { addSlopeOverlay, SLOPE_LAYER_IDS } from "./overlays/slope"

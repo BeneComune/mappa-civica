@@ -3,16 +3,19 @@ import type { Map } from "maplibre-gl"
 // "Presidi di soccorso" from the old app's RescueModule: AED defibrillators,
 // HEMS heliports, fire hydrants, and emergency assembly points. All four
 // were visible by default (no checkbox unchecked initially), so all four
-// are shown together when this route is active.
+// are shown together when this route is active. Each type also gets its own
+// layer-id group below, so the legend panel's per-type checkboxes can toggle
+// them independently once the route-level visibility has turned them all on.
+export const AED_LAYER_IDS = ["aed-sites", "aed-labels"]
+export const HEMS_LAYER_IDS = ["hems-sites", "hems-labels"]
+export const FIRE_HYDRANT_LAYER_IDS = ["fire-hydrant-sites", "fire-hydrant-labels"]
+export const ASSEMBLY_POINT_LAYER_IDS = ["assembly-point-sites", "assembly-point-labels"]
+
 export const ASSETS_LAYER_IDS = [
-  "aed-sites",
-  "aed-labels",
-  "hems-sites",
-  "hems-labels",
-  "fire-hydrant-sites",
-  "fire-hydrant-labels",
-  "assembly-point-sites",
-  "assembly-point-labels",
+  ...AED_LAYER_IDS,
+  ...HEMS_LAYER_IDS,
+  ...FIRE_HYDRANT_LAYER_IDS,
+  ...ASSEMBLY_POINT_LAYER_IDS,
 ]
 
 function addEmergencyLayers(
