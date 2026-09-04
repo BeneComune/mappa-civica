@@ -8,6 +8,7 @@ import {
   addBikeInfraOverlay,
   addFireOverlay,
   addRiiOverlay,
+  addSlopeOverlay,
   addTrailsWaterOverlay,
   ASSETS_LAYER_IDS,
   BIKE_INFRA_LAYER_IDS,
@@ -16,6 +17,7 @@ import {
   onStyleReady,
   RII_LAYER_IDS,
   setOverlayVisibility,
+  SLOPE_LAYER_IDS,
   TRAILS_WATER_LAYER_IDS,
 } from "@/lib/map"
 import { STRINGS } from "@/lib/strings"
@@ -29,6 +31,7 @@ const ROUTE_OVERLAYS = [
   { path: "/rescue/assets", add: addAssetsOverlay, layerIds: ASSETS_LAYER_IDS },
   { path: "/outdoor/trails/trails", add: addTrailsWaterOverlay, layerIds: TRAILS_WATER_LAYER_IDS },
   { path: "/outdoor/cyclability/bike-infra", add: addBikeInfraOverlay, layerIds: BIKE_INFRA_LAYER_IDS },
+  { path: "/outdoor/trails/slope", add: addSlopeOverlay, layerIds: SLOPE_LAYER_IDS },
 ]
 
 function syncOverlayVisibility(map: Map, pathname: string): void {
