@@ -29,7 +29,7 @@ export function HomePanel() {
         </section>
 
         {stats && (
-          <section className={CARD}>
+          <section className={`${CARD} max-w-sm`}>
             <MunicipalityStatsPanel stats={stats} />
           </section>
         )}
