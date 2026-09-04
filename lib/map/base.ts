@@ -254,9 +254,11 @@ class MapSearchControl implements IControl {
 // camera stays tilted but the relief disappears until re-toggled.
 class MapTerrainControl implements IControl {
   private container?: HTMLDivElement
+  private initial: boolean
   private onTerrainChange: (on: boolean) => void
 
-  constructor(onTerrainChange: (on: boolean) => void) {
+  constructor(initial: boolean, onTerrainChange: (on: boolean) => void) {
+    this.initial = initial
     this.onTerrainChange = onTerrainChange
   }
 
@@ -269,6 +271,7 @@ class MapTerrainControl implements IControl {
     button.title = "Terreno 3D"
     button.setAttribute("aria-label", "Terreno 3D")
     button.textContent = "🏔️"
+    button.classList.toggle("active", this.initial)
     button.addEventListener("click", () => {
       const isOn = !!map.getTerrain()
       const nextOn = !isOn
@@ -406,6 +409,7 @@ export function createBaseMap(container: HTMLElement, printLabel: string, produc
     container,
     center: DEFAULT_CENTER,
     zoom: DEFAULT_ZOOM,
+    pitch: 60,
     style: BASEMAP_STYLE_URLS[DEFAULT_BASEMAP_STYLE],
     attributionControl: false,
     // Needed for the print/export control to read back a valid PNG from the
@@ -413,7 +417,7 @@ export function createBaseMap(container: HTMLElement, printLabel: string, produc
     canvasContextAttributes: { preserveDrawingBuffer: true },
   })
 
-  let terrainOn = false
+  let terrainOn = true
 
   map.on("style.load", () => {
     if (!map.getSource(TERRAIN_SOURCE_ID)) {
@@ -434,7 +438,7 @@ export function createBaseMap(container: HTMLElement, printLabel: string, produc
   map.addControl(new maplibregl.FullscreenControl(), "top-right")
   map.addControl(new MapSearchControl(), "top-right")
   map.addControl(
-    new MapTerrainControl((on) => {
+    new MapTerrainControl(terrainOn, (on) => {
       terrainOn = on
     }),
     "top-right"
