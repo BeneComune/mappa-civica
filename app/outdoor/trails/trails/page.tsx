@@ -1,5 +1,6 @@
 "use client"
 
+import { Faq } from "@/components/faq"
 import { OverlayCheckbox } from "@/components/overlay-checkbox"
 import { STRINGS } from "@/lib/strings"
 
@@ -21,6 +22,10 @@ export default function TrailsWaterPage() {
         <OverlayCheckbox label={STRINGS.waterPointsSpring} layerIds={SPRING_LAYER_IDS} />
         <OverlayCheckbox label={STRINGS.waterPointsPicnic} layerIds={PICNIC_LAYER_IDS} />
       </div>
+      <Faq>
+        Sentieri segnalati dal CAI (Club Alpino Italiano) per l&apos;escursionismo a piedi, e percorsi adatti alla
+        mountain bike. Tracciati mappati da OpenStreetMap.
+      </Faq>
     </div>
   )
 }

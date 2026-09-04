@@ -1,5 +1,6 @@
 "use client"
 
+import { Faq } from "@/components/faq"
 import { HoverPopupLayer } from "@/components/hover-popup-layer"
 import { STRINGS } from "@/lib/strings"
 
@@ -21,6 +22,14 @@ export default function GreenShadePage() {
       <HoverPopupLayer layerId="shade-corridors" render={renderShadePopup} />
       <h2 className="text-xl font-semibold">{STRINGS.naturalShade}</h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.naturalShadeDescription}</p>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Verde scuro = strade ombreggiate · verde chiaro = sentieri ombreggiati · opacità proporzionale alla copertura
+      </p>
+      <Faq>
+        Percentuale di copertura arborea sopra ogni tratto di strada o sentiero, calcolata incrociando le aree di
+        vegetazione densa (dallo stesso indice di vegetazione) con i tracciati stradali e i sentieri di
+        OpenStreetMap.
+      </Faq>
     </div>
   )
 }

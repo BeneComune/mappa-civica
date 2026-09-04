@@ -1,5 +1,6 @@
 "use client"
 
+import { Faq } from "@/components/faq"
 import { OverlayCheckbox } from "@/components/overlay-checkbox"
 import { STRINGS } from "@/lib/strings"
 
@@ -17,6 +18,10 @@ export default function CyclabilityBikeInfraPage() {
         <OverlayCheckbox label={STRINGS.bikeInfraBikeRepair} layerIds={["bike-infra-bike-repair"]} />
         <OverlayCheckbox label={STRINGS.bikeInfraEbikeCharging} layerIds={["bike-infra-ebike-charging"]} />
       </div>
+      <Faq>
+        Piste ciclabili (incluso il percorso regionale FVG3 / MV 06), rastrelliere per parcheggiare la bici, punti
+        di bike sharing, officine per la riparazione e colonnine di ricarica per e-bike, mappati da OpenStreetMap.
+      </Faq>
     </div>
   )
 }

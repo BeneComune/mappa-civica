@@ -1,6 +1,7 @@
 "use client"
 
 import { ClickPopupLayer } from "@/components/click-popup-layer"
+import { Faq } from "@/components/faq"
 import { OverlayCheckbox } from "@/components/overlay-checkbox"
 import {
   AED_LAYER_IDS,
@@ -26,6 +27,13 @@ export default function RescueAssetsPage() {
         <OverlayCheckbox label={STRINGS.fireHydrants} layerIds={FIRE_HYDRANT_LAYER_IDS} />
         <OverlayCheckbox label={STRINGS.assemblyPoints} layerIds={ASSEMBLY_POINT_LAYER_IDS} />
       </div>
+      <Faq>
+        Defibrillatori (DAE), elisuperfici per l&apos;elisoccorso (HEMS), idranti antincendio e punti di raccolta
+        per le emergenze. I DAE sono l&apos;elenco fornito dal Comune di Montereale Valcellina, unito ai punti già
+        presenti su OpenStreetMap; alcuni sono posizionati a partire dall&apos;indirizzo (da verificare sul
+        posto), come indicato nel dettaglio. Elisuperfici, idranti e punti di raccolta vengono da OpenStreetMap:
+        se ne conosci uno mancante puoi aggiungerlo tu stesso.
+      </Faq>
     </div>
   )
 }

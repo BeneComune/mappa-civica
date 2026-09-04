@@ -16,6 +16,8 @@ export const NDVI_CLASS_CONFIG: Record<NdviClass, { label: string; color: string
   very_dense: { label: "Foresta molto densa", color: "#004d20" },
 }
 
+export const ALL_NBR_CLASSES: NbrClass[] = ["sana", "moderata", "stress", "degradata", "bruciata"]
+
 export const NBR_CLASS_CONFIG: Record<NbrClass, { label: string; color: string; range: string }> = {
   sana: { label: "Vegetazione sana", color: "#1a9641", range: "> 0.4" },
   moderata: { label: "Vegetazione moderata", color: "#a6d96a", range: "0.2 - 0.4" },
@@ -23,6 +25,8 @@ export const NBR_CLASS_CONFIG: Record<NbrClass, { label: string; color: string; 
   degradata: { label: "Vegetazione degradata", color: "#fdae61", range: "-0.2 - 0.0" },
   bruciata: { label: "Suolo nudo / bruciato", color: "#d7191c", range: "< -0.2" },
 }
+
+export const ALL_LST_CLASSES: LstClass[] = ["fresco", "moderato_fresco", "temperato", "caldo", "molto_caldo"]
 
 export const LST_CLASS_CONFIG: Record<LstClass, { label: string; color: string; range: string }> = {
   fresco: { label: "Fresco", color: "#4575b4", range: "< 18°C" },

@@ -1,5 +1,6 @@
 "use client"
 
+import { Faq } from "@/components/faq"
 import { FilterCheckboxGroup } from "@/components/filter-checkbox-group"
 import { SLOPE_LAYER_IDS } from "@/lib/map/overlays/slope"
 import { STRINGS } from "@/lib/strings"
@@ -21,6 +22,11 @@ export default function TrailsSlopePage() {
       <div className="mt-3">
         <FilterCheckboxGroup property="slope_class" options={SLOPE_OPTIONS} layerIds={SLOPE_LAYER_IDS} />
       </div>
+      <Faq>
+        Pendenza media di ogni tratto, calcolata dal modello digitale del terreno (DEM/LiDAR). Le classi vanno da
+        pianeggiante (0-3%) a impraticabile (oltre il 20%), con etichette pensate per chi cammina più che per chi
+        pedala.
+      </Faq>
     </div>
   )
 }
