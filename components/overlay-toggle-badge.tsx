@@ -4,10 +4,9 @@ import { useEffect, useState } from "react"
 import type { LucideIcon } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
 
-// Badge/chip variant of OverlayCheckbox: same layer-visibility toggle
-// behavior, styled as an icon pill instead of a checkbox row. Used for
-// category groups where an icon-per-category reads better than a plain list
-// (bike infra, trail/water points, rescue assets).
+// Toggleable icon pill that shows/hides one layer group. Used for both
+// category groups (bike infra, trail/water points, rescue assets) and
+// standalone on/off overlays (fire danger zoning, ignition points, NBR).
 export function OverlayToggleBadge({
   label,
   icon: Icon,

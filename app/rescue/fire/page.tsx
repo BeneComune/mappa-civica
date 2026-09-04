@@ -4,7 +4,7 @@ import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
 import { FilterBadgeGroup } from "@/components/filter-badge-group"
 import { HoverHighlightLayer } from "@/components/hover-highlight-layer"
-import { OverlayCheckbox } from "@/components/overlay-checkbox"
+import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
 import { ICONS } from "@/lib/ICONS"
 import { ALL_NBR_CLASSES, NBR_CLASS_CONFIG } from "@/lib/green-classes"
 import {
@@ -43,17 +43,33 @@ export default function RescueFirePage() {
       <div className="mt-3 flex flex-col gap-3">
         <FilterBadgeGroup property="causa_classe" options={CAUSE_OPTIONS} layerIds={FIRE_PERIMETERS_LAYER_IDS} />
         <div className="flex flex-col gap-2 border-t pt-3">
-          <OverlayCheckbox label={STRINGS.fireDangerToggle} layerIds={FIRE_DANGER_LAYER_IDS} defaultChecked={false} />
+          <div className="flex flex-wrap gap-2">
+            <OverlayToggleBadge
+              label={STRINGS.fireDangerToggle}
+              icon={ICONS.fireDangerToggle}
+              color="#f59f00"
+              layerIds={FIRE_DANGER_LAYER_IDS}
+              defaultChecked={false}
+            />
+            <OverlayToggleBadge
+              label={STRINGS.fireIgnitionToggle}
+              icon={ICONS.fireIgnitionToggle}
+              color="#7a1f1f"
+              layerIds={FIRE_IGNITION_LAYER_IDS}
+              defaultChecked={false}
+            />
+            <OverlayToggleBadge
+              label={STRINGS.fireNbrToggle}
+              icon={ICONS.fireNbrToggle}
+              color="#1a9641"
+              layerIds={FIRE_NBR_LAYER_IDS}
+              defaultChecked={false}
+            />
+          </div>
           <p className="text-xs text-muted-foreground">
             Zonazione regionale SITFOR (IRDAT FVG) ritagliata sul confine comunale: giallo = pericolo medio, rosso
             = pericolo alto. È la propensione del territorio agli incendi, non un allarme.
           </p>
-          <OverlayCheckbox
-            label={STRINGS.fireIgnitionToggle}
-            layerIds={FIRE_IGNITION_LAYER_IDS}
-            defaultChecked={false}
-          />
-          <OverlayCheckbox label={STRINGS.fireNbrToggle} layerIds={FIRE_NBR_LAYER_IDS} defaultChecked={false} />
           <p className="text-xs text-muted-foreground">
             Da immagine Sentinel-2 (set. 2025): vegetazione secca, degradata o suolo nudo/bruciato. È una
             condizione attuale, non l&apos;effetto di un singolo incendio.

@@ -21,9 +21,11 @@ import {
   PlaneTakeoff,
   Repeat2,
   Route,
+  Satellite,
   ShieldPlus,
   Signpost,
   SquareParking,
+  Target,
   ThermometerSun,
   TrafficCone,
   Trash2,
@@ -95,6 +97,11 @@ export const ICONS = {
   fireCauseColposa: TriangleAlert,
   fireCauseNaturale: Zap,
   fireCauseIgnota: CircleHelp,
+
+  // Wildfire optional overlays
+  fireDangerToggle: TriangleAlert,
+  fireIgnitionToggle: Target,
+  fireNbrToggle: Satellite,
 
   // Rescue sections
   riverRisk: TriangleAlert,
