@@ -240,7 +240,7 @@ export function RoutePlanner({ mode }: { mode: RoutingMode }) {
                 {summary.surfaceBreakdown.map((run) => (
                   <span
                     key={run.label}
-                    className="h-full bg-primary/70 first:ml-0 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-background"
+                    className="h-full bg-primary/70 first:ml-0 not-first:border-l not-first:border-background"
                     style={{ width: `${(run.km / summary.distanceKm) * 100}%` }}
                     title={`${run.label}: ${run.km.toFixed(2)} km`}
                   />

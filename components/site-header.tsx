@@ -164,7 +164,7 @@ export function SiteHeader() {
                 {STRINGS.outdoor}
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="grid w-[520px] grid-cols-1 gap-3 p-2 sm:grid-cols-2 sm:w-[720px]">
+                <div className="grid w-130 grid-cols-1 gap-3 p-2 sm:grid-cols-2 sm:w-180">
                   {OUTDOOR_GROUPS.map((group) => (
                     <div key={group.title} className="flex flex-col gap-1">
                       <span className="flex items-center gap-2 px-2 py-1.5 text-xs font-medium text-muted-foreground">
@@ -229,7 +229,7 @@ function NavDropdown({ menu, pathname }: { menu: SimpleMenu; pathname: string })
         {menu.label}
       </NavigationMenuTrigger>
       <NavigationMenuContent>
-        <div className="flex w-[420px] flex-col gap-1 p-2 md:w-[480px]">
+        <div className="flex w-105 flex-col gap-1 p-2 md:w-120">
           <ul className="flex flex-col gap-1">
             {menu.items.map((item) => (
               <ListItem
