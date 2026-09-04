@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useSyncExternalStore } from "react"
+import { useEffect, useState, useSyncExternalStore } from "react"
 import { ThumbsUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ReportDrawer } from "@/components/report-drawer"
@@ -22,24 +22,37 @@ import {
   toggleVote,
   type CommunityReport,
 } from "@/lib/community"
+import { loadCommunityReports } from "@/lib/duckdb"
 import { STRINGS } from "@/lib/strings"
 
 export function CommunityPanel() {
   const { flyTo } = useMapContext()
-  const reports = useSyncExternalStore(subscribeReports, getReportsSnapshot, getReportsServerSnapshot)
+  const pendingReports = useSyncExternalStore(subscribeReports, getReportsSnapshot, getReportsServerSnapshot)
   const votes = useSyncExternalStore(subscribeVotes, getVotesSnapshot, getVotesServerSnapshot)
   const votedIds = useSyncExternalStore(subscribeVotes, getVotedIdsSnapshot, getVotedIdsServerSnapshot)
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  // Official reports from the read-only DuckDB snapshot, fetched once on
+  // mount and merged with the locally-pending ones below - kept separate
+  // from the localStorage-backed store since they aren't ours to persist.
+  const [dbReports, setDbReports] = useState<CommunityReport[]>([])
+
+  useEffect(() => {
+    loadCommunityReports().then(setDbReports)
+  }, [])
+
+  const pendingIds = new Set(pendingReports.map((r) => r.id))
+  const reports = [...pendingReports, ...dbReports.filter((r) => !pendingIds.has(r.id))]
 
   const filteredReports = categoryFilter ? reports.filter((r) => r.category === categoryFilter) : reports
 
   function handleSubmitted(report: CommunityReport): void {
-    saveReports([...reports, report])
+    saveReports([...pendingReports, report])
   }
 
   function handleDelete(id: string): void {
-    saveReports(reports.filter((r) => r.id !== id))
+    saveReports(pendingReports.filter((r) => r.id !== id))
+    setDbReports((prev) => prev.filter((r) => r.id !== id))
     if (selectedId === id) setSelectedId(null)
   }
 

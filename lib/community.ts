@@ -1,8 +1,9 @@
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
-// Simplified port of the old app's communityStore.ts. Not ported yet:
-// duckdb-backed official reports (loadCommunityReports).
+// Port of the old app's communityStore.ts. Official duckdb-backed reports
+// live in lib/duckdb.ts (loadCommunityReports) and are merged in at the
+// component level, since they aren't persisted to localStorage.
 
 export const MUNICIPALITY_EMAIL = "info@comune.montereale-valcellina.pn.it"
 
