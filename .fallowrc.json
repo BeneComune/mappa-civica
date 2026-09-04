@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "ignorePatterns": [
+    // Vendored maplibre-gl runtime chunk, copied verbatim per lib/map/base.ts -
+    // not our code, never hand-edited.
+    "public/**",
+    // shadcn-generated primitives: full generated API is kept intact even when
+    // a given sub-export isn't used yet, so `shadcn add` can safely regenerate
+    // these files without us having pruned parts of them.
+    "components/ui/**"
+  ]
+}
