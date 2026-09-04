@@ -52,17 +52,19 @@ function StatSection({ title, children }: { title: string; children: React.React
       <summary className="flex cursor-pointer select-none items-center gap-1 text-sm font-semibold marker:content-none">
         <ChevronRight className="size-3.5 shrink-0 transition-transform group-open:rotate-90" /> {title}
       </summary>
-      <dl className="mt-1 flex flex-col gap-1 pl-4 text-sm">{children}</dl>
+      <table className="mt-1 w-full pl-4 text-sm">
+        <tbody>{children}</tbody>
+      </table>
     </details>
   )
 }
 
 function Stat({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-baseline justify-between gap-2">
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd className="text-right">{children}</dd>
-    </div>
+    <tr className="border-b border-border/50 last:border-0">
+      <td className="py-1 pr-2 align-baseline text-muted-foreground">{label}</td>
+      <td className="py-1 text-right align-baseline">{children}</td>
+    </tr>
   )
 }
 
