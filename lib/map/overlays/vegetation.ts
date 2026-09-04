@@ -2,6 +2,7 @@
 import type { ExpressionSpecification, Map } from "maplibre-gl"
 import { ALL_NDVI_CLASSES, NDVI_CLASS_CONFIG } from "@/lib/green-classes"
 import { COLORS } from "@/lib/colors"
+import { addChoroplethOverlay } from "./choropleth"
 
 // "Vegetazione" (NDVI) from the old app's GreenModule - the default tab,
 // showing land cover from bare soil to dense forest. Built from
@@ -23,27 +24,12 @@ const NDVI_FILL_COLOR = [
 const NDVI_FILL_OPACITY: ExpressionSpecification = ["match", ["get", "ndvi_class"], "bare", 0.15, 0.45]
 
 export function addVegetationOverlay(map: Map): void {
-  if (!map.getSource("greenery")) {
-    map.addSource("greenery", { type: "geojson", data: "/data/greenery.geojson" })
-  }
-
-  if (!map.getLayer("greenery-fill")) {
-    map.addLayer({
-      id: "greenery-fill",
-      type: "fill",
-      source: "greenery",
-      layout: { visibility: "none" },
-      paint: { "fill-color": NDVI_FILL_COLOR, "fill-opacity": NDVI_FILL_OPACITY },
-    })
-  }
-
-  if (!map.getLayer("greenery-outline")) {
-    map.addLayer({
-      id: "greenery-outline",
-      type: "line",
-      source: "greenery",
-      layout: { visibility: "none" },
-      paint: { "line-color": COLORS.white, "line-width": 0.3, "line-opacity": 0.4 },
-    })
-  }
+  addChoroplethOverlay(map, {
+    sourceId: "greenery",
+    dataUrl: "/data/greenery.geojson",
+    fillLayerId: "greenery-fill",
+    outlineLayerId: "greenery-outline",
+    fillColor: NDVI_FILL_COLOR,
+    fillOpacity: NDVI_FILL_OPACITY,
+  })
 }
