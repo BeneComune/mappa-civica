@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import type { MapMouseEvent, PointLike } from "maplibre-gl"
 import { useMapContext } from "@/components/map-provider"
+import { MUNICIPALITY_CADASTRAL_CODE, MUNICIPALITY_NAME } from "@/lib/config"
 import { CATASTO_LAYER_IDS } from "@/lib/map"
 
 type Parcel = { foglio: string; particella: string; lng: number; lat: number }
@@ -117,8 +118,8 @@ export function CatastoToggle() {
             Foglio {parcel.foglio} · Particella {parcel.particella}
           </strong>
           <p className="text-muted-foreground">
-            Serve per pagare IMU/TARI, chiedere una <b>visura</b>, pratiche edilizie (CILA/SCIA), successioni,
-            compravendite, mutui.
+            Comune catastale {MUNICIPALITY_CADASTRAL_CODE} ({MUNICIPALITY_NAME}). Serve per pagare IMU/TARI,
+            chiedere una <b>visura</b>, pratiche edilizie (CILA/SCIA), successioni, compravendite, mutui.
           </p>
           <a
             href="https://www.agenziaentrate.gov.it/portale/schede/fabbricatiterreni/visura-catastale/consultazione-rendite-catastali"

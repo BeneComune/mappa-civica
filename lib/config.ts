@@ -4,6 +4,8 @@
 // (which pulls in the real maplibre-gl runtime import).
 export const MUNICIPALITY_CENTER: [number, number] = [12.664, 46.16]
 export const MUNICIPALITY_ZOOM = 12
+export const MUNICIPALITY_NAME = "Montereale Valcellina"
+export const MUNICIPALITY_CADASTRAL_CODE = "F596"
 
 // Default view for the embedded stressinbici.it (LTS) map - "Percorsi in
 // bici > Stress da traffico" replaces the map view entirely with this
