@@ -247,7 +247,7 @@ export async function loadRoutingGraphForMode(mode: RoutingMode): Promise<Routin
   return buildWalkingRoutingGraph([...(roadsData.features ?? []), ...(trailsData.features ?? [])])
 }
 
-export function buildTransportRoutingGraph(features: TransportFeature[]): RoutingGraph {
+function buildTransportRoutingGraph(features: TransportFeature[]): RoutingGraph {
   const nodes = new Map<NodeId, GraphNode>()
   const edges: GraphEdge[] = []
 
@@ -664,7 +664,7 @@ function xmlEscape(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;")
 }
 
-export function routeToGeoJSON(summary: RouteSummary): string {
+function routeToGeoJSON(summary: RouteSummary): string {
   const fc = {
     type: "FeatureCollection",
     features: [
@@ -687,7 +687,7 @@ export function routeToGeoJSON(summary: RouteSummary): string {
   return JSON.stringify(fc, null, 2)
 }
 
-export function routeToGPX(summary: RouteSummary): string {
+function routeToGPX(summary: RouteSummary): string {
   const pts = summary.line.geometry.coordinates.map(([lon, lat]) => `      <trkpt lat="${lat.toFixed(7)}" lon="${lon.toFixed(7)}"/>`).join("\n")
   const wpts = summary.points.features
     .map((f) => {
@@ -705,7 +705,7 @@ ${pts}
 `
 }
 
-export function routeToKML(summary: RouteSummary): string {
+function routeToKML(summary: RouteSummary): string {
   const coords = summary.line.geometry.coordinates.map(([lon, lat]) => `${lon.toFixed(7)},${lat.toFixed(7)},0`).join(" ")
   const marks = summary.points.features
     .map((f) => {
@@ -724,7 +724,7 @@ ${marks}
 `
 }
 
-export function routeToCSV(summary: RouteSummary): string {
+function routeToCSV(summary: RouteSummary): string {
   // elevationM is cumulative height change from the start (can be negative),
   // not an absolute altitude - the source data only carries per-edge grade.
   const header = "distanza_km,dislivello_dalla_partenza_m,pendenza_pct"

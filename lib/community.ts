@@ -6,7 +6,7 @@ import { STRINGS } from "@/lib/strings"
 // live in lib/duckdb.ts (loadCommunityReports) and are merged in at the
 // component level, since they aren't persisted to localStorage.
 
-export const MUNICIPALITY_EMAIL = "info@comune.montereale-valcellina.pn.it"
+const MUNICIPALITY_EMAIL = "info@comune.montereale-valcellina.pn.it"
 
 export const CATEGORIES = [
   { id: "strade", label: STRINGS.reportCategoryRoads, icon: ICONS.reportRoads, color: "#e8590c" },
