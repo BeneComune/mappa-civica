@@ -28,10 +28,12 @@ import { addSoilTemperatureOverlay, SOIL_TEMPERATURE_LAYER_IDS } from "./overlay
 import { addRouteOverlay, ROUTE_LAYER_IDS } from "./overlays/route"
 
 // Each entry's overlay is added once (idempotently) on every style load, and
-// shown only when the current route matches `path`. Add a row here for each
-// new overlay ported instead of wiring it by hand in map-view.tsx.
+// shown only when the current route matches `path` (or is included in it,
+// for overlays shared by more than one route - e.g. the route planner line,
+// shown on both the Cyclability and Trails routing pages). Add a row here
+// for each new overlay ported instead of wiring it by hand in map-view.tsx.
 export const ROUTE_OVERLAYS: Array<{
-  path: string
+  path: string | string[]
   add: (map: Map) => void
   layerIds: string[]
 }> = [
@@ -46,12 +48,18 @@ export const ROUTE_OVERLAYS: Array<{
   { path: "/green/shade", add: addNaturalShadeOverlay, layerIds: NATURAL_SHADE_LAYER_IDS },
   { path: "/green/nbr", add: addVegetationHealthOverlay, layerIds: VEGETATION_HEALTH_LAYER_IDS },
   { path: "/green/lst", add: addSoilTemperatureOverlay, layerIds: SOIL_TEMPERATURE_LAYER_IDS },
-  { path: "/outdoor/cyclability/routing", add: addRouteOverlay, layerIds: ROUTE_LAYER_IDS },
-  { path: "/outdoor/trails/routing", add: addRouteOverlay, layerIds: ROUTE_LAYER_IDS },
+  {
+    path: ["/outdoor/cyclability/routing", "/outdoor/trails/routing"],
+    add: addRouteOverlay,
+    layerIds: ROUTE_LAYER_IDS,
+  },
 ]
 
 export function syncOverlayVisibility(map: Map, pathname: string): void {
   for (const overlay of ROUTE_OVERLAYS) {
-    setOverlayVisibility(map, overlay.layerIds, pathname === overlay.path)
+    const matches = Array.isArray(overlay.path)
+      ? overlay.path.includes(pathname)
+      : pathname === overlay.path
+    setOverlayVisibility(map, overlay.layerIds, matches)
   }
 }
