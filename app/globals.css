@@ -185,6 +185,19 @@
   color: var(--popover-foreground);
 }
 
+/* Compact (collapsed) state uses its own hardcoded white background, and the
+   "i" toggle button bakes a black-fill SVG as a background-image data URI -
+   same invert trick as .maplibregl-ctrl-icon flips it to read on dark. */
+.maplibregl-ctrl-attrib.maplibregl-compact {
+  background-color: color-mix(in oklch, var(--popover) 85%, transparent);
+  color: var(--popover-foreground);
+}
+
+.maplibregl-ctrl-attrib-button {
+  background-color: transparent;
+  filter: invert(1) hue-rotate(180deg);
+}
+
 .map-style-switcher {
   display: flex;
   flex-direction: column;
