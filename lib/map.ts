@@ -1,20 +1,15 @@
 import * as maplibregl from "maplibre-gl"
 import type { Map, IControl } from "maplibre-gl"
 
-// Ported from the old app's lib/map.ts. Overlay sources/layers per module
-// (rii, fire, AED/HEMS, NDVI, NBR, LST, trails, bike infra, ...) are not
-// ported yet — this is the base map + controls shell only.
+// Ported from the old app's lib/map.ts. Base map + controls, plus overlays
+// ported so far: rii (Rii a rischio). Remaining module overlays (fire,
+// AED/HEMS, NDVI, NBR, LST, trails, bike infra, ...) are not ported yet.
 
 // maplibre-gl-worker.mjs imports a sibling chunk (maplibre-gl-shared.mjs) via
 // a relative import that Vite historically didn't resolve correctly (see the
 // old app's lib/map.ts). Both files are copied verbatim into
 // public/maplibre-gl/ as a precaution. Re-copy them from
 // node_modules/maplibre-gl/dist/ if maplibre-gl is upgraded.
-//
-// NOTE: this alone does not fix map initialization under Next.js dev — see
-// the open issue logged in docs/PROGRESS.md. Style loading currently hangs
-// (isStyleLoaded()/loaded() never become true, zero style/data events fire,
-// no errors) regardless of whether this override is set.
 if (typeof window !== "undefined") {
   maplibregl.setWorkerUrl("/maplibre-gl/maplibre-gl-worker.mjs")
 }
@@ -398,9 +393,9 @@ class MapPrintControl implements IControl {
 }
 
 // Runs `fn` once immediately if the style is already loaded, and again after
-// every future style load - needed once module overlays are wired back in,
-// since the basemap switcher's setStyle() wipes anything not part of the new
-// style document.
+// every future style load - the basemap switcher's setStyle() wipes any
+// overlay source/layer not part of the new style document, so overlays must
+// be re-added on every style load, not just the first one.
 export function onStyleReady(map: Map, fn: () => void): () => void {
   if (map.isStyleLoaded()) fn()
   map.on("style.load", fn)
@@ -450,4 +445,120 @@ export function createBaseMap(container: HTMLElement, printLabel: string, produc
   map.addControl(new maplibregl.AttributionControl(), "bottom-right")
 
   return map
+}
+
+// --- Overlays ---------------------------------------------------------
+//
+// The old app recreated the whole map per module/section. This app keeps a
+// single persistent map, so overlays are added once (idempotently, since
+// setStyle() wipes anything not part of the new style document and
+// onStyleReady re-runs this on every style load) and toggled on/off by
+// layout.visibility depending on the current route.
+
+// Sets a MapLibre layer's visibility, ignoring layers that don't exist yet
+// (e.g. the style hasn't finished loading, or this overlay hasn't been
+// added). Shared by every overlay's route-driven show/hide.
+export function setOverlayVisibility(map: Map, layerIds: string[], visible: boolean): void {
+  for (const id of layerIds) {
+    if (map.getLayer(id)) {
+      map.setLayoutProperty(id, "visibility", visible ? "visible" : "none")
+    }
+  }
+}
+
+// "Rii a rischio esondazione" - the volunteer stream census (Censimento
+// RII) from the old app's RescueModule. Geometry is a mix: the real
+// watercourse line from OpenStreetMap where it has the named stream,
+// otherwise a single point (faded when its position is only approximate).
+// Colour encodes how current the survey is.
+export const RII_LAYER_IDS = ["rii-line-casing", "rii-line", "rii-points", "rii-labels"]
+
+const RII_SOURCE_ID = "rii"
+
+const RII_COLOR: maplibregl.ExpressionSpecification = [
+  "match",
+  ["get", "stato"],
+  "aggiornato_2024", "#1c7ed6",
+  "solo_foto_2024", "#4dabf7",
+  "storico_2013", "#f59f00",
+  "storico_2007", "#e8590c",
+  "#868e96",
+]
+
+export function addRiiOverlay(map: Map): void {
+  if (!map.getSource(RII_SOURCE_ID)) {
+    map.addSource(RII_SOURCE_ID, {
+      type: "geojson",
+      data: "/data/rescue/rii.geojson",
+    })
+  }
+
+  if (!map.getLayer("rii-line-casing")) {
+    // White casing under the stream line, for legibility over the basemap.
+    map.addLayer({
+      id: "rii-line-casing",
+      type: "line",
+      source: RII_SOURCE_ID,
+      filter: ["==", ["geometry-type"], "LineString"],
+      layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
+      paint: {
+        "line-color": "#ffffff",
+        "line-opacity": 0.7,
+        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 4.5, 15, 9],
+      },
+    })
+  }
+
+  if (!map.getLayer("rii-line")) {
+    map.addLayer({
+      id: "rii-line",
+      type: "line",
+      source: RII_SOURCE_ID,
+      filter: ["==", ["geometry-type"], "LineString"],
+      layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
+      paint: {
+        "line-color": RII_COLOR,
+        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 2.5, 15, 5.5],
+      },
+    })
+  }
+
+  if (!map.getLayer("rii-points")) {
+    map.addLayer({
+      id: "rii-points",
+      type: "circle",
+      source: RII_SOURCE_ID,
+      filter: ["==", ["geometry-type"], "Point"],
+      layout: { visibility: "none" },
+      paint: {
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 6, 15, 11],
+        "circle-color": RII_COLOR,
+        "circle-opacity": ["case", ["boolean", ["get", "pos_approssimata"], false], 0.5, 0.9],
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 1.8,
+      },
+    })
+  }
+
+  if (!map.getLayer("rii-labels")) {
+    map.addLayer({
+      id: "rii-labels",
+      type: "symbol",
+      source: RII_SOURCE_ID,
+      minzoom: 12,
+      layout: {
+        visibility: "none",
+        "text-field": ["get", "nome"],
+        "text-offset": [0, 1.3],
+        "text-size": ["interpolate", ["linear"], ["zoom"], 12, 10, 15, 13],
+        "text-font": ["Noto Sans Regular"],
+        "text-optional": true,
+      },
+      paint: {
+        "text-color": "#1b3a4b",
+        "text-halo-color": "#ffffff",
+        "text-halo-width": 1.6,
+      },
+    })
+  }
 }
