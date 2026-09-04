@@ -47,9 +47,10 @@ export function HomePanel() {
         </section>
       </div>
 
-      {/* Weather floats independently top-right, below the map's own
-          zoom/fullscreen/search/terrain/print control stack. */}
-      <div className="pointer-events-none absolute top-56 right-2.5">
+      {/* Weather floats independently top-right, to the left of the map's
+          own zoom/fullscreen/search/terrain/print control column, at the
+          same height as the top of that column. */}
+      <div className="pointer-events-none absolute top-2.5 right-10">
         <section className={CARD}>
           <WeatherCard />
         </section>
