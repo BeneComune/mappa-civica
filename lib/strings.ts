@@ -27,6 +27,8 @@ export const STRINGS = {
   bikeInfraDescription: "Piste ciclabili, rastrelliere, bike sharing e altri servizi per la bici",
   bikeRoutePlanner: "Pianifica percorso",
   bikeRoutePlannerDescription: "Calcola un itinerario in bici, con distanza, tempo e profilo altimetrico",
+  routePlannerNetworkBiking: "strade e ciclabili",
+  routePlannerNetworkWalking: "strade e sentieri",
 
   // Outdoor > Sentieri
   trails: "Sentieri",
@@ -36,6 +38,29 @@ export const STRINGS = {
   slopeDescription: "Strade e sentieri colorati per pendenza, con etichette pensate per chi cammina",
   trailsRoutePlanner: "Pianifica percorso",
   trailsRoutePlannerDescription: "Calcola un itinerario a piedi, con distanza, tempo e profilo altimetrico",
+
+  // Route planner (shared by Cyclability and Trails)
+  routePlannerActivate: "Attiva pianificazione",
+  routePlannerActive: "Pianificazione attiva",
+  routePlannerHint: "Clicca sulla mappa per porre partenza, arrivo e tappe; trascina i pallini per spostarli. Rete:",
+  routePlannerStart: "Partenza",
+  routePlannerEnd: "Arrivo",
+  routePlannerWaypoint: "Tappa",
+  routePlannerSwap: "Inverti",
+  routePlannerUndo: "Indietro",
+  routePlannerClear: "Pulisci",
+  routePlannerStatusEmpty: "Clicca sulla mappa per aggiungere punti",
+  routePlannerStatusOnePoint: "Aggiungi almeno un altro punto",
+  routePlannerStatusNotFound: "Percorso non trovato",
+  routePlannerStatusUnavailable: "Routing non disponibile",
+  routePlannerStatusConnected: "punti collegati",
+  routePlannerWalking: "a piedi",
+  routePlannerBiking: "bici",
+  routePlannerEbike: "bici elettrica",
+  routePlannerSurfaceTitle: "Tipologia di strada",
+  routePlannerProfileTitle: "Profilo altimetrico",
+  routePlannerProfileSubtitle: "dislivello relativo",
+  routePlannerDownloads: "Scarica",
 
   // Rescue sections
   riverRisk: "Rii a rischio",

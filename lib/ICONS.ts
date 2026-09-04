@@ -12,6 +12,7 @@ import {
   Megaphone,
   MessageSquare,
   OctagonAlert,
+  PersonStanding,
   Route,
   ShieldPlus,
   Signpost,
@@ -22,6 +23,8 @@ import {
   TreePine,
   TrendingUp,
   TriangleAlert,
+  X,
+  Zap,
 } from "lucide-react"
 
 /**
@@ -47,6 +50,10 @@ export const ICONS = {
   waterPoints: Map,
   slope: TrendingUp,
   routePlanner: Compass,
+  routePlannerWalking: PersonStanding,
+  routePlannerBiking: Bike,
+  routePlannerEbike: Zap,
+  routePlannerRemovePoint: X,
 
   // Rescue sections
   riverRisk: TriangleAlert,

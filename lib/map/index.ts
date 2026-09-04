@@ -33,6 +33,7 @@ import { addVegetationOverlay, VEGETATION_LAYER_IDS } from "./overlays/vegetatio
 import { addNaturalShadeOverlay, NATURAL_SHADE_LAYER_IDS } from "./overlays/natural-shade"
 import { addVegetationHealthOverlay, VEGETATION_HEALTH_LAYER_IDS } from "./overlays/vegetation-health"
 import { addSoilTemperatureOverlay, SOIL_TEMPERATURE_LAYER_IDS } from "./overlays/soil-temperature"
+import { addRouteOverlay, ROUTE_LAYER_IDS } from "./overlays/route"
 
 // Each entry's overlay is added once (idempotently) on every style load, and
 // shown only when the current route matches `path`. Add a row here for each
@@ -49,6 +50,8 @@ export const ROUTE_OVERLAYS: Array<{ path: string; add: (map: Map) => void; laye
   { path: "/green/shade", add: addNaturalShadeOverlay, layerIds: NATURAL_SHADE_LAYER_IDS },
   { path: "/green/nbr", add: addVegetationHealthOverlay, layerIds: VEGETATION_HEALTH_LAYER_IDS },
   { path: "/green/lst", add: addSoilTemperatureOverlay, layerIds: SOIL_TEMPERATURE_LAYER_IDS },
+  { path: "/outdoor/cyclability/routing", add: addRouteOverlay, layerIds: ROUTE_LAYER_IDS },
+  { path: "/outdoor/trails/routing", add: addRouteOverlay, layerIds: ROUTE_LAYER_IDS },
 ]
 
 export function syncOverlayVisibility(map: Map, pathname: string): void {
