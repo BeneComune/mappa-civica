@@ -136,6 +136,7 @@ export const STRINGS = {
   reportSubmitted: "Segnalazione pronta: si apre il client email per inviarla al Comune.",
   reportListEmpty: "Nessuna segnalazione ancora. Usa \"Nuova segnalazione\" per crearne una.",
   reportDelete: "Elimina",
+  reportPending: "In attesa",
 } as const
 
 export type StringKey = keyof typeof STRINGS

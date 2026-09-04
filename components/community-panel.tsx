@@ -80,6 +80,7 @@ export function CommunityPanel() {
           const Icon = category?.icon
           const selected = selectedId === report.id
           const voted = votedIds.includes(report.id)
+          const pending = pendingIds.has(report.id)
 
           return (
             <li key={report.id} className="rounded-lg border p-2">
@@ -92,7 +93,10 @@ export function CommunityPanel() {
                   {Icon && <Icon className="mt-0.5 size-4 shrink-0" style={{ color: category?.color }} />}
                   <div>
                     <p className="text-sm font-medium leading-none">{report.title}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{categoryLabel(report.category)}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {categoryLabel(report.category)}
+                      {pending && <span className="ml-1.5 rounded-full bg-accent px-1.5 py-0.5">{STRINGS.reportPending}</span>}
+                    </p>
                   </div>
                 </div>
                 <button
@@ -111,12 +115,24 @@ export function CommunityPanel() {
               {selected && (
                 <div className="mt-2 flex flex-col gap-1 border-t pt-2 text-xs">
                   {report.description && <p>{report.description}</p>}
+                  {report.photoDataUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element -- local/data-URL preview, next/image doesn't apply
+                    <img src={report.photoDataUrl} alt="" className="h-24 w-full rounded object-cover" />
+                  )}
                   <p className="text-muted-foreground">
                     {report.lat.toFixed(5)}, {report.lon.toFixed(5)}
+                    {report.foglio && report.particella && (
+                      <>
+                        {" "}
+                        · catasto F.{report.foglio} P.{report.particella}
+                      </>
+                    )}
                   </p>
-                  <Button variant="ghost" size="sm" className="w-fit" onClick={() => handleDelete(report.id)}>
-                    {STRINGS.reportDelete}
-                  </Button>
+                  {pending && (
+                    <Button variant="ghost" size="sm" className="w-fit" onClick={() => handleDelete(report.id)}>
+                      {STRINGS.reportDelete}
+                    </Button>
+                  )}
                 </div>
               )}
             </li>
