@@ -30,7 +30,7 @@ export function CommunityPanel() {
   const pendingReports = useSyncExternalStore(subscribeReports, getReportsSnapshot, getReportsServerSnapshot)
   const votes = useSyncExternalStore(subscribeVotes, getVotesSnapshot, getVotesServerSnapshot)
   const votedIds = useSyncExternalStore(subscribeVotes, getVotedIdsSnapshot, getVotedIdsServerSnapshot)
-  const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
+  const [categoryFilter, setCategoryFilter] = useState<string[]>(() => CATEGORIES.map((c) => c.id))
   const [selectedId, setSelectedId] = useState<string | null>(null)
   // Official reports from the read-only DuckDB snapshot, fetched once on
   // mount and merged with the locally-pending ones below - kept separate
@@ -44,7 +44,7 @@ export function CommunityPanel() {
   const pendingIds = new Set(pendingReports.map((r) => r.id))
   const reports = [...pendingReports, ...dbReports.filter((r) => !pendingIds.has(r.id))]
 
-  const filteredReports = categoryFilter ? reports.filter((r) => r.category === categoryFilter) : reports
+  const filteredReports = reports.filter((r) => categoryFilter.includes(r.category))
 
   function handleSubmitted(report: CommunityReport): void {
     saveReports([...pendingReports, report])
@@ -71,7 +71,7 @@ export function CommunityPanel() {
       </div>
       <p className="text-sm text-muted-foreground">{STRINGS.communityDescription}</p>
 
-      <FilterChips activeFilter={categoryFilter} onFilterChange={setCategoryFilter} />
+      <FilterChips selected={categoryFilter} onChange={setCategoryFilter} />
 
       <ul className="flex flex-col gap-2">
         {filteredReports.length === 0 && <li className="text-sm text-muted-foreground">{STRINGS.reportListEmpty}</li>}
