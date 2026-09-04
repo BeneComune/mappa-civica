@@ -2,8 +2,11 @@ import {
   Bike,
   CirclePlus,
   Compass,
+  Droplets,
   Flame,
   Flower2,
+  Footprints,
+  GlassWater,
   HeartPulse,
   House,
   Lightbulb,
@@ -13,9 +16,12 @@ import {
   MessageSquare,
   OctagonAlert,
   PersonStanding,
+  PlaneTakeoff,
+  Repeat2,
   Route,
   ShieldPlus,
   Signpost,
+  SquareParking,
   ThermometerSun,
   TrafficCone,
   Trash2,
@@ -23,6 +29,10 @@ import {
   TreePine,
   TrendingUp,
   TriangleAlert,
+  UtensilsCrossed,
+  Users,
+  Waves,
+  Wrench,
   X,
   Zap,
 } from "lucide-react"
@@ -54,6 +64,26 @@ export const ICONS = {
   routePlannerBiking: Bike,
   routePlannerEbike: Zap,
   routePlannerRemovePoint: X,
+
+  // Bike infra categories
+  bikeInfraCiclabili: Bike,
+  bikeInfraBikeParking: SquareParking,
+  bikeInfraBikeRental: Repeat2,
+  bikeInfraBikeRepair: Wrench,
+  bikeInfraEbikeCharging: Zap,
+
+  // Trails/water categories
+  waterPointsHiking: Footprints,
+  waterPointsMtb: Bike,
+  waterPointsDrinkingWater: GlassWater,
+  waterPointsSpring: Waves,
+  waterPointsPicnic: UtensilsCrossed,
+
+  // Rescue assets
+  aed: HeartPulse,
+  hems: PlaneTakeoff,
+  fireHydrants: Droplets,
+  assemblyPoints: Users,
 
   // Rescue sections
   riverRisk: TriangleAlert,

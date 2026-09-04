@@ -41,26 +41,26 @@ export function NdviClassesPanel() {
         }}
       />
 
-      <ul className="flex flex-col gap-1.5">
+      <div className="flex flex-wrap gap-2">
         {ALL_NDVI_CLASSES.map((cls) => {
           const config = NDVI_CLASS_CONFIG[cls]
+          const checked = visible.includes(cls)
           return (
-            <li key={cls}>
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={visible.includes(cls)}
-                  onChange={() => toggle(cls)}
-                  className="size-4 accent-primary"
-                />
-                <span className="size-2.5 rounded-full" style={{ background: config.color }} />
-                {config.label}
-                {stats && <span className="ml-auto text-xs text-muted-foreground">{stats[cls].pct.toFixed(1)}%</span>}
-              </label>
-            </li>
+            <button
+              key={cls}
+              type="button"
+              aria-pressed={checked}
+              onClick={() => toggle(cls)}
+              className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${checked ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent"}`}
+              style={checked ? { borderColor: config.color } : undefined}
+            >
+              <span className="size-2.5 shrink-0 rounded-full" style={{ background: config.color }} />
+              {config.label}
+              {stats && <span className="text-muted-foreground">{stats[cls].pct.toFixed(1)}%</span>}
+            </button>
           )
         })}
-      </ul>
+      </div>
 
       {stats && (
         <div className="mt-1 flex h-2 overflow-hidden rounded-full">

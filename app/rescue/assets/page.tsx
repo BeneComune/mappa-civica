@@ -2,7 +2,8 @@
 
 import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
-import { OverlayCheckbox } from "@/components/overlay-checkbox"
+import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
+import { ICONS } from "@/lib/ICONS"
 import {
   AED_LAYER_IDS,
   ASSEMBLY_POINT_LAYER_IDS,
@@ -21,11 +22,21 @@ export default function RescueAssetsPage() {
       <ClickPopupLayer layerId="assembly-point-sites" render={assetPopupHTML} />
       <h2 className="text-xl font-semibold">{STRINGS.rescueAssets}</h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.rescueAssetsDescription}</p>
-      <div className="mt-3 flex flex-col gap-2">
-        <OverlayCheckbox label={STRINGS.aed} layerIds={AED_LAYER_IDS} />
-        <OverlayCheckbox label={STRINGS.hems} layerIds={HEMS_LAYER_IDS} />
-        <OverlayCheckbox label={STRINGS.fireHydrants} layerIds={FIRE_HYDRANT_LAYER_IDS} />
-        <OverlayCheckbox label={STRINGS.assemblyPoints} layerIds={ASSEMBLY_POINT_LAYER_IDS} />
+      <div className="mt-3 flex flex-wrap gap-2">
+        <OverlayToggleBadge label={STRINGS.aed} icon={ICONS.aed} color="#e03131" layerIds={AED_LAYER_IDS} />
+        <OverlayToggleBadge label={STRINGS.hems} icon={ICONS.hems} color="#f59f00" layerIds={HEMS_LAYER_IDS} />
+        <OverlayToggleBadge
+          label={STRINGS.fireHydrants}
+          icon={ICONS.fireHydrants}
+          color="#0b7285"
+          layerIds={FIRE_HYDRANT_LAYER_IDS}
+        />
+        <OverlayToggleBadge
+          label={STRINGS.assemblyPoints}
+          icon={ICONS.assemblyPoints}
+          color="#2f9e44"
+          layerIds={ASSEMBLY_POINT_LAYER_IDS}
+        />
       </div>
       <Faq>
         Defibrillatori (DAE), elisuperfici per l&apos;elisoccorso (HEMS), idranti antincendio e punti di raccolta
