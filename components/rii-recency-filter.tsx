@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import type { FilterSpecification } from "maplibre-gl"
+import { Clock, History } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
 
 // Rii's recency filter groups two `stato` values per checkbox (unlike
@@ -33,26 +34,31 @@ export function RiiRecencyFilter() {
     setSelected((prev) => (prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]))
   }
 
+  const recenti = selected.includes("recenti")
+  const storici = selected.includes("storici")
+
   return (
-    <div className="flex flex-col gap-1.5">
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={selected.includes("recenti")}
-          onChange={() => toggle("recenti")}
-          className="size-4 accent-primary"
-        />
+    <div className="flex flex-wrap gap-2">
+      <button
+        type="button"
+        aria-pressed={recenti}
+        onClick={() => toggle("recenti")}
+        className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${recenti ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent"}`}
+        style={recenti ? { borderColor: "#1c7ed6" } : undefined}
+      >
+        <Clock className="size-3.5" aria-hidden="true" style={{ color: recenti ? "#1c7ed6" : undefined }} />
         Rilievi 2024
-      </label>
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={selected.includes("storici")}
-          onChange={() => toggle("storici")}
-          className="size-4 accent-primary"
-        />
+      </button>
+      <button
+        type="button"
+        aria-pressed={storici}
+        onClick={() => toggle("storici")}
+        className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${storici ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent"}`}
+        style={storici ? { borderColor: "#e8590c" } : undefined}
+      >
+        <History className="size-3.5" aria-hidden="true" style={{ color: storici ? "#e8590c" : undefined }} />
         Rilievi meno recenti
-      </label>
+      </button>
     </div>
   )
 }
