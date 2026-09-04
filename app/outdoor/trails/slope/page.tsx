@@ -21,14 +21,18 @@ const SLOPE_OPTIONS = [
 export default function TrailsSlopePage() {
   return (
     <div>
-      <PageHeader icon={ICONS.slope} title={STRINGS.slope} description={STRINGS.slopeDescription} />
+      <PageHeader
+        icon={ICONS.slope}
+        title={STRINGS.slope}
+        description={STRINGS.slopeDescription}
+      />
       <div className="mt-3">
         <FilterBadgeGroup property="slope_class" options={SLOPE_OPTIONS} layerIds={SLOPE_LAYER_IDS} />
       </div>
       <Faq>
-        Pendenza media di ogni tratto, calcolata dal modello digitale del terreno (DEM/LiDAR). Le classi vanno da
-        pianeggiante (0-3%) a impraticabile (oltre il 20%), con etichette pensate per chi cammina più che per chi
-        pedala.
+        Pendenza media di ogni tratto, calcolata dal modello digitale del terreno (DEM/LiDAR). Le
+        classi vanno da pianeggiante (0-3%) a impraticabile (oltre il 20%), con etichette pensate
+        per chi cammina più che per chi pedala.
       </Faq>
     </div>
   )

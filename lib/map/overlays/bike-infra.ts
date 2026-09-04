@@ -13,7 +13,12 @@ export const BIKE_INFRA_LAYER_IDS = [
   "bike-infra-ebike-charging",
 ]
 
-function addBikeInfraPoints(map: Map, categoryId: string, filter: FilterSpecification, color: string): void {
+function addBikeInfraPoints(
+  map: Map,
+  categoryId: string,
+  filter: FilterSpecification,
+  color: string
+): void {
   const id = `bike-infra-${categoryId}`
   if (map.getLayer(id)) return
 

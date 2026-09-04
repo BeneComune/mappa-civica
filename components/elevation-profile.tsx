@@ -16,7 +16,8 @@ export function ElevationProfile({ summary }: { summary: RouteSummary }) {
   const plotWidth = width - margin.left - margin.right
   const plotHeight = height - margin.top - margin.bottom
   const xFor = (distance: number) => margin.left + (distance / distanceKm) * plotWidth
-  const yFor = (elevation: number) => margin.top + plotHeight - ((elevation - minElevation) / elevationRange) * plotHeight
+  const yFor = (elevation: number) =>
+    margin.top + plotHeight - ((elevation - minElevation) / elevationRange) * plotHeight
   const linePoints = summary.profile.map((point) => `${xFor(point.distanceKm)} ${yFor(point.elevationM)}`).join(" ")
   const areaPoints = `${margin.left} ${height - margin.bottom} ${linePoints} ${width - margin.right} ${height - margin.bottom}`
 

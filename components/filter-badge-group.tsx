@@ -32,7 +32,9 @@ export function FilterBadgeGroup({
   }, [selected, property, layerIds, setLayersFilter])
 
   function toggle(value: string): void {
-    setSelected((prev) => (prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]))
+    setSelected((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+    )
   }
 
   return (

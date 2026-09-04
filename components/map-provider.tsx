@@ -32,10 +32,16 @@ type MapContextValue = {
   // Shows a popup following the cursor while hovering features on `layerId`,
   // via `render(properties)` returning an HTML string, or nothing to skip
   // that hover. Shared by every module's hover-popup (Rescue, Green, ...).
-  attachHoverPopup: (layerId: string, render: (props: Record<string, unknown>) => string | null | undefined) => () => void
+  attachHoverPopup: (
+    layerId: string,
+    render: (props: Record<string, unknown>) => string | null | undefined
+  ) => () => void
   // Shows a popup at the clicked feature's position on `layerId`. Shared by
   // Rescue's click-to-open popups (rii, fire, assets, ...).
-  attachClickPopup: (layerId: string, render: (props: Record<string, unknown>) => string | null | undefined) => () => void
+  attachClickPopup: (
+    layerId: string,
+    render: (props: Record<string, unknown>) => string | null | undefined
+  ) => () => void
   // Toggles feature-state `hover` on `sourceId` for whichever of `layerIds`
   // is under the cursor, driving hover-highlight paint expressions (see
   // RII_HOVER/FIRE_HOVER in the overlay definitions). Requires features to
@@ -163,7 +169,10 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
       const handleClick = (e: MapLayerMouseEvent) => {
         const html = render(e.features?.[0]?.properties ?? {})
         if (!html) return
-        new maplibregl.Popup({ closeButton: true, closeOnClick: true }).setLngLat(e.lngLat).setHTML(html).addTo(map)
+        new maplibregl.Popup({ closeButton: true, closeOnClick: true })
+          .setLngLat(e.lngLat)
+          .setHTML(html)
+          .addTo(map)
       }
       const handleEnter = () => {
         map.getCanvas().style.cursor = "pointer"

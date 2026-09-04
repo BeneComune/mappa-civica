@@ -418,7 +418,11 @@ export function onStyleReady(map: Map, fn: () => void): () => void {
   return () => map.off("style.load", fn)
 }
 
-export function createBaseMap(container: HTMLElement, printLabel: string, productName: string): Map {
+export function createBaseMap(
+  container: HTMLElement,
+  printLabel: string,
+  productName: string
+): Map {
   const map = new maplibregl.Map({
     container,
     center: DEFAULT_CENTER,

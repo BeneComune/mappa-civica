@@ -29,9 +29,17 @@ import { STRINGS } from "@/lib/strings"
 
 export function CommunityPanel() {
   const { flyTo } = useMapContext()
-  const pendingReports = useSyncExternalStore(subscribeReports, getReportsSnapshot, getReportsServerSnapshot)
+  const pendingReports = useSyncExternalStore(
+    subscribeReports,
+    getReportsSnapshot,
+    getReportsServerSnapshot
+  )
   const votes = useSyncExternalStore(subscribeVotes, getVotesSnapshot, getVotesServerSnapshot)
-  const votedIds = useSyncExternalStore(subscribeVotes, getVotedIdsSnapshot, getVotedIdsServerSnapshot)
+  const votedIds = useSyncExternalStore(
+    subscribeVotes,
+    getVotedIdsSnapshot,
+    getVotedIdsServerSnapshot
+  )
   const [categoryFilter, setCategoryFilter] = useState<string[]>(() => CATEGORIES.map((c) => c.id))
   const [selectedId, setSelectedId] = useState<string | null>(null)
   // Official reports from the read-only DuckDB snapshot, fetched once on

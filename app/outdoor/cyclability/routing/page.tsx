@@ -9,7 +9,11 @@ import { STRINGS } from "@/lib/strings"
 export default function CyclabilityRoutingPage() {
   return (
     <div>
-      <PageHeader icon={ICONS.routePlanner} title={STRINGS.bikeRoutePlanner} description={STRINGS.bikeRoutePlannerDescription} />
+      <PageHeader
+        icon={ICONS.routePlanner}
+        title={STRINGS.bikeRoutePlanner}
+        description={STRINGS.bikeRoutePlannerDescription}
+      />
       <div className="mt-3">
         <RoutePlanner mode="biking" />
       </div>

@@ -30,7 +30,11 @@ export type MunicipalityStats = {
     pharmacy: boolean | null
     pharmacy_name: string | null
     schools: string | null
-    nearest_emergency_room: { name: string | null; distance_km: number | null; drive_minutes: number | null }
+    nearest_emergency_room: {
+      name: string | null
+      distance_km: number | null
+      drive_minutes: number | null
+    }
     bank_branches: number | null
   }
   pipeline_derived: {
@@ -64,7 +68,15 @@ function StatSection({ title, children }: { title: string; children: React.React
 // text (addresses, name lists) doesn't - squeezed into a narrow right-aligned
 // column it wraps awkwardly, so those rows span full-width instead: label on
 // its own line, value below it, left-aligned.
-function Stat({ label, long, children }: { label: string; long?: boolean; children: React.ReactNode }) {
+function Stat({
+  label,
+  long,
+  children,
+}: {
+  label: string
+  long?: boolean
+  children: React.ReactNode
+}) {
   if (long) {
     return (
       <tr className="border-b border-border/50 last:border-0">

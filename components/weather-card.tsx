@@ -83,7 +83,9 @@ async function fetchWeather(): Promise<Weather> {
   const values: number[] = data.hourly?.precipitation ?? []
   const nowIndex = times.findIndex((t) => t > data.current.time)
   const end = nowIndex === -1 ? times.length : nowIndex
-  const precip24hMm = values.slice(Math.max(0, end - 24), end).reduce((sum, value) => sum + (value ?? 0), 0)
+  const precip24hMm = values
+    .slice(Math.max(0, end - 24), end)
+    .reduce((sum, value) => sum + (value ?? 0), 0)
 
   return {
     tempC: data.current.temperature_2m,

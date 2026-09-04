@@ -23,14 +23,19 @@ export default function GreenShadePage() {
   return (
     <div>
       <HoverPopupLayer layerId="shade-corridors" render={renderShadePopup} />
-      <PageHeader icon={ICONS.naturalShade} title={STRINGS.naturalShade} description={STRINGS.naturalShadeDescription} />
+      <PageHeader
+        icon={ICONS.naturalShade}
+        title={STRINGS.naturalShade}
+        description={STRINGS.naturalShadeDescription}
+      />
       <p className="mt-1 text-xs text-muted-foreground">
-        Verde scuro = strade ombreggiate · verde chiaro = sentieri ombreggiati · opacità proporzionale alla copertura
+        Verde scuro = strade ombreggiate · verde chiaro = sentieri ombreggiati · opacità
+        proporzionale alla copertura
       </p>
       <Faq>
-        Percentuale di copertura arborea sopra ogni tratto di strada o sentiero, calcolata incrociando le aree di
-        vegetazione densa (dallo stesso indice di vegetazione) con i tracciati stradali e i sentieri di
-        OpenStreetMap.
+        Percentuale di copertura arborea sopra ogni tratto di strada o sentiero, calcolata
+        incrociando le aree di vegetazione densa (dallo stesso indice di vegetazione) con i
+        tracciati stradali e i sentieri di OpenStreetMap.
       </Faq>
     </div>
   )

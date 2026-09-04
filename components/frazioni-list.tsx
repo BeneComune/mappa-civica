@@ -21,7 +21,9 @@ export function FrazioniList() {
     fetch("/data/frazioni.geojson")
       .then((r) => r.json())
       .then((geojson) => {
-        const items: FrazioneFeature[] = geojson.features.map((f: { properties: FrazioneFeature }) => f.properties)
+        const items: FrazioneFeature[] = geojson.features.map(
+          (f: { properties: FrazioneFeature }) => f.properties
+        )
         setFrazioni(items)
       })
       .catch(() => null)

@@ -5,7 +5,11 @@ import type { CategoryId, CommunityReport } from "@/lib/community"
 const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles()
 const DATABASE_URL = "/data/community_data.duckdb"
 
-async function makeDuckDb(): Promise<{ db: duckdb.AsyncDuckDB; worker: Worker; workerUrl: string }> {
+async function makeDuckDb(): Promise<{
+  db: duckdb.AsyncDuckDB
+  worker: Worker
+  workerUrl: string
+}> {
   const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES)
   const workerUrl = URL.createObjectURL(
     new Blob([`importScripts("${bundle.mainWorker}");`], { type: "text/javascript" })

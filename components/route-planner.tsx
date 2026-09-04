@@ -122,10 +122,14 @@ export function RoutePlanner({ mode }: { mode: RoutingMode }) {
 
     points.forEach((point, index) => {
       const color = index === 0 ? "#2f9e44" : index === points.length - 1 ? "#e03131" : "#f59f00"
-      const marker = new maplibregl.Marker({ color, draggable: true }).setLngLat([point.lng, point.lat]).addTo(map)
+      const marker = new maplibregl.Marker({ color, draggable: true })
+        .setLngLat([point.lng, point.lat])
+        .addTo(map)
       marker.on("dragend", () => {
         const { lng, lat } = marker.getLngLat()
-        setPoints((prev) => prev.map((entry) => (entry.id === point.id ? { ...entry, lng, lat } : entry)))
+        setPoints((prev) =>
+          prev.map((entry) => (entry.id === point.id ? { ...entry, lng, lat } : entry))
+        )
       })
       markers.set(point.id, marker)
     })

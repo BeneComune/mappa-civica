@@ -119,8 +119,9 @@ export function CatastoToggle() {
             Foglio {parcel.foglio} · Particella {parcel.particella}
           </strong>
           <p className="text-muted-foreground">
-            Comune catastale {MUNICIPALITY_CADASTRAL_CODE} ({MUNICIPALITY_NAME}). Serve per pagare IMU/TARI,
-            chiedere una <b>visura</b>, pratiche edilizie (CILA/SCIA), successioni, compravendite, mutui.
+            Comune catastale {MUNICIPALITY_CADASTRAL_CODE} ({MUNICIPALITY_NAME}). Serve per
+            pagare IMU/TARI, chiedere una <b>visura</b>, pratiche edilizie (CILA/SCIA),
+            successioni, compravendite, mutui.
           </p>
           <a
             href="https://www.agenziaentrate.gov.it/portale/schede/fabbricatiterreni/visura-catastale/consultazione-rendite-catastali"
@@ -131,8 +132,9 @@ export function CatastoToggle() {
             Consulta rendita / visura (Agenzia delle Entrate)
           </a>
           <p className="text-muted-foreground">
-            Dati aperti onData (CC BY 4.0): solo catasto terreni, senza proprietari né rendite. Il confine
-            catastale non è probatorio, e un fabbricato non mappato qui va verificato a parte.
+            Dati aperti onData (CC BY 4.0): solo catasto terreni, senza proprietari né rendite. Il
+            confine catastale non è probatorio, e un fabbricato non mappato qui va verificato a
+            parte.
           </p>
         </div>
       )}

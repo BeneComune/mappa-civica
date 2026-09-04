@@ -9,7 +9,11 @@ import { STRINGS } from "@/lib/strings"
 export default function TrailsRoutingPage() {
   return (
     <div>
-      <PageHeader icon={ICONS.routePlanner} title={STRINGS.trailsRoutePlanner} description={STRINGS.trailsRoutePlannerDescription} />
+      <PageHeader
+        icon={ICONS.routePlanner}
+        title={STRINGS.trailsRoutePlanner}
+        description={STRINGS.trailsRoutePlannerDescription}
+      />
       <div className="mt-3">
         <RoutePlanner mode="walking" />
       </div>

@@ -22,7 +22,11 @@ export default function RescueAssetsPage() {
       <ClickPopupLayer layerId="hems-sites" render={assetPopupHTML} />
       <ClickPopupLayer layerId="fire-hydrant-sites" render={assetPopupHTML} />
       <ClickPopupLayer layerId="assembly-point-sites" render={assetPopupHTML} />
-      <PageHeader icon={ICONS.rescueAssets} title={STRINGS.rescueAssets} description={STRINGS.rescueAssetsDescription} />
+      <PageHeader
+        icon={ICONS.rescueAssets}
+        title={STRINGS.rescueAssets}
+        description={STRINGS.rescueAssetsDescription}
+      />
       <div className="mt-3 flex flex-wrap gap-2">
         <OverlayToggleBadge label={STRINGS.aed} icon={ICONS.aed} color="#e03131" layerIds={AED_LAYER_IDS} />
         <OverlayToggleBadge label={STRINGS.hems} icon={ICONS.hems} color="#f59f00" layerIds={HEMS_LAYER_IDS} />
@@ -40,11 +44,12 @@ export default function RescueAssetsPage() {
         />
       </div>
       <Faq>
-        Defibrillatori (DAE), elisuperfici per l&apos;elisoccorso (HEMS), idranti antincendio e punti di raccolta
-        per le emergenze. I DAE sono l&apos;elenco fornito dal Comune di Montereale Valcellina, unito ai punti già
-        presenti su OpenStreetMap; alcuni sono posizionati a partire dall&apos;indirizzo (da verificare sul
-        posto), come indicato nel dettaglio. Elisuperfici, idranti e punti di raccolta vengono da OpenStreetMap:
-        se ne conosci uno mancante puoi aggiungerlo tu stesso.
+        Defibrillatori (DAE), elisuperfici per l&apos;elisoccorso (HEMS), idranti antincendio e
+        punti di raccolta per le emergenze. I DAE sono l&apos;elenco fornito dal Comune di
+        Montereale Valcellina, unito ai punti già presenti su OpenStreetMap; alcuni sono
+        posizionati a partire dall&apos;indirizzo (da verificare sul posto), come indicato nel
+        dettaglio. Elisuperfici, idranti e punti di raccolta vengono da OpenStreetMap: se ne
+        conosci uno mancante puoi aggiungerlo tu stesso.
       </Faq>
     </div>
   )

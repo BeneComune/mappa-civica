@@ -16,7 +16,11 @@ const PICNIC_LAYER_IDS = ["water-poi-picnic", "water-poi-labels-picnic"]
 export default function TrailsWaterPage() {
   return (
     <div>
-      <PageHeader icon={ICONS.waterPoints} title={STRINGS.waterPoints} description={STRINGS.waterPointsDescription} />
+      <PageHeader
+        icon={ICONS.waterPoints}
+        title={STRINGS.waterPoints}
+        description={STRINGS.waterPointsDescription}
+      />
       <div className="mt-3 flex flex-wrap gap-2">
         <OverlayToggleBadge
           label={STRINGS.waterPointsHiking}
@@ -50,8 +54,8 @@ export default function TrailsWaterPage() {
         />
       </div>
       <Faq>
-        Sentieri segnalati dal CAI (Club Alpino Italiano) per l&apos;escursionismo a piedi, e percorsi adatti alla
-        mountain bike. Tracciati mappati da OpenStreetMap.
+        Sentieri segnalati dal CAI (Club Alpino Italiano) per l&apos;escursionismo a piedi, e
+        percorsi adatti alla mountain bike. Tracciati mappati da OpenStreetMap.
       </Faq>
     </div>
   )

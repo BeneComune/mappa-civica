@@ -30,7 +30,11 @@ import { addRouteOverlay, ROUTE_LAYER_IDS } from "./overlays/route"
 // Each entry's overlay is added once (idempotently) on every style load, and
 // shown only when the current route matches `path`. Add a row here for each
 // new overlay ported instead of wiring it by hand in map-view.tsx.
-export const ROUTE_OVERLAYS: Array<{ path: string; add: (map: Map) => void; layerIds: string[] }> = [
+export const ROUTE_OVERLAYS: Array<{
+  path: string
+  add: (map: Map) => void
+  layerIds: string[]
+}> = [
   { path: "/", add: addHomeOverlay, layerIds: HOME_LAYER_IDS },
   { path: "/rescue/events", add: addRiiOverlay, layerIds: RII_LAYER_IDS },
   { path: "/rescue/fire", add: addFireOverlay, layerIds: FIRE_LAYER_IDS },

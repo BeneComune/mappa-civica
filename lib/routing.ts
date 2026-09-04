@@ -112,7 +112,8 @@ function distanceMeters(a: Coord, b: Coord): number {
   const deltaLng = toRadians(b[0] - a[0])
   const lat1 = toRadians(a[1])
   const lat2 = toRadians(b[1])
-  const h = Math.sin(deltaLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLng / 2) ** 2
+  const h =
+    Math.sin(deltaLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLng / 2) ** 2
   return 2 * radius * Math.asin(Math.sqrt(h))
 }
 
@@ -358,7 +359,13 @@ function buildWalkingRoutingGraph(features: CombinedFeature[]): RoutingGraph {
     const surface = properties.surface ? String(properties.surface) : undefined
 
     for (let index = 1; index < coords.length; index += 1) {
-      addSegmentEdge({ nodes, edges }, coords[index - 1], coords[index], { lts, slope, grade, highway, surface })
+      addSegmentEdge({ nodes, edges }, coords[index - 1], coords[index], {
+        lts,
+        slope,
+        grade,
+        highway,
+        surface,
+      })
     }
   }
 
@@ -458,7 +465,11 @@ function shortestPath(
   return { nodePath, edgePath }
 }
 
-function appendSegmentCoordinates(coordinates: Coord[], segment: Coord[], reverse: boolean): Coord[] {
+function appendSegmentCoordinates(
+  coordinates: Coord[],
+  segment: Coord[],
+  reverse: boolean
+): Coord[] {
   const segmentCoordinates = reverse ? [...segment].reverse() : segment
   if (coordinates.length === 0) {
     return [...segmentCoordinates]
@@ -518,12 +529,18 @@ function surfaceRunLabel(edge: GraphEdge): string {
   return "Non classificato"
 }
 
-export function buildRouteSummary(graph: RoutingGraph, points: RoutingInputPoint[], mode: RoutingMode): RouteSummary | null {
+export function buildRouteSummary(
+  graph: RoutingGraph,
+  points: RoutingInputPoint[],
+  mode: RoutingMode
+): RouteSummary | null {
   if (points.length < 2) {
     return null
   }
 
-  const snappedNodeIds = points.map((point) => findNearestNodeId(graph, point)).filter((value): value is NodeId => value !== null)
+  const snappedNodeIds = points
+    .map((point) => findNearestNodeId(graph, point))
+    .filter((value): value is NodeId => value !== null)
 
   if (snappedNodeIds.length < 2) {
     return null
@@ -580,7 +597,10 @@ export function buildRouteSummary(graph: RoutingGraph, points: RoutingInputPoint
 
       let edgeAccumulatedGeometryMeters = 0
       for (let coordinateIndex = 1; coordinateIndex < edgeGeometry.length; coordinateIndex += 1) {
-        const segmentMeters = distanceMeters(edgeGeometry[coordinateIndex - 1], edgeGeometry[coordinateIndex])
+        const segmentMeters = distanceMeters(
+          edgeGeometry[coordinateIndex - 1],
+          edgeGeometry[coordinateIndex]
+        )
         if (segmentMeters <= 0 || edgeGeometryLength <= 0) {
           continue
         }

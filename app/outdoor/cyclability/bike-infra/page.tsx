@@ -12,7 +12,11 @@ const BIKE_LANE_LAYER_IDS = ["bike-lane-casing", "bike-lane-network", "bike-lane
 export default function CyclabilityBikeInfraPage() {
   return (
     <div>
-      <PageHeader icon={ICONS.bikeInfra} title={STRINGS.bikeInfra} description={STRINGS.bikeInfraDescription} />
+      <PageHeader
+        icon={ICONS.bikeInfra}
+        title={STRINGS.bikeInfra}
+        description={STRINGS.bikeInfraDescription}
+      />
       <div className="mt-3 flex flex-wrap gap-2">
         <OverlayToggleBadge
           label={STRINGS.bikeInfraCiclabili}
@@ -46,8 +50,9 @@ export default function CyclabilityBikeInfraPage() {
         />
       </div>
       <Faq>
-        Piste ciclabili (incluso il percorso regionale FVG3 / MV 06), rastrelliere per parcheggiare la bici, punti
-        di bike sharing, officine per la riparazione e colonnine di ricarica per e-bike, mappati da OpenStreetMap.
+        Piste ciclabili (incluso il percorso regionale FVG3 / MV 06), rastrelliere per
+        parcheggiare la bici, punti di bike sharing, officine per la riparazione e colonnine di
+        ricarica per e-bike, mappati da OpenStreetMap.
       </Faq>
     </div>
   )
