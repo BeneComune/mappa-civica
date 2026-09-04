@@ -107,7 +107,7 @@ export function CatastoToggle() {
 
       {enabled && !parcel && (
         <p className="mt-1 text-xs text-muted-foreground">
-          Zooma sulla mappa e clicca un punto per leggere <b>foglio</b> e <b>particella</b>.
+          Ingrandisci la mappa e clicca un punto per leggere <b>foglio</b> e <b>particella</b>.
         </p>
       )}
 

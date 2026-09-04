@@ -2,8 +2,7 @@ import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
 // Simplified port of the old app's communityStore.ts. Not ported yet:
-// duckdb-backed official reports (loadCommunityReports), cadastral parcel
-// snapping (foglio/particella), and photo upload.
+// duckdb-backed official reports (loadCommunityReports).
 
 export const MUNICIPALITY_EMAIL = "info@comune.montereale-valcellina.pn.it"
 
@@ -30,6 +29,37 @@ export type CommunityReport = {
   lon: number
   lat: number
   createdAt: string
+  photoDataUrl?: string
+  foglio?: string
+  particella?: string
+}
+
+// Downscales + re-encodes an uploaded photo client-side before it's stored
+// as a data URL (localStorage has no room for full-resolution originals).
+export function resizeImageToDataUrl(file: File, maxWidth = 1024, quality = 0.75): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    const objectUrl = URL.createObjectURL(file)
+    img.onload = () => {
+      const scale = Math.min(1, maxWidth / img.width)
+      const canvas = document.createElement("canvas")
+      canvas.width = Math.round(img.width * scale)
+      canvas.height = Math.round(img.height * scale)
+      const ctx = canvas.getContext("2d")
+      if (!ctx) {
+        reject(new Error("canvas"))
+        return
+      }
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+      URL.revokeObjectURL(objectUrl)
+      resolve(canvas.toDataURL("image/jpeg", quality))
+    }
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl)
+      reject(new Error("load"))
+    }
+    img.src = objectUrl
+  })
 }
 
 const STORAGE_KEY = "mv_pending_reports"
@@ -144,9 +174,13 @@ export function buildReportMailto(report: CommunityReport): string {
   const body = [
     `Categoria: ${catLabel}`,
     `Posizione: lat ${report.lat.toFixed(5)}, lon ${report.lon.toFixed(5)}`,
+    ...(report.foglio && report.particella
+      ? [`Particella catastale (indicativa): foglio ${report.foglio}, particella ${report.particella}`]
+      : []),
     ``,
     `Descrizione:`,
     report.description || "(nessuna descrizione)",
+    ...(report.photoDataUrl ? [``, `Fotografia allegata: → allegare il file all'email prima di inviare.`] : []),
     ``,
     `---`,
     `Inviato dal portale ${STRINGS.appName}`,

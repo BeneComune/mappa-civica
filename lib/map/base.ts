@@ -454,8 +454,10 @@ export function createBaseMap(container: HTMLElement, printLabel: string, produc
     "top-right"
   )
   map.addControl(new MapPrintControl(printLabel, productName), "top-right")
-  map.addControl(new MapStyleControl(DEFAULT_BASEMAP_STYLE), "bottom-right")
+  // Bottom-corner controls stack with the most-recently-added one closest to
+  // the map edge, so attribution (added first) ends up below Legenda.
   map.addControl(new maplibregl.AttributionControl(), "bottom-right")
+  map.addControl(new MapStyleControl(DEFAULT_BASEMAP_STYLE), "bottom-right")
 
   return map
 }

@@ -20,31 +20,40 @@ export function HomePanel() {
   }, [])
 
   return (
-    // Independent floating cards, not one shared panel (see PanelFrame) -
-    // the stack scrolls as a group if it overflows the viewport.
-    <div className="pointer-events-none absolute inset-0 flex flex-col gap-2 overflow-y-auto p-4">
-      <section className={CARD}>
-        <h2 className="text-xl font-semibold">{stats?.municipality.name ?? STRINGS.appName}</h2>
-        <p className="mt-1 text-sm text-muted-foreground">{STRINGS.homeSubtitle}</p>
-      </section>
-
-      <section className={CARD}>
-        <WeatherCard />
-      </section>
-
-      <section className={CARD}>
-        <CatastoToggle />
-      </section>
-
-      <section className={CARD}>
-        <FrazioniList />
-      </section>
-
-      {stats && (
+    <>
+      {/* Top-left: zone name, stats. */}
+      <div className="pointer-events-none absolute top-0 left-0 flex flex-col gap-2 overflow-y-auto p-4">
         <section className={CARD}>
-          <MunicipalityStatsPanel stats={stats} />
+          <h2 className="text-xl font-semibold">{stats?.municipality.name ?? STRINGS.appName}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{STRINGS.homeSubtitle}</p>
         </section>
-      )}
-    </div>
+
+        {stats && (
+          <section className={CARD}>
+            <MunicipalityStatsPanel stats={stats} />
+          </section>
+        )}
+      </div>
+
+      {/* Bottom-left: frazioni + catasto toggle, same anchor point every
+          other route's legend panel uses. */}
+      <div className="pointer-events-none absolute bottom-0 left-0 flex flex-col gap-2 p-4">
+        <section className={CARD}>
+          <CatastoToggle />
+        </section>
+
+        <section className={CARD}>
+          <FrazioniList />
+        </section>
+      </div>
+
+      {/* Weather floats independently top-right, below the map's own
+          zoom/fullscreen/search/terrain/print control stack. */}
+      <div className="pointer-events-none absolute top-56 right-4">
+        <section className={CARD}>
+          <WeatherCard />
+        </section>
+      </div>
+    </>
   )
 }
