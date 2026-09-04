@@ -204,6 +204,29 @@
   filter: invert(1) hue-rotate(180deg);
 }
 
+/* Hover/click popups (rii, fire, assets, NDVI, ...) - same hardcoded white
+   background as the other built-in controls above, and with no explicit
+   text color of its own it was inheriting the dark theme's near-white body
+   color, making every popup unreadable (white text on white background).
+   The tip/arrow's border-*-color is set per anchor direction by MapLibre's
+   own more specific selectors, so it needs !important to win here. */
+.maplibregl-popup-content {
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border-radius: var(--radius-md);
+}
+
+.maplibregl-popup-close-button {
+  color: var(--popover-foreground);
+}
+
+.maplibregl-popup-tip {
+  border-top-color: var(--popover) !important;
+  border-bottom-color: var(--popover) !important;
+  border-left-color: var(--popover) !important;
+  border-right-color: var(--popover) !important;
+}
+
 .map-style-switcher {
   display: flex;
   flex-direction: column;
