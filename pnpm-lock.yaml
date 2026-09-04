@@ -14,15 +14,6 @@ importers:
       '@duckdb/duckdb-wasm':
         specifier: ^1.32.0
         version: 1.32.0
-      '@mapbox/vector-tile':
-        specifier: ^3.0.0
-        version: 3.0.0
-      '@turf/buffer':
-        specifier: ^7.4.0
-        version: 7.4.0
-      '@turf/helpers':
-        specifier: ^7.4.0
-        version: 7.4.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -44,9 +35,6 @@ importers:
       next:
         specifier: 16.3.4
         version: 16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@24.13.3)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      pmtiles:
-        specifier: ^4.5.0
-        version: 4.5.0
       react:
         specifier: 19.2.8
         version: 19.2.8
@@ -773,30 +761,6 @@ packages:
   '@ts-morph/common@0.27.0':
     resolution: {integrity: sha512-Wf29UqxWDpc+i61k3oIOzcUfQt79PIT9y/MWfAGlrkjg6lBC1hwDECLXPVJAhWjiGbfBCxZd65F/LIZF3+jeJQ==}
 
-  '@turf/bbox@7.4.0':
-    resolution: {integrity: sha512-yOX9lALc2GmjYUIE99+nRj7eZA7eDtx7Ixu/hrgIo+YqHvL1reaPVTC9rQWMHMm0pH0/WHjzk8uOpAHjptrudQ==}
-
-  '@turf/buffer@7.4.0':
-    resolution: {integrity: sha512-ewYjC7NmmP+BZ8JcjX1TglzYH1FCMWAh5L08j0iAP4lbn3/AutVjjbwIXedZZy5He1OfgmXf+rIBcNXdeEYceg==}
-
-  '@turf/center@7.4.0':
-    resolution: {integrity: sha512-JVuTaIdnQtmTV8eQfVxqza1okKiaFzgVeIA6Xoy/u6aBMxg2+oBpS6GcHZkEqR8OapPWValB1AYYqimUSiyOXw==}
-
-  '@turf/clone@7.4.0':
-    resolution: {integrity: sha512-IfYnuil7XYJauy3crzIYEr26QkmBiTgFdGfYwUUe3S6dawX+lyb3vhuaYyssEPcCJq83g0G7hwxZy7141Mmzjg==}
-
-  '@turf/helpers@7.4.0':
-    resolution: {integrity: sha512-7PAwLZqOdRzTI5g9bHvUwlloAXPDH/mlajtryk0tw4ZwGMtmXsAyF4QundsAMfy4u48Fyd3AUqMXY0SMxqJGWg==}
-
-  '@turf/jsts@2.7.2':
-    resolution: {integrity: sha512-zAezGlwWHPyU0zxwcX2wQY3RkRpwuoBmhhNE9HY9kWhFDkCxZ3aWK5URKwa/SWKJbj9aztO+8vtdiBA28KVJFg==}
-
-  '@turf/meta@7.4.0':
-    resolution: {integrity: sha512-3cLUvlEyDuSnMSzrjhaLAEiYR8xhbfWyTVQlrlEw40xL81d4KF4PqUWbjTXKpXZStdYbet2GCurl79KMypNw6g==}
-
-  '@turf/projection@7.4.0':
-    resolution: {integrity: sha512-ZS932qM+18V1UBvNlrNXUCD7mh9CzQqZzw/ElVtb0kAk6N00FYQ9bo26Cca08UZKXh3rZqG/e4eCK74JNGS4Zg==}
-
   '@tybys/wasm-util@0.10.3':
     resolution: {integrity: sha512-F3fo1MYrRJYL3zER0OUOmkutjr1Vp23m7OsSgp7nq4SP6OqX6C/56XFIPAl5bt3zaBRjmW7SGz3u/6LwFpYcOg==}
 
@@ -1341,12 +1305,6 @@ packages:
 
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
-
-  d3-array@2.12.1:
-    resolution: {integrity: sha512-B0ErZK/66mHtEsR1TkPEEkwdy+WDesimkM5gpZr5Dsg54BiTA5RXtYW5qTLIAcekaS9xfZrzBLF/OAkB3Qn1YQ==}
-
-  d3-geo@2.0.2:
-    resolution: {integrity: sha512-8pM1WGMLGFuhq9S+FpPURxic+gKzjluCD/CHTuUF3mXMeiCo0i6R0tO1s4+GArRFde96SLcW/kOFRjoAosPsFA==}
 
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
@@ -1945,9 +1903,6 @@ packages:
     resolution: {integrity: sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw==}
     engines: {node: '>= 0.4'}
 
-  internmap@1.0.1:
-    resolution: {integrity: sha512-lDB5YccMydFBtasVtxnZ3MRBHuaoE8GKsppq+EchKL2U4nK/DmEpPHNH8MZe5HkMtpSiTSOZwfN0tzYjO/lJEw==}
-
   iobuffer@5.4.0:
     resolution: {integrity: sha512-DRebOWuqDvxunfkNJAlc3IzWIPD5xVxwUNbHr7xKB8E6aLJxIPfNX3CoMJghcFjpv6RWQsrcJbghtEwSPoJqMA==}
 
@@ -2210,10 +2165,6 @@ packages:
 
   jspdf@4.2.1:
     resolution: {integrity: sha512-YyAXyvnmjTbR4bHQRLzex3CuINCDlQnBqoSYyjJwTP2x9jDLuKDzy7aKUl0hgx3uhcl7xzg32agn5vlie6HIlQ==}
-
-  jsts@2.7.1:
-    resolution: {integrity: sha512-x2wSZHEBK20CY+Wy+BPE7MrFQHW6sIsdaGUMEqmGAio+3gFzQaBYPwLRonUfQf9Ak8pBieqj9tUofX1+WtAEIg==}
-    engines: {node: '>= 12'}
 
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
@@ -2634,9 +2585,6 @@ packages:
   pkg-up@3.1.0:
     resolution: {integrity: sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==}
     engines: {node: '>=8'}
-
-  pmtiles@4.5.0:
-    resolution: {integrity: sha512-CBeD4SoUluFziGdy/8k7FOjQxQy486n+929W/tWophauvMICpkZ26vGBWhDt/6b1FZQWNaf4jFdT/5+q0Wii5w==}
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -3914,61 +3862,6 @@ snapshots:
       minimatch: 10.2.6
       path-browserify: 1.0.1
 
-  '@turf/bbox@7.4.0':
-    dependencies:
-      '@turf/helpers': 7.4.0
-      '@turf/meta': 7.4.0
-      '@types/geojson': 7946.0.16
-      tslib: 2.8.1
-
-  '@turf/buffer@7.4.0':
-    dependencies:
-      '@turf/bbox': 7.4.0
-      '@turf/center': 7.4.0
-      '@turf/helpers': 7.4.0
-      '@turf/jsts': 2.7.2
-      '@turf/meta': 7.4.0
-      '@turf/projection': 7.4.0
-      '@types/geojson': 7946.0.16
-      d3-geo: 2.0.2
-      tslib: 2.8.1
-
-  '@turf/center@7.4.0':
-    dependencies:
-      '@turf/bbox': 7.4.0
-      '@turf/helpers': 7.4.0
-      '@types/geojson': 7946.0.16
-      tslib: 2.8.1
-
-  '@turf/clone@7.4.0':
-    dependencies:
-      '@turf/helpers': 7.4.0
-      '@types/geojson': 7946.0.16
-      tslib: 2.8.1
-
-  '@turf/helpers@7.4.0':
-    dependencies:
-      '@types/geojson': 7946.0.16
-      tslib: 2.8.1
-
-  '@turf/jsts@2.7.2':
-    dependencies:
-      jsts: 2.7.1
-
-  '@turf/meta@7.4.0':
-    dependencies:
-      '@turf/helpers': 7.4.0
-      '@types/geojson': 7946.0.16
-      tslib: 2.8.1
-
-  '@turf/projection@7.4.0':
-    dependencies:
-      '@turf/clone': 7.4.0
-      '@turf/helpers': 7.4.0
-      '@turf/meta': 7.4.0
-      '@types/geojson': 7946.0.16
-      tslib: 2.8.1
-
   '@tybys/wasm-util@0.10.3':
     dependencies:
       tslib: 2.8.1
@@ -4515,14 +4408,6 @@ snapshots:
   cssesc@3.0.0: {}
 
   csstype@3.2.3: {}
-
-  d3-array@2.12.1:
-    dependencies:
-      internmap: 1.0.1
-
-  d3-geo@2.0.2:
-    dependencies:
-      d3-array: 2.12.1
 
   damerau-levenshtein@1.0.8: {}
 
@@ -5298,8 +5183,6 @@ snapshots:
       hasown: 2.0.4
       side-channel: 1.1.1
 
-  internmap@1.0.1: {}
-
   iobuffer@5.4.0: {}
 
   ip-address@10.7.0: {}
@@ -5529,8 +5412,6 @@ snapshots:
       core-js: 3.50.0
       dompurify: 3.4.14
       html2canvas: 1.4.1
-
-  jsts@2.7.1: {}
 
   jsx-ast-utils@3.3.5:
     dependencies:
@@ -5931,10 +5812,6 @@ snapshots:
   pkg-up@3.1.0:
     dependencies:
       find-up: 3.0.0
-
-  pmtiles@4.5.0:
-    dependencies:
-      fflate: 0.8.3
 
   possible-typed-array-names@1.1.0: {}
 

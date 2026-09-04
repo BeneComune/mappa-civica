@@ -8,5 +8,16 @@
     // a given sub-export isn't used yet, so `shadcn add` can safely regenerate
     // these files without us having pruned parts of them.
     "components/ui/**"
+  ],
+  "ignoreDependencies": [
+    // Imported only from components/ui/** (ignored above), so fallow sees no
+    // importer and reports them unused - they are very much used at runtime.
+    "@base-ui/react",
+    "class-variance-authority",
+    // Pulled in through `@import "tailwindcss"` in app/globals.css and
+    // compiled away by @tailwindcss/postcss at build time. fallow reads the
+    // CSS import as a production runtime import and asks for it to be moved
+    // into dependencies; it correctly belongs in devDependencies.
+    "tailwindcss"
   ]
 }
