@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SiteHeader } from "@/components/site-header";
+import { MapShell } from "@/components/map-shell";
 import { STRINGS } from "@/lib/strings";
 import "./globals.css";
 
@@ -25,9 +26,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="it"
       className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="h-full flex flex-col overflow-hidden">
         <SiteHeader />
-        <main className="flex-1">{children}</main>
+        <main className="relative min-h-0 flex-1">
+          <MapShell />
+          <div className="pointer-events-none absolute inset-0 flex items-end p-4">
+            <div className="pointer-events-auto w-full max-w-sm rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur">
+              {children}
+            </div>
+          </div>
+        </main>
       </body>
     </html>
   );

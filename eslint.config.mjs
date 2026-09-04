@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendor files copied verbatim from node_modules/maplibre-gl/dist/ (see
+    // lib/map.ts) - minified, not our code.
+    "public/maplibre-gl/**",
   ]),
 ]);
 

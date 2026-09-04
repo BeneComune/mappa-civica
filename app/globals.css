@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "maplibre-gl/dist/maplibre-gl.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -127,5 +128,165 @@
   html {
     @apply font-sans;
     font-size: 118%;
+  }
+}
+
+/* Custom MapLibre controls: basemap style switcher, search, terrain, print.
+   Ported verbatim from the old app (styles.css) - deliberately fixed light
+   colors, matching how basemap controls conventionally stay legible over any
+   basemap style regardless of the app's own dark/light theme. */
+
+.map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.map-style-switcher {
+  display: flex;
+  flex-direction: column;
+}
+
+.map-style-switcher .map-style-switcher-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 32px;
+  background: #eef4f9;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: left;
+  color: #1e3850;
+  padding: 0.3rem 0.6rem;
+}
+
+.map-style-switcher.collapsed .map-style-switcher-header {
+  border-bottom: none;
+}
+
+.map-style-switcher-toggle-icon {
+  font-weight: 700;
+  line-height: 1;
+}
+
+.map-style-switcher-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.map-style-switcher.collapsed .map-style-switcher-body {
+  display: none;
+}
+
+.map-style-switcher button {
+  display: block;
+  width: 100%;
+  min-height: 32px;
+  background: #fff;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+  color: #333;
+  padding: 0.3rem 0.6rem;
+  white-space: nowrap;
+}
+
+.map-style-switcher button:last-child {
+  border-bottom: none;
+}
+
+.map-style-switcher button:hover {
+  background: #f2f2f2;
+}
+
+.map-style-switcher button.active {
+  background: #d8e8f4;
+  color: #1e3850;
+  font-weight: 600;
+}
+
+.map-search-ctrl button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #333;
+  padding: 0;
+}
+
+.map-search-ctrl button:hover {
+  background: #f2f2f2;
+}
+
+.map-search-ctrl button.active {
+  background: #d8e8f4;
+}
+
+.map-search-ctrl {
+  position: relative;
+}
+
+.map-search-panel {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 0.5rem);
+  width: min(280px, calc(100vw - 2rem));
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  padding: 0.5rem;
+}
+
+.map-search-panel.hidden {
+  display: none;
+}
+
+.map-search-panel input {
+  width: 100%;
+  border: 1px solid #9fb9cc;
+  border-radius: 6px;
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.map-search-results {
+  margin: 0.35rem 0 0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.map-search-results.hidden {
+  display: none;
+}
+
+.map-search-result-item {
+  padding: 0.4rem 0.5rem;
+  font-size: 0.82rem;
+  color: #385063;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.map-search-result-item:hover {
+  background: #eef4f8;
+}
+
+@media (max-width: 699px) {
+  .map-style-switcher button,
+  .map-style-switcher-header {
+    min-height: 44px;
+    font-size: 0.88rem;
   }
 }
