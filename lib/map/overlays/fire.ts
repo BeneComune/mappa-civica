@@ -6,7 +6,12 @@ import type { ExpressionSpecification, Map } from "maplibre-gl"
 // off by default behind checkboxes in the old app - added here (so the
 // route-level toggle works once that UI exists) but kept hidden for now,
 // since only the main perimeters are shown when this route is active.
-export const FIRE_LAYER_IDS = ["fire-perimeters-fill", "fire-perimeters-outline"]
+export const FIRE_PERIMETERS_LAYER_IDS = ["fire-perimeters-fill", "fire-perimeters-outline"]
+export const FIRE_DANGER_LAYER_IDS = ["fire-danger-fill", "fire-danger-outline"]
+export const FIRE_IGNITION_LAYER_IDS = ["fire-ignition-points"]
+export const FIRE_NBR_LAYER_IDS = ["rescue-nbr-fill", "rescue-nbr-outline"]
+
+export const FIRE_LAYER_IDS = [...FIRE_PERIMETERS_LAYER_IDS]
 
 const FIRE_COLOR: ExpressionSpecification = [
   "match",

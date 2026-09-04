@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useCallback, useContext, useRef } from "react"
-import type { Map } from "maplibre-gl"
+import type { FilterSpecification, Map } from "maplibre-gl"
 import { setOverlayVisibility } from "@/lib/map"
 
 // Bridges the single persistent map instance (mounted once in the root
@@ -12,6 +12,7 @@ import { setOverlayVisibility } from "@/lib/map"
 type MapContextValue = {
   registerMap: (map: Map | null) => void
   setLayersVisible: (layerIds: string[], visible: boolean) => void
+  setLayersFilter: (layerIds: string[], filter: FilterSpecification) => void
 }
 
 const MapContext = createContext<MapContextValue | null>(null)
@@ -30,7 +31,19 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  return <MapContext.Provider value={{ registerMap, setLayersVisible }}>{children}</MapContext.Provider>
+  const setLayersFilter = useCallback((layerIds: string[], filter: FilterSpecification) => {
+    const map = mapRef.current
+    if (!map || !map.isStyleLoaded()) return
+    for (const id of layerIds) {
+      if (map.getLayer(id)) map.setFilter(id, filter)
+    }
+  }, [])
+
+  return (
+    <MapContext.Provider value={{ registerMap, setLayersVisible, setLayersFilter }}>
+      {children}
+    </MapContext.Provider>
+  )
 }
 
 export function useMapContext(): MapContextValue {

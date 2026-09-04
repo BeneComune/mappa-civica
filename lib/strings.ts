@@ -48,6 +48,13 @@ export const STRINGS = {
   hems: "Elisoccorso",
   fireHydrants: "Idranti",
   assemblyPoints: "Punti raccolta",
+  fireCauseDolosa: "Dolose",
+  fireCauseColposa: "Colpose",
+  fireCauseNaturale: "Naturali (fulmini)",
+  fireCauseIgnota: "Ignote",
+  fireDangerToggle: "Classe di pericolo",
+  fireIgnitionToggle: "Punti di innesco",
+  fireNbrToggle: "Indice NBR (vegetazione secca/bruciata)",
 
   // Green sections
   vegetation: "Vegetazione",
