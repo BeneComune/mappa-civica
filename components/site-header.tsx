@@ -14,7 +14,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
-import type { LucideIcon } from "lucide-react"
+import { ExternalLink, type LucideIcon } from "lucide-react"
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
@@ -28,6 +28,9 @@ const OUTDOOR_GROUPS = [
         href: "/outdoor/cyclability/lts",
         icon: ICONS.trafficStress,
         description: STRINGS.trafficStressDescription,
+        // Replaces our own map with the stressinbici.it embed (see
+        // LtsEmbed) - flagged in the menu so it's clear this leaves our map.
+        external: true,
       },
       {
         title: STRINGS.bikeInfra,
@@ -174,6 +177,7 @@ export function SiteHeader() {
                             title={item.title}
                             description={item.description}
                             icon={item.icon}
+                            external={"external" in item && item.external}
                           />
                         ))}
                       </ul>
@@ -246,6 +250,7 @@ function ListItem({
   href,
   icon: Icon,
   description,
+  external,
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"li"> & {
@@ -253,6 +258,7 @@ function ListItem({
   title: string
   icon: LucideIcon
   description: string
+  external?: boolean
 }) {
   return (
     <li className={cn("list-none", className)} {...props}>
@@ -261,7 +267,12 @@ function ListItem({
           <Link href={href} className="items-start">
             <Icon aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
             <div className="flex flex-col gap-0.5">
-              <span className="font-medium leading-none">{title}</span>
+              <span className="flex items-center gap-1.5 font-medium leading-none">
+                {title}
+                {external && (
+                  <ExternalLink aria-label="Apre una mappa esterna" className="size-3 text-muted-foreground" />
+                )}
+              </span>
               <span className="text-xs text-muted-foreground">{description}</span>
             </div>
           </Link>
