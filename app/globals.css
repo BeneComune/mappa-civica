@@ -132,18 +132,63 @@
 }
 
 /* Custom MapLibre controls: basemap style switcher, search, terrain, print.
-   Ported verbatim from the old app (styles.css) - deliberately fixed light
-   colors, matching how basemap controls conventionally stay legible over any
-   basemap style regardless of the app's own dark/light theme. */
+   Restyled to follow the app's own shadcn theme tokens (popover/border/
+   foreground) instead of the old app's hardcoded light colors, so they
+   blend into the UI instead of looking like a separate light-mode widget
+   bolted onto a dark map. */
 
 .map-canvas {
   width: 100%;
   height: 100%;
 }
 
+/* MapLibre's own built-in controls (zoom, compass, fullscreen, attribution)
+   ship as light boxes with dark icon glyphs baked into background-image
+   data URIs - restyle the container via theme tokens and flip the baked-in
+   icons with a filter instead of overriding every one of them by hand. */
+.maplibregl-ctrl-group {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--popover);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.maplibregl-ctrl-group button + button {
+  border-top: 1px solid var(--border);
+}
+
+/* MapLibre's default button is display:block with no centering - fine for
+   the built-in icons (an absolutely-sized span), but our terrain/print
+   buttons append a fixed 16x16 lucide SVG that needs to be centered in the
+   29x29 box by hand. */
+.maplibregl-ctrl-group button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.maplibregl-ctrl-group button:not(:disabled):hover {
+  background: var(--accent);
+}
+
+.maplibregl-ctrl-icon {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.maplibregl-ctrl-attrib {
+  background: color-mix(in oklch, var(--popover) 85%, transparent);
+  color: var(--popover-foreground);
+  border-radius: var(--radius-md);
+}
+
+.maplibregl-ctrl-attrib a {
+  color: var(--popover-foreground);
+}
+
 .map-style-switcher {
   display: flex;
   flex-direction: column;
+  color: var(--popover-foreground);
 }
 
 .map-style-switcher .map-style-switcher-header {
@@ -153,25 +198,26 @@
   gap: 0.6rem;
   width: 100%;
   min-height: 32px;
-  background: #eef4f9;
+  background: var(--muted);
   border: none;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
   font: inherit;
   font-size: 0.82rem;
   font-weight: 600;
   text-align: left;
-  color: #1e3850;
+  color: inherit;
   padding: 0.3rem 0.6rem;
+}
+
+.map-style-switcher-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .map-style-switcher.collapsed .map-style-switcher-header {
   border-bottom: none;
-}
-
-.map-style-switcher-toggle-icon {
-  font-weight: 700;
-  line-height: 1;
 }
 
 .map-style-switcher-body {
@@ -187,14 +233,14 @@
   display: block;
   width: 100%;
   min-height: 32px;
-  background: #fff;
+  background: var(--popover);
   border: none;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
   font: inherit;
   font-size: 0.82rem;
   text-align: left;
-  color: #333;
+  color: inherit;
   padding: 0.3rem 0.6rem;
   white-space: nowrap;
 }
@@ -204,12 +250,12 @@
 }
 
 .map-style-switcher button:hover {
-  background: #f2f2f2;
+  background: var(--accent);
 }
 
 .map-style-switcher button.active {
-  background: #d8e8f4;
-  color: #1e3850;
+  background: var(--accent);
+  color: var(--accent-foreground);
   font-weight: 600;
 }
 
@@ -217,20 +263,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: var(--popover);
   border: none;
   cursor: pointer;
-  font-size: 1rem;
-  color: #333;
+  color: var(--popover-foreground);
   padding: 0;
 }
 
 .map-search-ctrl button:hover {
-  background: #f2f2f2;
+  background: var(--accent);
 }
 
 .map-search-ctrl button.active {
-  background: #d8e8f4;
+  background: var(--accent);
+  color: var(--accent-foreground);
 }
 
 .map-search-ctrl {
@@ -242,8 +288,9 @@
   top: 0;
   right: calc(100% + 0.5rem);
   width: min(280px, calc(100vw - 2rem));
-  background: #fff;
-  border-radius: 6px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border-radius: var(--radius-md);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   padding: 0.5rem;
 }
@@ -254,8 +301,10 @@
 
 .map-search-panel input {
   width: 100%;
-  border: 1px solid #9fb9cc;
-  border-radius: 6px;
+  background: var(--input);
+  color: inherit;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   padding: 0.4rem 0.55rem;
   font: inherit;
   font-size: 0.88rem;
@@ -274,13 +323,21 @@
 .map-search-result-item {
   padding: 0.4rem 0.5rem;
   font-size: 0.82rem;
-  color: #385063;
+  color: var(--muted-foreground);
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .map-search-result-item:hover {
-  background: #eef4f8;
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* Terrain and print controls are plain maplibregl-ctrl-group buttons whose
+   icon is now an inline lucide SVG (not a baked-in background-image), so
+   they need the invert filter removed and a size to match the built-ins. */
+.maplibregl-ctrl-group button svg {
+  color: var(--popover-foreground);
 }
 
 @media (max-width: 699px) {

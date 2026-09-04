@@ -1,8 +1,16 @@
 import * as maplibregl from "maplibre-gl"
 import type { Map, IControl } from "maplibre-gl"
+import { createElement as createLucideElement, ChevronDown, ChevronUp, Mountain, Palette, Printer, Search } from "lucide"
 
 // Ported from the old app's lib/map.ts. Base map: basemap style, controls
 // (style switcher, search, terrain, print), worker setup.
+
+// The custom controls below build plain DOM (MapLibre's IControl API, not
+// React), so they use the framework-agnostic `lucide` package instead of
+// lucide-react - createElement(iconNode) returns a real SVGElement.
+function icon(node: Parameters<typeof createLucideElement>[0], size = 16): SVGElement {
+  return createLucideElement(node, { width: size, height: size, "stroke-width": 1.75 })
+}
 
 // maplibre-gl-worker.mjs imports a sibling chunk (maplibre-gl-shared.mjs) via
 // a relative import that Vite historically didn't resolve correctly (see the
@@ -58,11 +66,11 @@ class MapStyleControl implements IControl {
     header.className = "map-style-switcher-header"
 
     const title = document.createElement("span")
-    title.textContent = "Legenda"
+    title.className = "map-style-switcher-title"
+    title.appendChild(icon(Palette, 15))
+    title.appendChild(document.createTextNode("Legenda"))
 
-    const toggleIcon = document.createElement("span")
-    toggleIcon.className = "map-style-switcher-toggle-icon"
-    toggleIcon.textContent = "−"
+    let toggleIcon = icon(ChevronUp, 15)
     toggleIcon.setAttribute("aria-hidden", "true")
 
     header.appendChild(title)
@@ -73,7 +81,10 @@ class MapStyleControl implements IControl {
 
     header.addEventListener("click", () => {
       const collapsed = container.classList.toggle("collapsed")
-      toggleIcon.textContent = collapsed ? "+" : "−"
+      const nextIcon = icon(collapsed ? ChevronDown : ChevronUp, 15)
+      nextIcon.setAttribute("aria-hidden", "true")
+      toggleIcon.replaceWith(nextIcon)
+      toggleIcon = nextIcon
       header.setAttribute("aria-expanded", String(!collapsed))
     })
     header.setAttribute("aria-expanded", "true")
@@ -131,7 +142,7 @@ class MapSearchControl implements IControl {
     button.type = "button"
     button.title = "Cerca un indirizzo o un luogo"
     button.setAttribute("aria-label", "Cerca un indirizzo o un luogo")
-    button.textContent = "🔍"
+    button.appendChild(icon(Search))
     button.addEventListener("click", () => this.toggle())
 
     const panel = document.createElement("div")
@@ -270,7 +281,7 @@ class MapTerrainControl implements IControl {
     button.type = "button"
     button.title = "Terreno 3D"
     button.setAttribute("aria-label", "Terreno 3D")
-    button.textContent = "🏔️"
+    button.appendChild(icon(Mountain))
     button.classList.toggle("active", this.initial)
     button.addEventListener("click", () => {
       const isOn = !!map.getTerrain()
@@ -347,8 +358,11 @@ async function exportMapToPdf(map: Map, moduleLabel: string, productName: string
   doc.text(`${centerText}  ·  ${scaleText}`, margin, pageHeight - 10)
   doc.text("© Maptoolkit © OpenStreetMap contributors", margin, pageHeight - 5)
 
-  const fileSlug = moduleLabel.toLowerCase().replace(/\s+/g, "-")
-  doc.save(`mappa-civica-${fileSlug}.pdf`)
+  // Preview in a new tab (the browser's own PDF viewer) instead of forcing
+  // an immediate download - the user can save/print from there if they want
+  // to keep it.
+  const blobUrl = doc.output("bloburl")
+  window.open(blobUrl, "_blank")
 }
 
 class MapPrintControl implements IControl {
@@ -369,12 +383,7 @@ class MapPrintControl implements IControl {
     button.type = "button"
     button.title = "Stampa mappa"
     button.setAttribute("aria-label", "Stampa mappa")
-    button.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M5 2 H14 L19 7 V22 H5 Z" fill="#f5f5f5" stroke="#888" stroke-width="1" stroke-linejoin="round"></path>
-      <path d="M14 2 L19 7 H14 Z" fill="#cccccc"></path>
-      <rect x="4" y="13" width="15" height="6" rx="1" fill="#E31B1C"></rect>
-      <text x="11.5" y="17.6" font-size="5.5" font-family="Arial, sans-serif" font-weight="bold" fill="white" text-anchor="middle">PDF</text>
-    </svg>`
+    button.appendChild(icon(Printer))
     button.addEventListener("click", () => {
       button.disabled = true
       exportMapToPdf(map, this.moduleLabel, this.productName)
