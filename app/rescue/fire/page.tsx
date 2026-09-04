@@ -2,9 +2,10 @@
 
 import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
-import { FilterCheckboxGroup } from "@/components/filter-checkbox-group"
+import { FilterBadgeGroup } from "@/components/filter-badge-group"
 import { HoverHighlightLayer } from "@/components/hover-highlight-layer"
 import { OverlayCheckbox } from "@/components/overlay-checkbox"
+import { ICONS } from "@/lib/ICONS"
 import { ALL_NBR_CLASSES, NBR_CLASS_CONFIG } from "@/lib/green-classes"
 import {
   FIRE_DANGER_LAYER_IDS,
@@ -16,10 +17,10 @@ import { dangerPopupHTML, firePopupHTML, ignitionPopupHTML } from "@/lib/rescue-
 import { STRINGS } from "@/lib/strings"
 
 const CAUSE_OPTIONS = [
-  { value: "dolosa", label: STRINGS.fireCauseDolosa },
-  { value: "colposa", label: STRINGS.fireCauseColposa },
-  { value: "naturale", label: STRINGS.fireCauseNaturale },
-  { value: "ignota", label: STRINGS.fireCauseIgnota },
+  { value: "dolosa", label: STRINGS.fireCauseDolosa, icon: ICONS.fireCauseDolosa, color: "#e03131" },
+  { value: "colposa", label: STRINGS.fireCauseColposa, icon: ICONS.fireCauseColposa, color: "#f76707" },
+  { value: "naturale", label: STRINGS.fireCauseNaturale, icon: ICONS.fireCauseNaturale, color: "#7048e8" },
+  { value: "ignota", label: STRINGS.fireCauseIgnota, icon: ICONS.fireCauseIgnota, color: "#868e96" },
 ]
 
 export default function RescueFirePage() {
@@ -37,7 +38,7 @@ export default function RescueFirePage() {
         variabile.
       </p>
       <div className="mt-3 flex flex-col gap-3">
-        <FilterCheckboxGroup property="causa_classe" options={CAUSE_OPTIONS} layerIds={FIRE_PERIMETERS_LAYER_IDS} />
+        <FilterBadgeGroup property="causa_classe" options={CAUSE_OPTIONS} layerIds={FIRE_PERIMETERS_LAYER_IDS} />
         <div className="flex flex-col gap-2 border-t pt-3">
           <OverlayCheckbox label={STRINGS.fireDangerToggle} layerIds={FIRE_DANGER_LAYER_IDS} defaultChecked={false} />
           <p className="text-xs text-muted-foreground">

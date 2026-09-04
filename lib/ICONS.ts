@@ -1,5 +1,6 @@
 import {
   Bike,
+  CircleHelp,
   CirclePlus,
   Compass,
   Droplets,
@@ -84,6 +85,12 @@ export const ICONS = {
   hems: PlaneTakeoff,
   fireHydrants: Droplets,
   assemblyPoints: Users,
+
+  // Wildfire causes
+  fireCauseDolosa: Flame,
+  fireCauseColposa: TriangleAlert,
+  fireCauseNaturale: Zap,
+  fireCauseIgnota: CircleHelp,
 
   // Rescue sections
   riverRisk: TriangleAlert,
