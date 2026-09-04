@@ -3,8 +3,30 @@
 import { useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import type { Map } from "maplibre-gl"
-import { addRiiOverlay, createBaseMap, onStyleReady, RII_LAYER_IDS, setOverlayVisibility } from "@/lib/map"
+import {
+  addFireOverlay,
+  addRiiOverlay,
+  createBaseMap,
+  FIRE_LAYER_IDS,
+  onStyleReady,
+  RII_LAYER_IDS,
+  setOverlayVisibility,
+} from "@/lib/map"
 import { STRINGS } from "@/lib/strings"
+
+// Each entry's overlay is added once (idempotently) on every style load, and
+// shown only when the current route matches `path`. Add a row here for each
+// new overlay ported instead of wiring it by hand in the effects below.
+const ROUTE_OVERLAYS = [
+  { path: "/rescue/events", add: addRiiOverlay, layerIds: RII_LAYER_IDS },
+  { path: "/rescue/fire", add: addFireOverlay, layerIds: FIRE_LAYER_IDS },
+]
+
+function syncOverlayVisibility(map: Map, pathname: string): void {
+  for (const overlay of ROUTE_OVERLAYS) {
+    setOverlayVisibility(map, overlay.layerIds, pathname === overlay.path)
+  }
+}
 
 export default function MapView() {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -23,8 +45,10 @@ export default function MapView() {
     mapRef.current = map
 
     const unsubscribe = onStyleReady(map, () => {
-      addRiiOverlay(map)
-      setOverlayVisibility(map, RII_LAYER_IDS, pathnameRef.current === "/rescue/events")
+      for (const overlay of ROUTE_OVERLAYS) {
+        overlay.add(map)
+      }
+      syncOverlayVisibility(map, pathnameRef.current)
     })
 
     return () => {
@@ -37,7 +61,7 @@ export default function MapView() {
   useEffect(() => {
     const map = mapRef.current
     if (!map || !map.isStyleLoaded()) return
-    setOverlayVisibility(map, RII_LAYER_IDS, pathname === "/rescue/events")
+    syncOverlayVisibility(map, pathname)
   }, [pathname])
 
   return <div ref={containerRef} className="map-canvas" />
