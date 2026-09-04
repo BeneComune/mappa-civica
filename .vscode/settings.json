@@ -1,0 +1,9 @@
+{
+  // app/globals.css is Tailwind v4, which introduces at-rules the editor's
+  // built-in CSS validator doesn't know: @theme, @custom-variant and @apply
+  // all report "Unknown at rule". They are real Tailwind syntax, compiled
+  // away by @tailwindcss/postcss at build time, so the warnings are noise.
+  "css.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore"
+}
