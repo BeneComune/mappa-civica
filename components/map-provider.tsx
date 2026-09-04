@@ -35,6 +35,11 @@ type MapContextValue = {
   // Shows a popup at the clicked feature's position on `layerId`. Shared by
   // Rescue's click-to-open popups (rii, fire, assets, ...).
   attachClickPopup: (layerId: string, render: (props: Record<string, unknown>) => string | null | undefined) => () => void
+  // Toggles feature-state `hover` on `sourceId` for whichever of `layerIds`
+  // is under the cursor, driving hover-highlight paint expressions (see
+  // RII_HOVER/FIRE_HOVER in the overlay definitions). Requires features to
+  // carry a stable top-level `id` (or `generateId: true` on the source).
+  attachHoverHighlight: (sourceId: string, layerIds: string[]) => () => void
   // Escape hatch for interactions too specific to generalize (e.g. Home's
   // cadastral-parcel identify: click + hover + queryRenderedFeatures). Use
   // the narrower methods above where possible instead.
@@ -183,6 +188,54 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
     []
   )
 
+  const attachHoverHighlight = useCallback((sourceId: string, layerIds: string[]) => {
+    const map = mapRef.current
+    if (!map) return () => {}
+
+    let hovered: { source: string; id: string | number } | undefined
+
+    const clearHover = () => {
+      if (hovered) {
+        map.setFeatureState(hovered, { hover: false })
+        hovered = undefined
+      }
+      map.getCanvas().style.cursor = ""
+    }
+
+    const handleMove = (e: MapMouseEvent) => {
+      const layers = layerIds.filter((id) => map.getLayer(id))
+      if (layers.length === 0) {
+        clearHover()
+        return
+      }
+      const feature = map.queryRenderedFeatures(e.point, { layers })[0]
+      if (!feature || feature.id === undefined) {
+        clearHover()
+        return
+      }
+      const next = { source: sourceId, id: feature.id }
+      if (hovered && (hovered.source !== next.source || hovered.id !== next.id)) {
+        map.setFeatureState(hovered, { hover: false })
+      }
+      hovered = next
+      map.setFeatureState(hovered, { hover: true })
+      map.getCanvas().style.cursor = "pointer"
+    }
+
+    const attach = () => {
+      map.on("mousemove", handleMove)
+      map.on("mouseout", clearHover)
+    }
+    const unsubStyleReady = onStyleReady(map, attach)
+
+    return () => {
+      unsubStyleReady()
+      map.off("mousemove", handleMove)
+      map.off("mouseout", clearHover)
+      clearHover()
+    }
+  }, [])
+
   return (
     <MapContext.Provider
       value={{
@@ -196,6 +249,7 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
         getMap,
         attachHoverPopup,
         attachClickPopup,
+        attachHoverHighlight,
       }}
     >
       {children}

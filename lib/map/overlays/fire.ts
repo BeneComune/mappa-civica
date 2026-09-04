@@ -30,6 +30,10 @@ const FIRE_DANGER_COLOR: ExpressionSpecification = [
   "#adb5bd",
 ]
 
+// Features carry a stable top-level `id` in the source GeoJSON already, so
+// no generateId is needed for setFeatureState to work.
+const FIRE_HOVER: ExpressionSpecification = ["boolean", ["feature-state", "hover"], false]
+
 export function addFireOverlay(map: Map): void {
   if (!map.getSource("firePerimeters")) {
     map.addSource("firePerimeters", { type: "geojson", data: "/data/rescue/fire_perimeters.geojson" })
@@ -90,7 +94,7 @@ export function addFireOverlay(map: Map): void {
       type: "fill",
       source: "firePerimeters",
       layout: { visibility: "none" },
-      paint: { "fill-color": FIRE_COLOR, "fill-opacity": 0.25 },
+      paint: { "fill-color": FIRE_COLOR, "fill-opacity": ["case", FIRE_HOVER, 0.5, 0.25] },
     })
   }
   if (!map.getLayer("fire-perimeters-outline")) {
@@ -99,7 +103,7 @@ export function addFireOverlay(map: Map): void {
       type: "line",
       source: "firePerimeters",
       layout: { visibility: "none" },
-      paint: { "line-color": FIRE_COLOR, "line-width": 1.1 },
+      paint: { "line-color": FIRE_COLOR, "line-width": ["case", FIRE_HOVER, 2.6, 1.1] },
     })
   }
 

@@ -19,6 +19,10 @@ const RII_COLOR: ExpressionSpecification = [
   "#868e96",
 ]
 
+// Features carry a stable top-level `id` in the source GeoJSON already, so
+// no generateId is needed for setFeatureState to work.
+const RII_HOVER: ExpressionSpecification = ["boolean", ["feature-state", "hover"], false]
+
 export function addRiiOverlay(map: Map): void {
   if (!map.getSource(RII_SOURCE_ID)) {
     map.addSource(RII_SOURCE_ID, {
@@ -52,7 +56,11 @@ export function addRiiOverlay(map: Map): void {
       layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
       paint: {
         "line-color": RII_COLOR,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 2.5, 15, 5.5],
+        "line-width": [
+          "interpolate", ["linear"], ["zoom"],
+          11, ["case", RII_HOVER, 4.5, 2.5],
+          15, ["case", RII_HOVER, 8, 5.5],
+        ],
       },
     })
   }
@@ -65,11 +73,15 @@ export function addRiiOverlay(map: Map): void {
       filter: ["==", ["geometry-type"], "Point"],
       layout: { visibility: "none" },
       paint: {
-        "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 6, 15, 11],
+        "circle-radius": [
+          "interpolate", ["linear"], ["zoom"],
+          11, ["case", RII_HOVER, 8, 6],
+          15, ["case", RII_HOVER, 15, 11],
+        ],
         "circle-color": RII_COLOR,
         "circle-opacity": ["case", ["boolean", ["get", "pos_approssimata"], false], 0.5, 0.9],
         "circle-stroke-color": "#ffffff",
-        "circle-stroke-width": 1.8,
+        "circle-stroke-width": ["case", RII_HOVER, 3, 1.8],
       },
     })
   }

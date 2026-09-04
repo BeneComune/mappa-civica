@@ -2,6 +2,7 @@
 
 import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { FilterCheckboxGroup } from "@/components/filter-checkbox-group"
+import { HoverHighlightLayer } from "@/components/hover-highlight-layer"
 import { OverlayCheckbox } from "@/components/overlay-checkbox"
 import {
   FIRE_DANGER_LAYER_IDS,
@@ -25,6 +26,7 @@ export default function RescueFirePage() {
       <ClickPopupLayer layerId="fire-perimeters-fill" render={firePopupHTML} />
       <ClickPopupLayer layerId="fire-danger-fill" render={dangerPopupHTML} />
       <ClickPopupLayer layerId="fire-ignition-points" render={ignitionPopupHTML} />
+      <HoverHighlightLayer sourceId="firePerimeters" layerIds={FIRE_PERIMETERS_LAYER_IDS} />
       <h2 className="text-xl font-semibold">{STRINGS.wildfires}</h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.wildfiresDescription}</p>
       <div className="mt-3 flex flex-col gap-3">
