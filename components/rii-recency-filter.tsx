@@ -5,9 +5,9 @@ import type { FilterSpecification } from "maplibre-gl"
 import { Clock, History } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
 
-// Rii's recency filter groups two `stato` values per checkbox (unlike
-// fire's cause filter, where each checkbox is one property value), so it
-// doesn't fit FilterCheckboxGroup - a small bespoke component instead.
+// Rii's recency filter groups two `stato` values per badge (unlike fire's
+// cause filter, where each badge is one property value), so it doesn't fit
+// FilterBadgeGroup - a small bespoke component instead.
 // Each layer keeps its own geometry-type filter combined with the shared
 // stato match, matching the old app (rii-points is Point-only, the line
 // layers are LineString-only, labels have no geometry filter).

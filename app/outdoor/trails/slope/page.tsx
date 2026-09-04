@@ -1,18 +1,19 @@
 "use client"
 
 import { Faq } from "@/components/faq"
-import { FilterCheckboxGroup } from "@/components/filter-checkbox-group"
+import { FilterBadgeGroup } from "@/components/filter-badge-group"
 import { ICONS } from "@/lib/ICONS"
 import { SLOPE_LAYER_IDS } from "@/lib/map/overlays/slope"
 import { STRINGS } from "@/lib/strings"
 
+// Colors match SLOPE_COLOR in lib/map/overlays/slope.ts.
 const SLOPE_OPTIONS = [
-  { value: "0-3: flat", label: STRINGS.slopeFlat },
-  { value: "3-5: mild", label: STRINGS.slopeMild },
-  { value: "5-8: medium", label: STRINGS.slopeMedium },
-  { value: "8-10: hard", label: STRINGS.slopeHard },
-  { value: "10-20: extreme", label: STRINGS.slopeExtreme },
-  { value: ">20: impossible", label: STRINGS.slopeImpossible },
+  { value: "0-3: flat", label: STRINGS.slopeFlat, color: "#2b8a3e" },
+  { value: "3-5: mild", label: STRINGS.slopeMild, color: "#74c69d" },
+  { value: "5-8: medium", label: STRINGS.slopeMedium, color: "#ffd43b" },
+  { value: "8-10: hard", label: STRINGS.slopeHard, color: "#ff922b" },
+  { value: "10-20: extreme", label: STRINGS.slopeExtreme, color: "#e03131" },
+  { value: ">20: impossible", label: STRINGS.slopeImpossible, color: "#7f1d1d" },
 ]
 
 export default function TrailsSlopePage() {
@@ -24,7 +25,7 @@ export default function TrailsSlopePage() {
       </h2>
       <p className="mt-2 text-sm text-muted-foreground">{STRINGS.slopeDescription}</p>
       <div className="mt-3">
-        <FilterCheckboxGroup property="slope_class" options={SLOPE_OPTIONS} layerIds={SLOPE_LAYER_IDS} />
+        <FilterBadgeGroup property="slope_class" options={SLOPE_OPTIONS} layerIds={SLOPE_LAYER_IDS} />
       </div>
       <Faq>
         Pendenza media di ogni tratto, calcolata dal modello digitale del terreno (DEM/LiDAR). Le classi vanno da
