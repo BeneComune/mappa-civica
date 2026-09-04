@@ -68,6 +68,28 @@ export const STRINGS = {
     "Individua vegetazione in sofferenza, degradata o bruciata: non solo quanto verde c'è, ma come sta.",
   soilTemperature: "Temperatura suolo",
   soilTemperatureDescription: "Le zone più calde e quelle più fresche del territorio, misurate dal satellite.",
+
+  // Community (Segnala)
+  communityDescription: "Invia una segnalazione al Comune: strade, sentieri, rifiuti, illuminazione o proposte.",
+  newReport: "Nuova segnalazione",
+  reportCategoryRoads: "Viabilità e strade",
+  reportCategoryNature: "Sentieri e natura",
+  reportCategoryWaste: "Rifiuti e degrado",
+  reportCategoryLighting: "Illuminazione",
+  reportCategorySignage: "Segnaletica",
+  reportCategoryProposal: "Proposta",
+  reportFormTitle: "Nuova segnalazione",
+  reportFormDescription: "Clicca sulla mappa per indicare la posizione, poi compila i campi qui sotto.",
+  reportCategoryLabel: "Categoria",
+  reportTitleLabel: "Titolo",
+  reportDescriptionLabel: "Descrizione",
+  reportLocationLabel: "Posizione",
+  reportLocationUnset: "Clicca sulla mappa per indicarla",
+  reportSubmit: "Invia segnalazione",
+  reportCancel: "Annulla",
+  reportSubmitted: "Segnalazione pronta: si apre il client email per inviarla al Comune.",
+  reportListEmpty: "Nessuna segnalazione ancora. Usa \"Nuova segnalazione\" per crearne una.",
+  reportDelete: "Elimina",
 } as const
 
 export type StringKey = keyof typeof STRINGS

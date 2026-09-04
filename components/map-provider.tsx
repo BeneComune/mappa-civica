@@ -1,27 +1,41 @@
 "use client"
 
 import { createContext, useCallback, useContext, useRef } from "react"
-import type { FilterSpecification, Map } from "maplibre-gl"
+import * as maplibregl from "maplibre-gl"
+import type { FilterSpecification, LngLat, Map, MapMouseEvent, Marker } from "maplibre-gl"
 import { setOverlayVisibility } from "@/lib/map"
 
 // Bridges the single persistent map instance (mounted once in the root
-// layout, see MapShell/MapView) to legend-panel checkboxes rendered as route
-// children elsewhere in the tree. The map instance itself is stored in a
-// ref, not React state - toggling a layer is an imperative side effect, not
-// something that should trigger a re-render of the provider's subtree.
+// layout, see MapShell/MapView) to legend-panel checkboxes and forms
+// rendered as route children elsewhere in the tree. The map instance itself
+// is stored in a ref, not React state - toggling a layer or reading a click
+// is an imperative side effect, not something that should trigger a
+// re-render of the provider's subtree.
 type MapContextValue = {
   registerMap: (map: Map | null) => void
   setLayersVisible: (layerIds: string[], visible: boolean) => void
   setLayersFilter: (layerIds: string[], filter: FilterSpecification) => void
+  subscribeMapClick: (handler: (lngLat: LngLat) => void) => () => void
+  setPinMarker: (lngLat: [number, number] | null) => void
 }
 
 const MapContext = createContext<MapContextValue | null>(null)
 
 export function MapProvider({ children }: { children: React.ReactNode }) {
   const mapRef = useRef<Map | null>(null)
+  const clickHandlersRef = useRef<Set<(lngLat: LngLat) => void>>(new Set())
+  const pinMarkerRef = useRef<Marker | null>(null)
 
   const registerMap = useCallback((map: Map | null) => {
+    const previous = mapRef.current
+    if (previous) previous.off("click", handleMapClick)
     mapRef.current = map
+    pinMarkerRef.current = null
+    if (map) map.on("click", handleMapClick)
+
+    function handleMapClick(e: MapMouseEvent): void {
+      for (const handler of clickHandlersRef.current) handler(e.lngLat)
+    }
   }, [])
 
   const setLayersVisible = useCallback((layerIds: string[], visible: boolean) => {
@@ -39,8 +53,30 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
+  const subscribeMapClick = useCallback((handler: (lngLat: LngLat) => void) => {
+    clickHandlersRef.current.add(handler)
+    return () => clickHandlersRef.current.delete(handler)
+  }, [])
+
+  const setPinMarker = useCallback((lngLat: [number, number] | null) => {
+    const map = mapRef.current
+    if (!map) return
+    if (!lngLat) {
+      pinMarkerRef.current?.remove()
+      pinMarkerRef.current = null
+      return
+    }
+    if (pinMarkerRef.current) {
+      pinMarkerRef.current.setLngLat(lngLat)
+    } else {
+      pinMarkerRef.current = new maplibregl.Marker({ color: "#e03131" }).setLngLat(lngLat).addTo(map)
+    }
+  }, [])
+
   return (
-    <MapContext.Provider value={{ registerMap, setLayersVisible, setLayersFilter }}>
+    <MapContext.Provider
+      value={{ registerMap, setLayersVisible, setLayersFilter, subscribeMapClick, setPinMarker }}
+    >
       {children}
     </MapContext.Provider>
   )

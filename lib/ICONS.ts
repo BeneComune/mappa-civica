@@ -1,15 +1,22 @@
 import {
   Bike,
+  CirclePlus,
   Compass,
   Flame,
   Flower2,
   HeartPulse,
+  Lightbulb,
   Map,
+  MapPinPlus,
   Megaphone,
+  MessageSquare,
+  OctagonAlert,
   Route,
   ShieldPlus,
   Signpost,
   ThermometerSun,
+  TrafficCone,
+  Trash2,
   Trees,
   TreePine,
   TrendingUp,
@@ -49,6 +56,16 @@ export const ICONS = {
   naturalShade: TreePine,
   vegetationHealth: HeartPulse,
   soilTemperature: ThermometerSun,
+
+  // Community report categories
+  reportRoads: TrafficCone,
+  reportNature: Trees,
+  reportWaste: Trash2,
+  reportLighting: Lightbulb,
+  reportSignage: OctagonAlert,
+  reportProposal: MessageSquare,
+  newReport: CirclePlus,
+  reportLocation: MapPinPlus,
 } as const
 
 export type IconName = keyof typeof ICONS

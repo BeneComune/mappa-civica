@@ -1,6 +1,5 @@
-import { ModulePlaceholder } from "@/components/module-placeholder"
-import { STRINGS } from "@/lib/strings"
+import { CommunityPanel } from "@/components/community-panel"
 
 export default function CommunityPage() {
-  return <ModulePlaceholder title={STRINGS.community} />
+  return <CommunityPanel />
 }
