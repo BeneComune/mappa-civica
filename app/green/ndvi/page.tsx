@@ -1,6 +1,14 @@
-import { ModulePlaceholder } from "@/components/module-placeholder"
+import { NdviClassesPanel } from "@/components/ndvi-classes-panel"
 import { STRINGS } from "@/lib/strings"
 
 export default function GreenNdviPage() {
-  return <ModulePlaceholder title={STRINGS.vegetation} />
+  return (
+    <div>
+      <h2 className="text-xl font-semibold">{STRINGS.vegetation}</h2>
+      <p className="mt-2 text-sm text-muted-foreground">{STRINGS.vegetationDescription}</p>
+      <div className="mt-3">
+        <NdviClassesPanel />
+      </div>
+    </div>
+  )
 }

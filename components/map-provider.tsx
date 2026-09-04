@@ -2,8 +2,17 @@
 
 import { createContext, useCallback, useContext, useRef } from "react"
 import * as maplibregl from "maplibre-gl"
-import type { FilterSpecification, GeoJSONSource, LngLat, Map, MapMouseEvent, Marker } from "maplibre-gl"
-import { setOverlayVisibility } from "@/lib/map"
+import type {
+  FilterSpecification,
+  GeoJSONSource,
+  LngLat,
+  Map,
+  MapLayerMouseEvent,
+  MapMouseEvent,
+  Marker,
+  Popup,
+} from "maplibre-gl"
+import { onStyleReady, setOverlayVisibility } from "@/lib/map"
 
 // Bridges the single persistent map instance (mounted once in the root
 // layout, see MapShell/MapView) to legend-panel checkboxes and forms
@@ -19,6 +28,10 @@ type MapContextValue = {
   setPinMarker: (lngLat: [number, number] | null) => void
   flyTo: (center: [number, number], zoom: number) => void
   setSourceData: (sourceId: string, url: string) => void
+  // Shows a popup following the cursor while hovering features on `layerId`,
+  // via `render(properties)` returning an HTML string, or nothing to skip
+  // that hover. Shared by every module's hover-popup (Rescue, Green, ...).
+  attachHoverPopup: (layerId: string, render: (props: Record<string, unknown>) => string | null | undefined) => () => void
   // Escape hatch for interactions too specific to generalize (e.g. Home's
   // cadastral-parcel identify: click + hover + queryRenderedFeatures). Use
   // the narrower methods above where possible instead.
@@ -92,6 +105,47 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
 
   const getMap = useCallback(() => mapRef.current, [])
 
+  const attachHoverPopup = useCallback(
+    (layerId: string, render: (props: Record<string, unknown>) => string | null | undefined) => {
+      const map = mapRef.current
+      if (!map) return () => {}
+
+      let popup: Popup | null = null
+
+      const handleMove = (e: MapLayerMouseEvent) => {
+        const html = render(e.features?.[0]?.properties ?? {})
+        if (!html) {
+          popup?.remove()
+          map.getCanvas().style.cursor = ""
+          return
+        }
+        map.getCanvas().style.cursor = "pointer"
+        if (!popup) {
+          popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false })
+        }
+        popup.setLngLat(e.lngLat).setHTML(html).addTo(map)
+      }
+      const handleLeave = () => {
+        map.getCanvas().style.cursor = ""
+        popup?.remove()
+      }
+
+      const attach = () => {
+        map.on("mousemove", layerId, handleMove)
+        map.on("mouseleave", layerId, handleLeave)
+      }
+      const unsubStyleReady = onStyleReady(map, attach)
+
+      return () => {
+        unsubStyleReady()
+        map.off("mousemove", layerId, handleMove)
+        map.off("mouseleave", layerId, handleLeave)
+        popup?.remove()
+      }
+    },
+    []
+  )
+
   return (
     <MapContext.Provider
       value={{
@@ -103,6 +157,7 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
         flyTo,
         setSourceData,
         getMap,
+        attachHoverPopup,
       }}
     >
       {children}
