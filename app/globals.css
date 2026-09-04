@@ -207,9 +207,7 @@
 /* Hover/click popups (rii, fire, assets, NDVI, ...) - same hardcoded white
    background as the other built-in controls above, and with no explicit
    text color of its own it was inheriting the dark theme's near-white body
-   color, making every popup unreadable (white text on white background).
-   The tip/arrow's border-*-color is set per anchor direction by MapLibre's
-   own more specific selectors, so it needs !important to win here. */
+   color, making every popup unreadable (white text on white background). */
 .maplibregl-popup-content {
   background: var(--popover);
   color: var(--popover-foreground);
@@ -220,11 +218,29 @@
   color: var(--popover-foreground);
 }
 
-.maplibregl-popup-tip {
-  border-top-color: var(--popover) !important;
-  border-bottom-color: var(--popover) !important;
-  border-left-color: var(--popover) !important;
-  border-right-color: var(--popover) !important;
+/* The tip/arrow is a CSS border-triangle: only ONE side should be colored
+   (the other three stay `transparent`, from MapLibre's own base rule) or it
+   renders as a diamond/square instead of a triangle. MapLibre colors only
+   the relevant side per anchor direction via these same more-specific
+   selectors, so mirror that instead of blanket-coloring every side. */
+.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+  border-bottom-color: var(--popover);
+}
+
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
+  border-top-color: var(--popover);
+}
+
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: var(--popover);
+}
+
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: var(--popover);
 }
 
 .map-style-switcher {
