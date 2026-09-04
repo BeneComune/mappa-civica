@@ -3,9 +3,7 @@ import { STRINGS } from "@/lib/strings"
 
 // Simplified port of the old app's communityStore.ts. Not ported yet:
 // duckdb-backed official reports (loadCommunityReports), cadastral parcel
-// snapping (foglio/particella), photo upload, and upvoting - this covers
-// only the "submit a new report" flow (local list + mailto), which is what
-// the drawer form needs.
+// snapping (foglio/particella), and photo upload.
 
 export const MUNICIPALITY_EMAIL = "info@comune.montereale-valcellina.pn.it"
 
@@ -75,6 +73,69 @@ export function saveReports(reports: CommunityReport[]): void {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(reports))
   }
   for (const listener of listeners) listener()
+}
+
+// Upvoting ("Anche a me importa"), same subscribe/snapshot pattern as
+// reports above.
+type Votes = Record<string, number>
+const VOTES_KEY = "mv_report_votes"
+const VOTED_IDS_KEY = "mv_voted_ids"
+const EMPTY_VOTES: Votes = {}
+const EMPTY_VOTED_IDS: string[] = []
+const voteListeners = new Set<() => void>()
+let cachedVotes: Votes | null = null
+let cachedVotedIds: string[] | null = null
+
+function readJSON<T>(key: string, fallback: T): T {
+  if (typeof window === "undefined") return fallback
+  try {
+    const raw = window.localStorage.getItem(key)
+    return raw ? (JSON.parse(raw) as T) : fallback
+  } catch {
+    return fallback
+  }
+}
+
+export function subscribeVotes(onChange: () => void): () => void {
+  voteListeners.add(onChange)
+  return () => voteListeners.delete(onChange)
+}
+
+export function getVotesSnapshot(): Votes {
+  if (cachedVotes === null) cachedVotes = readJSON(VOTES_KEY, {})
+  return cachedVotes
+}
+
+export function getVotesServerSnapshot(): Votes {
+  return EMPTY_VOTES
+}
+
+export function getVotedIdsSnapshot(): string[] {
+  if (cachedVotedIds === null) cachedVotedIds = readJSON(VOTED_IDS_KEY, [])
+  return cachedVotedIds
+}
+
+export function getVotedIdsServerSnapshot(): string[] {
+  return EMPTY_VOTED_IDS
+}
+
+export function toggleVote(reportId: string): void {
+  const votes = { ...getVotesSnapshot() }
+  const votedIds = new Set(getVotedIdsSnapshot())
+  if (votedIds.has(reportId)) {
+    votes[reportId] = Math.max(0, (votes[reportId] ?? 1) - 1)
+    votedIds.delete(reportId)
+  } else {
+    votes[reportId] = (votes[reportId] ?? 0) + 1
+    votedIds.add(reportId)
+  }
+  cachedVotes = votes
+  cachedVotedIds = [...votedIds]
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(VOTES_KEY, JSON.stringify(votes))
+    window.localStorage.setItem(VOTED_IDS_KEY, JSON.stringify(cachedVotedIds))
+  }
+  for (const listener of voteListeners) listener()
 }
 
 export function buildReportMailto(report: CommunityReport): string {
