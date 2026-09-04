@@ -288,12 +288,10 @@ function buildTransportRoutingGraph(features: TransportFeature[]): RoutingGraph 
     const edgeIndex = edges.push(edge) - 1
 
     const fromNode = nodes.get(from) ?? { coord: coords[0], edges: [] }
-    fromNode.coord = fromNode.coord ?? coords[0]
     fromNode.edges.push(edgeIndex)
     nodes.set(from, fromNode)
 
     const toNode = nodes.get(to) ?? { coord: coords[coords.length - 1], edges: [] }
-    toNode.coord = toNode.coord ?? coords[coords.length - 1]
     toNode.edges.push(edgeIndex)
     nodes.set(to, toNode)
   }
