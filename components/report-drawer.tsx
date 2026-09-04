@@ -126,14 +126,30 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
             <Label htmlFor="report-category">{STRINGS.reportCategoryLabel}</Label>
             <Select value={category} onValueChange={(value) => setCategory(value as CategoryId)}>
               <SelectTrigger id="report-category" className="w-full">
-                <SelectValue />
+                <SelectValue>
+                  {(value: CategoryId) => {
+                    const selected = CATEGORIES.find((c) => c.id === value)
+                    if (!selected) return null
+                    const Icon = selected.icon
+                    return (
+                      <>
+                        <Icon className="size-4" style={{ color: selected.color }} />
+                        {selected.label}
+                      </>
+                    )
+                  }}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                {CATEGORIES.map((c) => (
-                  <SelectItem key={c.id} value={c.id}>
-                    {c.label}
-                  </SelectItem>
-                ))}
+                {CATEGORIES.map((c) => {
+                  const Icon = c.icon
+                  return (
+                    <SelectItem key={c.id} value={c.id}>
+                      <Icon className="size-4" style={{ color: c.color }} />
+                      {c.label}
+                    </SelectItem>
+                  )
+                })}
               </SelectContent>
             </Select>
           </div>
