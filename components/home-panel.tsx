@@ -49,7 +49,7 @@ export function HomePanel() {
 
       {/* Weather floats independently top-right, below the map's own
           zoom/fullscreen/search/terrain/print control stack. */}
-      <div className="pointer-events-none absolute top-56 right-4">
+      <div className="pointer-events-none absolute top-56 right-2.5">
         <section className={CARD}>
           <WeatherCard />
         </section>
