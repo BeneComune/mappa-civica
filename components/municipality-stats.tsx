@@ -46,10 +46,12 @@ function fmt(v: number | null | undefined, suffix = ""): string {
 
 function StatSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section>
-      <h3 className="text-sm font-semibold">{title}</h3>
-      <dl className="mt-1 flex flex-col gap-1 text-sm">{children}</dl>
-    </section>
+    <details className="group">
+      <summary className="cursor-pointer select-none text-sm font-semibold marker:content-none">
+        <span className="inline-block w-3 transition-transform group-open:rotate-90">›</span> {title}
+      </summary>
+      <dl className="mt-1 flex flex-col gap-1 pl-4 text-sm">{children}</dl>
+    </details>
   )
 }
 

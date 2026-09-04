@@ -1,6 +1,5 @@
-import { ModulePlaceholder } from "@/components/module-placeholder"
-import { STRINGS } from "@/lib/strings"
+import { LtsEmbed } from "@/components/lts-embed"
 
 export default function CyclabilityLtsPage() {
-  return <ModulePlaceholder title={STRINGS.trafficStress} />
+  return <LtsEmbed />
 }

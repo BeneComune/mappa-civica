@@ -3,7 +3,8 @@ import type { Map } from "maplibre-gl"
 // Home module from the old app's BaseModule: the municipality boundary
 // (always shown on "/") plus cadastral parcels, which stay empty/hidden
 // until the "Particelle catastali" toggle lazily loads the real data and
-// zooms in (parcel markers only render from minzoom 15).
+// zooms in. minzoom lowered from the old app's 15/16 to 13/14 so parcels
+// show up without having to zoom in quite as far.
 export const HOME_LAYER_IDS = ["boundary-fill", "boundary-outline"]
 export const CATASTO_LAYER_IDS = ["catasto-points", "catasto-labels"]
 
@@ -39,10 +40,10 @@ export function addHomeOverlay(map: Map): void {
       id: "catasto-points",
       type: "circle",
       source: "catasto",
-      minzoom: 15,
+      minzoom: 13,
       layout: { visibility: "none" },
       paint: {
-        "circle-radius": ["interpolate", ["linear"], ["zoom"], 15, 3.5, 18, 6.5],
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 13, 2, 15, 3.5, 18, 6.5],
         "circle-color": "#8a5a00",
         "circle-stroke-color": "#ffffff",
         "circle-stroke-width": 1.2,
@@ -55,11 +56,11 @@ export function addHomeOverlay(map: Map): void {
       id: "catasto-labels",
       type: "symbol",
       source: "catasto",
-      minzoom: 16,
+      minzoom: 14,
       layout: {
         visibility: "none",
         "text-field": ["get", "particella"],
-        "text-size": ["interpolate", ["linear"], ["zoom"], 16, 9, 19, 13],
+        "text-size": ["interpolate", ["linear"], ["zoom"], 14, 8, 19, 13],
         "text-font": ["Noto Sans Regular"],
         "text-optional": true,
         "text-ignore-placement": false,

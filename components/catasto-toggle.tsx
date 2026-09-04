@@ -24,7 +24,7 @@ export function CatastoToggle() {
       setSourceData("catasto", "/data/catasto.geojson")
       loadedRef.current = true
     }
-    if (map.getZoom() < 15) map.easeTo({ zoom: 15.5, duration: 700 })
+    if (map.getZoom() < 13) map.easeTo({ zoom: 13.5, duration: 700 })
 
     return () => {
       setLayersVisible(CATASTO_LAYER_IDS, false)

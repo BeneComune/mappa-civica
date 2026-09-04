@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { SiteHeader } from "@/components/site-header";
 import { MapShell } from "@/components/map-shell";
 import { MapProvider } from "@/components/map-provider";
+import { PanelFrame } from "@/components/panel-frame";
 import { STRINGS } from "@/lib/strings";
 import "./globals.css";
 
@@ -32,11 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SiteHeader />
           <main className="relative min-h-0 flex-1">
             <MapShell />
-            <div className="pointer-events-none absolute inset-0 flex items-end p-4">
-              <div className="pointer-events-auto w-full max-w-sm rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur">
-                {children}
-              </div>
-            </div>
+            <PanelFrame>{children}</PanelFrame>
           </main>
         </MapProvider>
       </body>

@@ -7,6 +7,8 @@ import { FrazioniList } from "@/components/frazioni-list"
 import { MunicipalityStatsPanel, type MunicipalityStats } from "@/components/municipality-stats"
 import { STRINGS } from "@/lib/strings"
 
+const CARD = "pointer-events-auto w-full max-w-xs rounded-lg border bg-background/95 p-3 shadow-lg backdrop-blur"
+
 export function HomePanel() {
   const [stats, setStats] = useState<MunicipalityStats | null>(null)
 
@@ -18,19 +20,31 @@ export function HomePanel() {
   }, [])
 
   return (
-    <div className="flex max-h-[calc(100vh-8rem)] flex-col gap-4 overflow-y-auto">
-      <div>
+    // Independent floating cards, not one shared panel (see PanelFrame) -
+    // the stack scrolls as a group if it overflows the viewport.
+    <div className="pointer-events-none absolute inset-0 flex flex-col gap-2 overflow-y-auto p-4">
+      <section className={CARD}>
         <h2 className="text-xl font-semibold">{stats?.municipality.name ?? STRINGS.appName}</h2>
         <p className="mt-1 text-sm text-muted-foreground">{STRINGS.homeSubtitle}</p>
-      </div>
+      </section>
 
-      <WeatherCard />
+      <section className={CARD}>
+        <WeatherCard />
+      </section>
 
-      <CatastoToggle />
+      <section className={CARD}>
+        <CatastoToggle />
+      </section>
 
-      <FrazioniList />
+      <section className={CARD}>
+        <FrazioniList />
+      </section>
 
-      {stats && <MunicipalityStatsPanel stats={stats} />}
+      {stats && (
+        <section className={CARD}>
+          <MunicipalityStatsPanel stats={stats} />
+        </section>
+      )}
     </div>
   )
 }

@@ -142,7 +142,7 @@ export function WeatherCard() {
   const time = new Date(weather.observedAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })
 
   return (
-    <div className="flex flex-col gap-2 rounded-lg border p-3" aria-label="Meteo attuale">
+    <div className="flex flex-col gap-2" aria-label="Meteo attuale">
       <div className="flex items-center gap-3">
         <Icon className="size-8 shrink-0" aria-hidden="true" />
         <div>
