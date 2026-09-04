@@ -5,6 +5,8 @@
  */
 export const STRINGS = {
   appName: "Mappa Civica",
+  homeSubtitle:
+    "Piattaforma civica open-source per la mobilità sostenibile, l'ambiente, la resilienza del territorio e la partecipazione della comunità.",
   portingNotice: "Porting in corso dal prototipo Vite.",
 
   // Top-level nav / page titles

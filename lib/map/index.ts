@@ -10,8 +10,10 @@ import type { Map } from "maplibre-gl"
 // files only import maplibre-gl's types (erased at compile time).
 export { createBaseMap, onStyleReady } from "./base"
 export { setOverlayVisibility } from "./overlays/shared"
+export { CATASTO_LAYER_IDS } from "./overlays/home"
 
 import { setOverlayVisibility } from "./overlays/shared"
+import { addHomeOverlay, HOME_LAYER_IDS } from "./overlays/home"
 import { addRiiOverlay, RII_LAYER_IDS } from "./overlays/rii"
 import { addFireOverlay, FIRE_LAYER_IDS } from "./overlays/fire"
 import { addAssetsOverlay, ASSETS_LAYER_IDS } from "./overlays/assets"
@@ -36,6 +38,7 @@ import { addSoilTemperatureOverlay, SOIL_TEMPERATURE_LAYER_IDS } from "./overlay
 // shown only when the current route matches `path`. Add a row here for each
 // new overlay ported instead of wiring it by hand in map-view.tsx.
 export const ROUTE_OVERLAYS: Array<{ path: string; add: (map: Map) => void; layerIds: string[] }> = [
+  { path: "/", add: addHomeOverlay, layerIds: HOME_LAYER_IDS },
   { path: "/rescue/events", add: addRiiOverlay, layerIds: RII_LAYER_IDS },
   { path: "/rescue/fire", add: addFireOverlay, layerIds: FIRE_LAYER_IDS },
   { path: "/rescue/assets", add: addAssetsOverlay, layerIds: ASSETS_LAYER_IDS },

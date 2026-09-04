@@ -1,6 +1,7 @@
 import * as maplibregl from "maplibre-gl"
 import type { Map, IControl } from "maplibre-gl"
 import { createElement as createLucideElement, ChevronDown, ChevronUp, Mountain, Palette, Printer, Search } from "lucide"
+import { MUNICIPALITY_CENTER, MUNICIPALITY_ZOOM } from "@/lib/config"
 
 // Ported from the old app's lib/map.ts. Base map: basemap style, controls
 // (style switcher, search, terrain, print), worker setup.
@@ -21,8 +22,8 @@ if (typeof window !== "undefined") {
   maplibregl.setWorkerUrl("/maplibre-gl/maplibre-gl-worker.mjs")
 }
 
-const DEFAULT_CENTER: [number, number] = [12.664, 46.16]
-const DEFAULT_ZOOM = 12
+const DEFAULT_CENTER = MUNICIPALITY_CENTER
+const DEFAULT_ZOOM = MUNICIPALITY_ZOOM
 
 // Live basemap styles from Maptoolkit - the same tile+style service the old
 // app's integrated stressinbici.it (LTS) map uses.

@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useRef } from "react"
 import * as maplibregl from "maplibre-gl"
-import type { FilterSpecification, LngLat, Map, MapMouseEvent, Marker } from "maplibre-gl"
+import type { FilterSpecification, GeoJSONSource, LngLat, Map, MapMouseEvent, Marker } from "maplibre-gl"
 import { setOverlayVisibility } from "@/lib/map"
 
 // Bridges the single persistent map instance (mounted once in the root
@@ -17,6 +17,12 @@ type MapContextValue = {
   setLayersFilter: (layerIds: string[], filter: FilterSpecification) => void
   subscribeMapClick: (handler: (lngLat: LngLat) => void) => () => void
   setPinMarker: (lngLat: [number, number] | null) => void
+  flyTo: (center: [number, number], zoom: number) => void
+  setSourceData: (sourceId: string, url: string) => void
+  // Escape hatch for interactions too specific to generalize (e.g. Home's
+  // cadastral-parcel identify: click + hover + queryRenderedFeatures). Use
+  // the narrower methods above where possible instead.
+  getMap: () => Map | null
 }
 
 const MapContext = createContext<MapContextValue | null>(null)
@@ -73,9 +79,31 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
+  const flyTo = useCallback((center: [number, number], zoom: number) => {
+    mapRef.current?.flyTo({ center, zoom, duration: 900 })
+  }, [])
+
+  const setSourceData = useCallback((sourceId: string, url: string) => {
+    const map = mapRef.current
+    if (!map) return
+    const source = map.getSource(sourceId) as GeoJSONSource | undefined
+    source?.setData(url)
+  }, [])
+
+  const getMap = useCallback(() => mapRef.current, [])
+
   return (
     <MapContext.Provider
-      value={{ registerMap, setLayersVisible, setLayersFilter, subscribeMapClick, setPinMarker }}
+      value={{
+        registerMap,
+        setLayersVisible,
+        setLayersFilter,
+        subscribeMapClick,
+        setPinMarker,
+        flyTo,
+        setSourceData,
+        getMap,
+      }}
     >
       {children}
     </MapContext.Provider>

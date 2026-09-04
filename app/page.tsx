@@ -1,6 +1,5 @@
-import { ModulePlaceholder } from "@/components/module-placeholder"
-import { STRINGS } from "@/lib/strings"
+import { HomePanel } from "@/components/home-panel"
 
 export default function Home() {
-  return <ModulePlaceholder title={STRINGS.home} />
+  return <HomePanel />
 }

@@ -1,0 +1,115 @@
+{
+  "_meta": {
+    "description": "Dati comunali per il pannello home. Campi null = da compilare manualmente. Scope 'municipal' = dato comunale, 'provincial' = dato provinciale (PN) usato in assenza di dato comunale.",
+    "istat_source": "https://esploradati.istat.it/SDMXWS/rest",
+    "pipeline_generated": "2026-06-09",
+    "istat_fetched": "2026-06-09"
+  },
+  "municipality": {
+    "name": "Montereale Valcellina",
+    "province": "Pordenone",
+    "region": "Friuli-Venezia Giulia",
+    "istat_code": "093027"
+  },
+  "demographic": {
+    "_source": "ISTAT - dataset 22_289 e 22_315 (comunale), 22_293 (provinciale PN)",
+    "population": 4221,
+    "population_year": 2024,
+    "population_scope": "municipal",
+    "population_trend": [
+      { "year": 2001, "value": 4656 },
+      { "year": 2002, "value": 4671 },
+      { "year": 2003, "value": 4676 },
+      { "year": 2004, "value": 4680 },
+      { "year": 2005, "value": 4678 },
+      { "year": 2006, "value": 4659 },
+      { "year": 2007, "value": 4680 },
+      { "year": 2008, "value": 4685 },
+      { "year": 2009, "value": 4692 },
+      { "year": 2010, "value": 4612 },
+      { "year": 2011, "value": 4545 },
+      { "year": 2012, "value": 4518 },
+      { "year": 2013, "value": 4529 },
+      { "year": 2014, "value": 4489 },
+      { "year": 2015, "value": 4441 },
+      { "year": 2016, "value": 4414 },
+      { "year": 2017, "value": 4396 },
+      { "year": 2018, "value": 4336 },
+      { "year": 2019, "value": 4297 },
+      { "year": 2020, "value": 4311 },
+      { "year": 2021, "value": 4323 },
+      { "year": 2022, "value": 4267 },
+      { "year": 2023, "value": 4228 },
+      { "year": 2024, "value": 4221 },
+      { "year": 2025, "value": 4197 },
+      { "year": 2026, "value": 4187 }
+    ],
+    "area_km2": 67.72,
+    "population_density_km2": 20,
+    "population_density_scope": "municipal",
+    "localities_count": 4,
+    "households": 1951,
+    "households_scope": "municipal",
+    "avg_household_size": 2.1,
+    "avg_household_size_scope": "municipal",
+    "avg_age": 47.5,
+    "avg_age_scope": "provincial",
+    "old_age_index": 223.4,
+    "old_age_index_scope": "provincial",
+    "pct_pop_65_over": 25.8,
+    "pct_pop_65_over_scope": "provincial",
+    "pct_pop_0_14": 11.6,
+    "pct_pop_0_14_scope": "provincial",
+    "dwellings_occupied": null,
+    "dwellings_total": null
+  },
+  "geography": {
+    "_source": "OpenStreetMap",
+    "waterways": ["Torrente Cellina"],
+    "peaks": [
+      { "name": "Monte I Cameroni", "elevation_m": 1471 },
+      { "name": "Monte Fortel",     "elevation_m": 1436 },
+      { "name": "Monte Fara",       "elevation_m": 1345 },
+      { "name": "Monte Spia",       "elevation_m": 548  },
+      { "name": "Monte Gloriassis", "elevation_m": 468  }
+    ]
+  },
+  "risk": {
+    "_source": "Normativa nazionale (sismicità) + PAI Regione FVG / ISPRA (idrogeologico)",
+    "seismic_zone": "1",
+    "seismic_zone_label": "Alta pericolosità",
+    "hydrogeological_risk_class": null,
+    "hydrogeological_risk_note": "PAI FVG - dato in attesa"
+  },
+  "services": {
+    "_source": "OpenStreetMap / ISTAT 117_1035",
+    "pharmacy": true,
+    "pharmacy_name": "Farmacia Tre Effe",
+    "schools": "Scuola Primaria 'P.D.M. Turoldo', Sec. I Grado 'Giovanni XXXIII', Scuola dell'Infanzia (capoluogo), Scuola dell'Infanzia (San Leonardo)",
+    "nearest_emergency_room": {
+      "name": "Ospedale 'Immacolata Concezione', Maniago / Manià",
+      "distance_km": 6,
+      "drive_minutes": 13
+    },
+    "bank_branches": 2,
+    "bank_branches_names": ["Banca 360 FVG", "Unicredit"],
+    "bank_branches_source": "OpenStreetMap"
+  },
+  "pipeline_derived": {
+    "_source": "Calcolato da greenery.geojson (NDVI Sentinel-2) e trails.geojson (OSM)",
+    "total_area_ha": 6772,
+    "dense_vegetation_ha": 4081,
+    "green_area_pct": 60.3,
+    "ndvi_breakdown": {
+      "very_dense_ha": 251,
+      "dense_ha": 3830,
+      "moderate_ha": 2007,
+      "sparse_ha": 332,
+      "bare_ha": 321,
+      "water_ha": 31
+    },
+    "trails_cai_km": 49.6,
+    "trails_mtb_km": 11.0,
+    "cycling_km": 8.4
+  }
+}
