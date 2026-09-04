@@ -1,5 +1,6 @@
 // lib\map\overlays\fire.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
+import { COLORS } from "@/lib/colors"
 
 // Forest fire perimeters (IRDAT FVG) from the old app's RescueModule.
 // Historical burned areas, coloured by ignition cause. Danger zonation,
@@ -17,18 +18,18 @@ export const FIRE_LAYER_IDS = [...FIRE_PERIMETERS_LAYER_IDS]
 const FIRE_COLOR: ExpressionSpecification = [
   "match",
   ["get", "causa_classe"],
-  "dolosa", "#e03131",
-  "colposa", "#f76707",
-  "naturale", "#7048e8",
-  "#868e96",
+  "dolosa", COLORS.fireCauseDolosa,
+  "colposa", COLORS.fireCauseColposa,
+  "naturale", COLORS.fireCauseNaturale,
+  COLORS.fireCauseIgnota,
 ]
 
 const FIRE_DANGER_COLOR: ExpressionSpecification = [
   "match",
   ["get", "grado"],
-  "alta", "#e03131",
-  "medio", "#f59f00",
-  "#adb5bd",
+  "alta", COLORS.fireDangerAlta,
+  "medio", COLORS.fireDangerMedio,
+  COLORS.fireDangerDefault,
 ]
 
 // Features carry a stable top-level `id` in the source GeoJSON already, so
@@ -85,7 +86,7 @@ export function addFireOverlay(map: Map): void {
       type: "line",
       source: "nbr",
       layout: { visibility: "none" },
-      paint: { "line-color": "#ffffff", "line-width": 0.3, "line-opacity": 0.35 },
+      paint: { "line-color": COLORS.white, "line-width": 0.3, "line-opacity": 0.35 },
     })
   }
 
@@ -116,8 +117,8 @@ export function addFireOverlay(map: Map): void {
       layout: { visibility: "none" },
       paint: {
         "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 3, 15, 6],
-        "circle-color": "#7a1f1f",
-        "circle-stroke-color": "#ffffff",
+        "circle-color": COLORS.fireIgnitionToggle,
+        "circle-stroke-color": COLORS.white,
         "circle-stroke-width": 1.4,
         "circle-opacity": 0.95,
       },

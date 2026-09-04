@@ -7,6 +7,7 @@ import type { GeoJSONSource } from "maplibre-gl"
 import { Button } from "@/components/ui/button"
 import { ElevationProfile } from "@/components/elevation-profile"
 import { useMapContext } from "@/components/map-provider"
+import { COLORS } from "@/lib/colors"
 import { ICONS } from "@/lib/ICONS"
 import {
   buildRouteSummary,
@@ -33,6 +34,12 @@ function formatTime(timeMin: number): string {
 }
 
 const EXPORT_FORMATS: RouteExportFormat[] = ["geojson", "gpx", "kml", "csv"]
+
+function routePointColor(index: number, total: number): string {
+  if (index === 0) return COLORS.routePointStart
+  if (index === total - 1) return COLORS.routePointEnd
+  return COLORS.routePointWaypoint
+}
 
 export function RoutePlanner({ mode }: { mode: RoutingMode }) {
   const { getMap, subscribeMapClick } = useMapContext()
@@ -121,7 +128,7 @@ export function RoutePlanner({ mode }: { mode: RoutingMode }) {
     if (!map) return clearAll
 
     points.forEach((point, index) => {
-      const color = index === 0 ? "#2f9e44" : index === points.length - 1 ? "#e03131" : "#f59f00"
+      const color = routePointColor(index, points.length)
       const marker = new maplibregl.Marker({ color, draggable: true })
         .setLngLat([point.lng, point.lat])
         .addTo(map)
@@ -166,7 +173,7 @@ export function RoutePlanner({ mode }: { mode: RoutingMode }) {
             <li key={point.id} className="flex items-center gap-2 text-xs">
               <span
                 className="size-2.5 shrink-0 rounded-full"
-                style={{ background: index === 0 ? "#2f9e44" : index === points.length - 1 ? "#e03131" : "#f59f00" }}
+                style={{ background: routePointColor(index, points.length) }}
                 aria-hidden="true"
               />
               <span className="font-medium">{pointLabel(index)}</span>

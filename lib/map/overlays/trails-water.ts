@@ -1,5 +1,6 @@
 // lib\map\overlays\trails-water.ts
 import type { FilterSpecification, Map } from "maplibre-gl"
+import { COLORS } from "@/lib/colors"
 
 // "Sentieri e punti acqua" from the old app's OutdoorModule: hiking/MTB
 // trail network (casing + coloured line + label per category) plus
@@ -72,7 +73,7 @@ function addTrailLayers(
       },
       paint: {
         "text-color": options.labelColor,
-        "text-halo-color": "#ffffff",
+        "text-halo-color": COLORS.white,
         "text-halo-width": 1.8,
       },
     })
@@ -96,7 +97,7 @@ function addWaterLayers(
       paint: {
         "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 3, 15, 7],
         "circle-color": color,
-        "circle-stroke-color": "#ffffff",
+        "circle-stroke-color": COLORS.white,
         "circle-stroke-width": 1.5,
         "circle-opacity": 0.95,
       },
@@ -117,8 +118,8 @@ function addWaterLayers(
         "text-font": ["Noto Sans Regular"],
       },
       paint: {
-        "text-color": "#7a4d00",
-        "text-halo-color": "#ffffff",
+        "text-color": COLORS.waterPointsLabel,
+        "text-halo-color": COLORS.white,
         "text-halo-width": 1.2,
       },
     })
@@ -133,26 +134,38 @@ export function addTrailsWaterOverlay(map: Map): void {
     map.addSource("water", { type: "geojson", data: "/data/outdoor/water.geojson" })
   }
 
-  addTrailLayers(map, "trails", "hiking", ["in", ["get", "class"], ["literal", ["path", "track", "bridleway"]]], {
-    casingColor: "#dfe9d8",
-    lineColor: "#4f7b3a",
-    labelColor: "#436432",
-    dasharray: [1, 0],
-  })
+  addTrailLayers(
+    map,
+    "trails",
+    "hiking",
+    ["in", ["get", "class"], ["literal", ["path", "track", "bridleway"]]],
+    {
+      casingColor: COLORS.waterPointsHikingCasing,
+      lineColor: COLORS.waterPointsHiking,
+      labelColor: COLORS.waterPointsHikingLabel,
+      dasharray: [1, 0],
+    }
+  )
   addTrailLayers(map, "trails", "mtb", ["in", ["get", "class"], ["literal", ["track", "cycleway"]]], {
-    casingColor: "#d9e7f4",
-    lineColor: "#2f78c4",
-    labelColor: "#245c99",
+    casingColor: COLORS.waterPointsMtbCasing,
+    lineColor: COLORS.waterPointsMtb,
+    labelColor: COLORS.waterPointsMtbLabel,
     dasharray: [1.8, 1],
   })
 
-  addWaterLayers(map, "water", "drinking-water", ["==", ["get", "class"], "drinking_water"], "#2b8a3e")
-  addWaterLayers(map, "water", "spring", ["==", ["get", "class"], "spring"], "#74c0fc")
+  addWaterLayers(
+    map,
+    "water",
+    "drinking-water",
+    ["==", ["get", "class"], "drinking_water"],
+    COLORS.waterPointsDrinkingWater
+  )
+  addWaterLayers(map, "water", "spring", ["==", ["get", "class"], "spring"], COLORS.waterPointsSpring)
   addWaterLayers(
     map,
     "water",
     "picnic",
     ["in", ["get", "class"], ["literal", ["picnic_site", "picnic_area"]]],
-    "#f59f00"
+    COLORS.waterPointsPicnic
   )
 }

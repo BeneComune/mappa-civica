@@ -4,6 +4,7 @@
 import { Faq } from "@/components/faq"
 import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
 import { PageHeader } from "@/components/page-header"
+import { COLORS } from "@/lib/colors"
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
@@ -21,31 +22,31 @@ export default function CyclabilityBikeInfraPage() {
         <OverlayToggleBadge
           label={STRINGS.bikeInfraCiclabili}
           icon={ICONS.bikeInfraCiclabili}
-          color="#2f78c4"
+          color={COLORS.bikeInfraCiclabili}
           layerIds={BIKE_LANE_LAYER_IDS}
         />
         <OverlayToggleBadge
           label={STRINGS.bikeInfraBikeParking}
           icon={ICONS.bikeInfraBikeParking}
-          color="#2f78c4"
+          color={COLORS.bikeInfraBikeParking}
           layerIds={["bike-infra-bike-parking"]}
         />
         <OverlayToggleBadge
           label={STRINGS.bikeInfraBikeRental}
           icon={ICONS.bikeInfraBikeRental}
-          color="#2b8a3e"
+          color={COLORS.bikeInfraBikeRental}
           layerIds={["bike-infra-bike-rental"]}
         />
         <OverlayToggleBadge
           label={STRINGS.bikeInfraBikeRepair}
           icon={ICONS.bikeInfraBikeRepair}
-          color="#7b2cbf"
+          color={COLORS.bikeInfraBikeRepair}
           layerIds={["bike-infra-bike-repair"]}
         />
         <OverlayToggleBadge
           label={STRINGS.bikeInfraEbikeCharging}
           icon={ICONS.bikeInfraEbikeCharging}
-          color="#f59f00"
+          color={COLORS.bikeInfraEbikeCharging}
           layerIds={["bike-infra-ebike-charging"]}
         />
       </div>

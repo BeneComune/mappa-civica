@@ -4,6 +4,7 @@
 import { Faq } from "@/components/faq"
 import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
 import { PageHeader } from "@/components/page-header"
+import { COLORS } from "@/lib/colors"
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
@@ -25,31 +26,31 @@ export default function TrailsWaterPage() {
         <OverlayToggleBadge
           label={STRINGS.waterPointsHiking}
           icon={ICONS.waterPointsHiking}
-          color="#4f7b3a"
+          color={COLORS.waterPointsHiking}
           layerIds={HIKING_LAYER_IDS}
         />
         <OverlayToggleBadge
           label={STRINGS.waterPointsMtb}
           icon={ICONS.waterPointsMtb}
-          color="#2f78c4"
+          color={COLORS.waterPointsMtb}
           layerIds={MTB_LAYER_IDS}
         />
         <OverlayToggleBadge
           label={STRINGS.waterPointsDrinkingWater}
           icon={ICONS.waterPointsDrinkingWater}
-          color="#2b8a3e"
+          color={COLORS.waterPointsDrinkingWater}
           layerIds={DRINKING_WATER_LAYER_IDS}
         />
         <OverlayToggleBadge
           label={STRINGS.waterPointsSpring}
           icon={ICONS.waterPointsSpring}
-          color="#74c0fc"
+          color={COLORS.waterPointsSpring}
           layerIds={SPRING_LAYER_IDS}
         />
         <OverlayToggleBadge
           label={STRINGS.waterPointsPicnic}
           icon={ICONS.waterPointsPicnic}
-          color="#f59f00"
+          color={COLORS.waterPointsPicnic}
           layerIds={PICNIC_LAYER_IDS}
         />
       </div>

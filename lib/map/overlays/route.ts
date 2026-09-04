@@ -1,5 +1,6 @@
 // lib\map\overlays\route.ts
 import type { Map } from "maplibre-gl"
+import { COLORS } from "@/lib/colors"
 
 // The computed route's line geometry (see lib/routing.ts). Start/end/
 // waypoint markers are plain draggable maplibregl.Marker instances owned by
@@ -19,7 +20,7 @@ export function addRouteOverlay(map: Map): void {
       source: "route",
       layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
       paint: {
-        "line-color": "#ffffff",
+        "line-color": COLORS.white,
         "line-opacity": 0.8,
         "line-width": ["interpolate", ["linear"], ["zoom"], 11, 6, 15, 10],
       },
@@ -33,7 +34,7 @@ export function addRouteOverlay(map: Map): void {
       source: "route",
       layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
       paint: {
-        "line-color": "#1d4ed8",
+        "line-color": COLORS.routeLine,
         "line-width": ["interpolate", ["linear"], ["zoom"], 11, 3, 15, 5.5],
       },
     })

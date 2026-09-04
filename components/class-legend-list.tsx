@@ -1,3 +1,4 @@
+// components\class-legend-list.tsx
 // Color-swatch + label + range legend list, shared by the NBR and LST Green
 // pages (identical markup, different class configs - see lib/green-classes.ts).
 export function ClassLegendList<T extends string>({

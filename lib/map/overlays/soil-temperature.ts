@@ -1,5 +1,6 @@
 // lib\map\overlays\soil-temperature.ts
 import type { Map } from "maplibre-gl"
+import { COLORS } from "@/lib/colors"
 
 // "Temperatura suolo" (LST) from the old app's GreenModule.
 export const SOIL_TEMPERATURE_LAYER_IDS = ["lst-fill", "lst-outline"]
@@ -25,7 +26,7 @@ export function addSoilTemperatureOverlay(map: Map): void {
       type: "line",
       source: "lst",
       layout: { visibility: "none" },
-      paint: { "line-color": "#ffffff", "line-width": 0.3, "line-opacity": 0.4 },
+      paint: { "line-color": COLORS.white, "line-width": 0.3, "line-opacity": 0.4 },
     })
   }
 }

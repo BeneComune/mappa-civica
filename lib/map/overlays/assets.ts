@@ -1,5 +1,6 @@
 // lib\map\overlays\assets.ts
 import type { Map } from "maplibre-gl"
+import { COLORS } from "@/lib/colors"
 
 // "Presidi di soccorso" from the old app's RescueModule: AED defibrillators,
 // HEMS heliports, fire hydrants, and emergency assembly points. All four
@@ -36,7 +37,7 @@ function addEmergencyLayers(
       paint: {
         "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 5, 15, 10],
         "circle-color": color,
-        "circle-stroke-color": "#ffffff",
+        "circle-stroke-color": COLORS.white,
         "circle-stroke-width": 1.6,
         "circle-opacity": 0.95,
       },
@@ -57,7 +58,7 @@ function addEmergencyLayers(
       },
       paint: {
         "text-color": labelColor,
-        "text-halo-color": "#ffffff",
+        "text-halo-color": COLORS.white,
         "text-halo-width": 1.5,
       },
     })
@@ -78,8 +79,22 @@ export function addAssetsOverlay(map: Map): void {
     map.addSource("assemblyPoints", { type: "geojson", data: "/data/rescue/emergency_assembly_points.geojson" })
   }
 
-  addEmergencyLayers(map, "aed", "aed-sites", "aed-labels", "#e03131", "#7f1d1d")
-  addEmergencyLayers(map, "hems", "hems-sites", "hems-labels", "#f59f00", "#7a4d00")
-  addEmergencyLayers(map, "fireHydrants", "fire-hydrant-sites", "fire-hydrant-labels", "#0b7285", "#0b4f61")
-  addEmergencyLayers(map, "assemblyPoints", "assembly-point-sites", "assembly-point-labels", "#2f9e44", "#1b5e20")
+  addEmergencyLayers(map, "aed", "aed-sites", "aed-labels", COLORS.aed, COLORS.aedLabel)
+  addEmergencyLayers(map, "hems", "hems-sites", "hems-labels", COLORS.hems, COLORS.hemsLabel)
+  addEmergencyLayers(
+    map,
+    "fireHydrants",
+    "fire-hydrant-sites",
+    "fire-hydrant-labels",
+    COLORS.fireHydrants,
+    COLORS.fireHydrantsLabel
+  )
+  addEmergencyLayers(
+    map,
+    "assemblyPoints",
+    "assembly-point-sites",
+    "assembly-point-labels",
+    COLORS.assemblyPoints,
+    COLORS.assemblyPointsLabel
+  )
 }

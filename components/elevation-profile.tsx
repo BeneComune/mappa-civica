@@ -1,4 +1,5 @@
 // components\elevation-profile.tsx
+import { COLORS } from "@/lib/colors"
 import type { RouteSummary } from "@/lib/routing"
 
 // SVG elevation-vs-distance chart, ported from the old app's ElevationSvg.
@@ -25,8 +26,8 @@ export function ElevationProfile({ summary }: { summary: RouteSummary }) {
     <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-hidden="true" className="w-full">
       <defs>
         <linearGradient id="route-profile-fill" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#8ecae6" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#8ecae6" stopOpacity="0.08" />
+          <stop offset="0%" stopColor={COLORS.routeProfileFill} stopOpacity="0.55" />
+          <stop offset="100%" stopColor={COLORS.routeProfileFill} stopOpacity="0.08" />
         </linearGradient>
       </defs>
       {xTicks.map((tick) => {
@@ -62,7 +63,14 @@ export function ElevationProfile({ summary }: { summary: RouteSummary }) {
       />
       <line x1={margin.left} y1={margin.top} x2={margin.left} y2={height - margin.bottom} stroke="currentColor" strokeOpacity={0.3} />
       <polygon points={areaPoints} fill="url(#route-profile-fill)" />
-      <polyline points={linePoints} fill="none" stroke="#1d4ed8" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" />
+      <polyline
+        points={linePoints}
+        fill="none"
+        stroke={COLORS.routeLine}
+        strokeWidth="2.5"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
     </svg>
   )
 }

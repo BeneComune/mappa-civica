@@ -7,6 +7,7 @@ import { FilterBadgeGroup } from "@/components/filter-badge-group"
 import { HoverHighlightLayer } from "@/components/hover-highlight-layer"
 import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
 import { PageHeader } from "@/components/page-header"
+import { COLORS } from "@/lib/colors"
 import { ICONS } from "@/lib/ICONS"
 import { ALL_NBR_CLASSES, NBR_CLASS_CONFIG } from "@/lib/green-classes"
 import {
@@ -19,10 +20,30 @@ import { dangerPopupHTML, firePopupHTML, ignitionPopupHTML } from "@/lib/rescue-
 import { STRINGS } from "@/lib/strings"
 
 const CAUSE_OPTIONS = [
-  { value: "dolosa", label: STRINGS.fireCauseDolosa, icon: ICONS.fireCauseDolosa, color: "#e03131" },
-  { value: "colposa", label: STRINGS.fireCauseColposa, icon: ICONS.fireCauseColposa, color: "#f76707" },
-  { value: "naturale", label: STRINGS.fireCauseNaturale, icon: ICONS.fireCauseNaturale, color: "#7048e8" },
-  { value: "ignota", label: STRINGS.fireCauseIgnota, icon: ICONS.fireCauseIgnota, color: "#868e96" },
+  {
+    value: "dolosa",
+    label: STRINGS.fireCauseDolosa,
+    icon: ICONS.fireCauseDolosa,
+    color: COLORS.fireCauseDolosa,
+  },
+  {
+    value: "colposa",
+    label: STRINGS.fireCauseColposa,
+    icon: ICONS.fireCauseColposa,
+    color: COLORS.fireCauseColposa,
+  },
+  {
+    value: "naturale",
+    label: STRINGS.fireCauseNaturale,
+    icon: ICONS.fireCauseNaturale,
+    color: COLORS.fireCauseNaturale,
+  },
+  {
+    value: "ignota",
+    label: STRINGS.fireCauseIgnota,
+    icon: ICONS.fireCauseIgnota,
+    color: COLORS.fireCauseIgnota,
+  },
 ]
 
 export default function RescueFirePage() {
@@ -49,21 +70,21 @@ export default function RescueFirePage() {
             <OverlayToggleBadge
               label={STRINGS.fireDangerToggle}
               icon={ICONS.fireDangerToggle}
-              color="#f59f00"
+              color={COLORS.fireDangerToggle}
               layerIds={FIRE_DANGER_LAYER_IDS}
               defaultChecked={false}
             />
             <OverlayToggleBadge
               label={STRINGS.fireIgnitionToggle}
               icon={ICONS.fireIgnitionToggle}
-              color="#7a1f1f"
+              color={COLORS.fireIgnitionToggle}
               layerIds={FIRE_IGNITION_LAYER_IDS}
               defaultChecked={false}
             />
             <OverlayToggleBadge
               label={STRINGS.fireNbrToggle}
               icon={ICONS.fireNbrToggle}
-              color="#1a9641"
+              color={COLORS.fireNbrToggle}
               layerIds={FIRE_NBR_LAYER_IDS}
               defaultChecked={false}
             />

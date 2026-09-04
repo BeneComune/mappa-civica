@@ -1,5 +1,6 @@
 // lib\map\overlays\home.ts
 import type { Map } from "maplibre-gl"
+import { COLORS } from "@/lib/colors"
 
 // Home module from the old app's BaseModule: the municipality boundary
 // (always shown on "/") plus cadastral parcels, which stay empty/hidden
@@ -23,7 +24,7 @@ export function addHomeOverlay(map: Map): void {
       type: "fill",
       source: "municipalityBoundary",
       layout: { visibility: "none" },
-      paint: { "fill-color": "#4a90d9", "fill-opacity": 0.06 },
+      paint: { "fill-color": COLORS.boundaryFill, "fill-opacity": 0.06 },
     })
   }
   if (!map.getLayer("boundary-outline")) {
@@ -32,7 +33,12 @@ export function addHomeOverlay(map: Map): void {
       type: "line",
       source: "municipalityBoundary",
       layout: { visibility: "none" },
-      paint: { "line-color": "#2563a8", "line-width": 2, "line-opacity": 0.7, "line-dasharray": [4, 3] },
+      paint: {
+        "line-color": COLORS.boundaryOutline,
+        "line-width": 2,
+        "line-opacity": 0.7,
+        "line-dasharray": [4, 3],
+      },
     })
   }
 
@@ -45,8 +51,8 @@ export function addHomeOverlay(map: Map): void {
       layout: { visibility: "none" },
       paint: {
         "circle-radius": ["interpolate", ["linear"], ["zoom"], 13, 2, 15, 3.5, 18, 6.5],
-        "circle-color": "#8a5a00",
-        "circle-stroke-color": "#ffffff",
+        "circle-color": COLORS.catastoPoint,
+        "circle-stroke-color": COLORS.white,
         "circle-stroke-width": 1.2,
         "circle-opacity": 0.9,
       },
@@ -67,8 +73,8 @@ export function addHomeOverlay(map: Map): void {
         "text-ignore-placement": false,
       },
       paint: {
-        "text-color": "#5c3d00",
-        "text-halo-color": "#ffffff",
+        "text-color": COLORS.catastoLabel,
+        "text-halo-color": COLORS.white,
         "text-halo-width": 1.6,
       },
     })

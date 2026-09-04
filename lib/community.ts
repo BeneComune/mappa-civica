@@ -1,4 +1,5 @@
 // lib\community.ts
+import { COLORS } from "@/lib/colors"
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
@@ -9,12 +10,27 @@ import { STRINGS } from "@/lib/strings"
 const MUNICIPALITY_EMAIL = "info@comune.montereale-valcellina.pn.it"
 
 export const CATEGORIES = [
-  { id: "strade", label: STRINGS.reportCategoryRoads, icon: ICONS.reportRoads, color: "#e8590c" },
-  { id: "natura", label: STRINGS.reportCategoryNature, icon: ICONS.reportNature, color: "#2f9e44" },
-  { id: "rifiuti", label: STRINGS.reportCategoryWaste, icon: ICONS.reportWaste, color: "#7b2cbf" },
-  { id: "illuminazione", label: STRINGS.reportCategoryLighting, icon: ICONS.reportLighting, color: "#f59f00" },
-  { id: "segnaletica", label: STRINGS.reportCategorySignage, icon: ICONS.reportSignage, color: "#1c7ed6" },
-  { id: "proposta", label: STRINGS.reportCategoryProposal, icon: ICONS.reportProposal, color: "#0ca678" },
+  { id: "strade", label: STRINGS.reportCategoryRoads, icon: ICONS.reportRoads, color: COLORS.reportRoads },
+  { id: "natura", label: STRINGS.reportCategoryNature, icon: ICONS.reportNature, color: COLORS.reportNature },
+  { id: "rifiuti", label: STRINGS.reportCategoryWaste, icon: ICONS.reportWaste, color: COLORS.reportWaste },
+  {
+    id: "illuminazione",
+    label: STRINGS.reportCategoryLighting,
+    icon: ICONS.reportLighting,
+    color: COLORS.reportLighting,
+  },
+  {
+    id: "segnaletica",
+    label: STRINGS.reportCategorySignage,
+    icon: ICONS.reportSignage,
+    color: COLORS.reportSignage,
+  },
+  {
+    id: "proposta",
+    label: STRINGS.reportCategoryProposal,
+    icon: ICONS.reportProposal,
+    color: COLORS.reportProposal,
+  },
 ] as const
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"]

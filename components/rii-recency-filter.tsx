@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import type { FilterSpecification } from "maplibre-gl"
 import { Clock, History } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
+import { COLORS } from "@/lib/colors"
 
 // Rii's recency filter groups two `stato` values per badge (unlike fire's
 // cause filter, where each badge is one property value), so it doesn't fit
@@ -47,9 +48,13 @@ export function RiiRecencyFilter() {
         aria-pressed={recenti}
         onClick={() => toggle("recenti")}
         className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${recenti ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent"}`}
-        style={recenti ? { borderColor: "#1c7ed6" } : undefined}
+        style={recenti ? { borderColor: COLORS.riiAggiornato2024 } : undefined}
       >
-        <Clock className="size-3.5" aria-hidden="true" style={{ color: recenti ? "#1c7ed6" : undefined }} />
+        <Clock
+          className="size-3.5"
+          aria-hidden="true"
+          style={{ color: recenti ? COLORS.riiAggiornato2024 : undefined }}
+        />
         Rilievi 2024
       </button>
       <button
@@ -57,9 +62,13 @@ export function RiiRecencyFilter() {
         aria-pressed={storici}
         onClick={() => toggle("storici")}
         className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${storici ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent"}`}
-        style={storici ? { borderColor: "#e8590c" } : undefined}
+        style={storici ? { borderColor: COLORS.riiStorico2007 } : undefined}
       >
-        <History className="size-3.5" aria-hidden="true" style={{ color: storici ? "#e8590c" : undefined }} />
+        <History
+          className="size-3.5"
+          aria-hidden="true"
+          style={{ color: storici ? COLORS.riiStorico2007 : undefined }}
+        />
         Rilievi meno recenti
       </button>
     </div>

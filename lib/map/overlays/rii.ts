@@ -1,5 +1,6 @@
 // lib\map\overlays\rii.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
+import { COLORS } from "@/lib/colors"
 
 // "Rii a rischio esondazione" - the volunteer stream census (Censimento
 // RII) from the old app's RescueModule. Geometry is a mix: the real
@@ -13,11 +14,11 @@ const RII_SOURCE_ID = "rii"
 const RII_COLOR: ExpressionSpecification = [
   "match",
   ["get", "stato"],
-  "aggiornato_2024", "#1c7ed6",
-  "solo_foto_2024", "#4dabf7",
-  "storico_2013", "#f59f00",
-  "storico_2007", "#e8590c",
-  "#868e96",
+  "aggiornato_2024", COLORS.riiAggiornato2024,
+  "solo_foto_2024", COLORS.riiSoloFoto2024,
+  "storico_2013", COLORS.riiStorico2013,
+  "storico_2007", COLORS.riiStorico2007,
+  COLORS.riiDefault,
 ]
 
 // Features carry a stable top-level `id` in the source GeoJSON already, so
@@ -41,7 +42,7 @@ export function addRiiOverlay(map: Map): void {
       filter: ["==", ["geometry-type"], "LineString"],
       layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
       paint: {
-        "line-color": "#ffffff",
+        "line-color": COLORS.white,
         "line-opacity": 0.7,
         "line-width": ["interpolate", ["linear"], ["zoom"], 11, 4.5, 15, 9],
       },
@@ -81,7 +82,7 @@ export function addRiiOverlay(map: Map): void {
         ],
         "circle-color": RII_COLOR,
         "circle-opacity": ["case", ["boolean", ["get", "pos_approssimata"], false], 0.5, 0.9],
-        "circle-stroke-color": "#ffffff",
+        "circle-stroke-color": COLORS.white,
         "circle-stroke-width": ["case", RII_HOVER, 3, 1.8],
       },
     })
@@ -102,8 +103,8 @@ export function addRiiOverlay(map: Map): void {
         "text-optional": true,
       },
       paint: {
-        "text-color": "#1b3a4b",
-        "text-halo-color": "#ffffff",
+        "text-color": COLORS.riiLabel,
+        "text-halo-color": COLORS.white,
         "text-halo-width": 1.6,
       },
     })

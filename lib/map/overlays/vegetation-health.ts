@@ -1,5 +1,6 @@
 // lib\map\overlays\vegetation-health.ts
 import type { Map } from "maplibre-gl"
+import { COLORS } from "@/lib/colors"
 
 // "Salute vegetazione" (NBR) from the old app's GreenModule. Shares the
 // 'nbr' source with the Rescue fire overlay's burn-index toggle (see
@@ -28,7 +29,7 @@ export function addVegetationHealthOverlay(map: Map): void {
       type: "line",
       source: "nbr",
       layout: { visibility: "none" },
-      paint: { "line-color": "#ffffff", "line-width": 0.3, "line-opacity": 0.4 },
+      paint: { "line-color": COLORS.white, "line-width": 0.3, "line-opacity": 0.4 },
     })
   }
 }

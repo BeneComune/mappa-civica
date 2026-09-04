@@ -5,6 +5,7 @@ import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
 import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
 import { PageHeader } from "@/components/page-header"
+import { COLORS } from "@/lib/colors"
 import { ICONS } from "@/lib/ICONS"
 import {
   AED_LAYER_IDS,
@@ -28,18 +29,28 @@ export default function RescueAssetsPage() {
         description={STRINGS.rescueAssetsDescription}
       />
       <div className="mt-3 flex flex-wrap gap-2">
-        <OverlayToggleBadge label={STRINGS.aed} icon={ICONS.aed} color="#e03131" layerIds={AED_LAYER_IDS} />
-        <OverlayToggleBadge label={STRINGS.hems} icon={ICONS.hems} color="#f59f00" layerIds={HEMS_LAYER_IDS} />
+        <OverlayToggleBadge
+          label={STRINGS.aed}
+          icon={ICONS.aed}
+          color={COLORS.aed}
+          layerIds={AED_LAYER_IDS}
+        />
+        <OverlayToggleBadge
+          label={STRINGS.hems}
+          icon={ICONS.hems}
+          color={COLORS.hems}
+          layerIds={HEMS_LAYER_IDS}
+        />
         <OverlayToggleBadge
           label={STRINGS.fireHydrants}
           icon={ICONS.fireHydrants}
-          color="#0b7285"
+          color={COLORS.fireHydrants}
           layerIds={FIRE_HYDRANT_LAYER_IDS}
         />
         <OverlayToggleBadge
           label={STRINGS.assemblyPoints}
           icon={ICONS.assemblyPoints}
-          color="#2f9e44"
+          color={COLORS.assemblyPoints}
           layerIds={ASSEMBLY_POINT_LAYER_IDS}
         />
       </div>

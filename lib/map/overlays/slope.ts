@@ -1,5 +1,6 @@
 // lib\map\overlays\slope.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
+import { COLORS } from "@/lib/colors"
 
 // "Pendenza" from the old app's OutdoorModule: trails/roads coloured by
 // steepness class.
@@ -8,13 +9,13 @@ export const SLOPE_LAYER_IDS = ["slope-network-trails"]
 const SLOPE_COLOR: ExpressionSpecification = [
   "match",
   ["get", "slope_class"],
-  "0-3: flat", "#2b8a3e",
-  "3-5: mild", "#74c69d",
-  "5-8: medium", "#ffd43b",
-  "8-10: hard", "#ff922b",
-  "10-20: extreme", "#e03131",
-  ">20: impossible", "#7f1d1d",
-  "#adb5bd",
+  "0-3: flat", COLORS.slopeFlat,
+  "3-5: mild", COLORS.slopeMild,
+  "5-8: medium", COLORS.slopeMedium,
+  "8-10: hard", COLORS.slopeHard,
+  "10-20: extreme", COLORS.slopeExtreme,
+  ">20: impossible", COLORS.slopeImpossible,
+  COLORS.slopeDefault,
 ]
 
 export function addSlopeOverlay(map: Map): void {

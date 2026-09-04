@@ -14,6 +14,7 @@ import type {
   Popup,
 } from "maplibre-gl"
 import { onStyleReady, setOverlayVisibility } from "@/lib/map"
+import { COLORS } from "@/lib/colors"
 
 // Bridges the single persistent map instance (mounted once in the root
 // layout, see MapShell/MapView) to legend-panel checkboxes and forms
@@ -103,7 +104,9 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
     if (pinMarkerRef.current) {
       pinMarkerRef.current.setLngLat(lngLat)
     } else {
-      pinMarkerRef.current = new maplibregl.Marker({ color: "#e03131" }).setLngLat(lngLat).addTo(map)
+      pinMarkerRef.current = new maplibregl.Marker({ color: COLORS.reportLocationPin })
+        .setLngLat(lngLat)
+        .addTo(map)
     }
   }, [])
 

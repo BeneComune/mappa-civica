@@ -1,11 +1,17 @@
 // lib\map\overlays\natural-shade.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
+import { COLORS } from "@/lib/colors"
 
 // "Ombra naturale" from the old app's GreenModule - roads/trails coloured
 // by tree canopy coverage.
 export const NATURAL_SHADE_LAYER_IDS = ["shade-corridors-casing", "shade-corridors"]
 
-const SHADE_COLOR: ExpressionSpecification = ["match", ["get", "type"], "road", "#1a7f3c", "#52b788"]
+const SHADE_COLOR: ExpressionSpecification = [
+  "match",
+  ["get", "type"],
+  "road", COLORS.shadeRoad,
+  COLORS.shadeTrail,
+]
 
 const SHADE_OPACITY: ExpressionSpecification = [
   "interpolate",
@@ -27,7 +33,7 @@ export function addNaturalShadeOverlay(map: Map): void {
       source: "shadeCorridors",
       layout: { visibility: "none" },
       paint: {
-        "line-color": "#ffffff",
+        "line-color": COLORS.white,
         "line-width": ["interpolate", ["linear"], ["zoom"], 11, 3.5, 15, 7.5],
         "line-opacity": 0.7,
       },
