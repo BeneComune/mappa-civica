@@ -7,12 +7,14 @@ import {
   addAssetsOverlay,
   addFireOverlay,
   addRiiOverlay,
+  addTrailsWaterOverlay,
   ASSETS_LAYER_IDS,
   createBaseMap,
   FIRE_LAYER_IDS,
   onStyleReady,
   RII_LAYER_IDS,
   setOverlayVisibility,
+  TRAILS_WATER_LAYER_IDS,
 } from "@/lib/map"
 import { STRINGS } from "@/lib/strings"
 
@@ -23,6 +25,7 @@ const ROUTE_OVERLAYS = [
   { path: "/rescue/events", add: addRiiOverlay, layerIds: RII_LAYER_IDS },
   { path: "/rescue/fire", add: addFireOverlay, layerIds: FIRE_LAYER_IDS },
   { path: "/rescue/assets", add: addAssetsOverlay, layerIds: ASSETS_LAYER_IDS },
+  { path: "/outdoor/trails/trails", add: addTrailsWaterOverlay, layerIds: TRAILS_WATER_LAYER_IDS },
 ]
 
 function syncOverlayVisibility(map: Map, pathname: string): void {
