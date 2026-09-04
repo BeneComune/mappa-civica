@@ -17,7 +17,8 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useMapContext } from "@/components/map-provider"
-import { CATEGORIES, buildReportMailto, type CategoryId, type CommunityReport } from "@/lib/community"
+import { CATEGORIES, buildReportMailto, resizeImageToDataUrl, type CategoryId, type CommunityReport } from "@/lib/community"
+import { loadParcels, nearestParcel, type ParcelPoint } from "@/lib/catasto"
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
@@ -28,6 +29,9 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [location, setLocation] = useState<[number, number] | null>(null)
+  const [photo, setPhoto] = useState<{ fileName: string; dataUrl: string } | null>(null)
+  const [parcels, setParcels] = useState<ParcelPoint[]>([])
+  const parcel = location ? nearestParcel(parcels, location[0], location[1]) : null
 
   useEffect(() => {
     if (!open) return
@@ -41,11 +45,30 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
     }
   }, [open, subscribeMapClick, setPinMarker])
 
+  // Load the parcel points once, the first time the drawer opens.
+  useEffect(() => {
+    if (open && parcels.length === 0) {
+      loadParcels().then(setParcels)
+    }
+  }, [open, parcels.length])
+
   function reset(): void {
     setCategory(CATEGORIES[0].id)
     setTitle("")
     setDescription("")
     setLocation(null)
+    setPhoto(null)
+  }
+
+  async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>): Promise<void> {
+    const file = e.target.files?.[0]
+    if (!file) return
+    try {
+      const dataUrl = await resizeImageToDataUrl(file)
+      setPhoto({ fileName: file.name, dataUrl })
+    } catch {
+      /* silently ignore resize errors */
+    }
   }
 
   function handleSubmit(): void {
@@ -59,6 +82,9 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
       lon: location[0],
       lat: location[1],
       createdAt: new Date().toISOString(),
+      photoDataUrl: photo?.dataUrl,
+      foglio: parcel?.foglio,
+      particella: parcel?.particella,
     }
 
     window.location.href = buildReportMailto(report)
@@ -122,10 +148,29 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
           </div>
 
           <div className="flex flex-col gap-1.5">
+            <Label htmlFor="report-photo">{STRINGS.reportPhotoLabel}</Label>
+            <Input id="report-photo" type="file" accept="image/*" onChange={handlePhotoChange} />
+            {photo && (
+              <div className="flex items-center gap-2">
+                {/* eslint-disable-next-line @next/next/no-img-element -- local data URL preview, next/image doesn't apply */}
+                <img src={photo.dataUrl} alt="" className="h-12 w-12 rounded object-cover" />
+                <Button type="button" variant="ghost" size="sm" onClick={() => setPhoto(null)}>
+                  {STRINGS.reportPhotoRemove}
+                </Button>
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1.5">
             <Label>{STRINGS.reportLocationLabel}</Label>
             <p className="text-sm text-muted-foreground">
               {location ? `${location[1].toFixed(5)}, ${location[0].toFixed(5)}` : STRINGS.reportLocationUnset}
             </p>
+            {parcel && (
+              <p className="text-xs text-muted-foreground">
+                {STRINGS.reportParcelLabel}: foglio {parcel.foglio}, particella {parcel.particella}
+              </p>
+            )}
           </div>
         </div>
         <DrawerFooter>
