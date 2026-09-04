@@ -141,6 +141,19 @@ export function SiteHeader() {
         <NavigationMenu className="max-w-none justify-start">
           <NavigationMenuList className="flex-wrap justify-start gap-1">
             <NavigationMenuItem>
+              <NavigationMenuLink
+                className={navigationMenuTriggerStyle()}
+                data-active={pathname === "/" || undefined}
+                render={
+                  <Link href="/">
+                    <ICONS.home aria-hidden="true" className="size-4" />
+                    {STRINGS.home}
+                  </Link>
+                }
+              />
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
               <NavigationMenuTrigger data-active={outdoorActive || undefined}>
                 <OutdoorIcon aria-hidden="true" className="size-4" />
                 {STRINGS.outdoor}

@@ -5,6 +5,7 @@ import {
   Flame,
   Flower2,
   HeartPulse,
+  House,
   Lightbulb,
   Map,
   MapPinPlus,
@@ -30,6 +31,7 @@ import {
  */
 export const ICONS = {
   // Top-level modules
+  home: House,
   outdoor: Signpost,
   rescue: ShieldPlus,
   green: Trees,
