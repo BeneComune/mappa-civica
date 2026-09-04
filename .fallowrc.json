@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
   "ignorePatterns": [
-    // Vendored maplibre-gl runtime chunk, copied verbatim per lib/map/base.ts -
+    // Vendored maplibre-gl runtime chunk, copied verbatim per lib/map/base/index.ts -
     // not our code, never hand-edited.
     "public/**",
     // shadcn-generated primitives: full generated API is kept intact even when
@@ -9,6 +9,9 @@
     // these files without us having pruned parts of them.
     "components/ui/**"
   ],
+  // MapLibre invokes IControl.onAdd / onRemove itself on addControl();
+  // nothing in our code calls them, so they read as unused members.
+  "usedClassMembers": ["onAdd", "onRemove"],
   "ignoreDependencies": [
     // Imported only from components/ui/** (ignored above), so fallow sees no
     // importer and reports them unused - they are very much used at runtime.
