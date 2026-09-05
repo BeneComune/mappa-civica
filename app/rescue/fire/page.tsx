@@ -1,6 +1,7 @@
 // app\rescue\fire\page.tsx
 "use client"
 
+import { ClassesTogglePanel } from "@/components/classes-toggle-panel"
 import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
 import { FilterBadgeGroup } from "@/components/filter-badge-group"
@@ -98,17 +99,14 @@ export default function RescueFirePage() {
             Da immagine Sentinel-2 (set. 2025): vegetazione secca, degradata o suolo nudo/bruciato.
             È una condizione attuale, non l&apos;effetto di un singolo incendio.
           </p>
-          <ul className="flex flex-col gap-1">
-            {ALL_NBR_CLASSES.map((cls) => {
-              const config = NBR_CLASS_CONFIG[cls]
-              return (
-                <li key={cls} className="flex items-center gap-2 text-xs">
-                  <span className="size-2.5 shrink-0 rounded-full" style={{ background: config.color }} />
-                  {config.label}
-                </li>
-              )
-            })}
-          </ul>
+          <ClassesTogglePanel
+            dataUrl="/data/nbr.geojson"
+            fillLayerId="rescue-nbr-fill"
+            outlineLayerId="rescue-nbr-outline"
+            propertyKey="nbr_class"
+            allClasses={ALL_NBR_CLASSES}
+            config={NBR_CLASS_CONFIG}
+          />
         </div>
       </div>
       <Faq>
