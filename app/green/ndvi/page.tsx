@@ -1,7 +1,7 @@
-// app\green\ndvi\page.tsx
+import { ClassesTogglePanel } from "@/components/classes-toggle-panel"
 import { Faq } from "@/components/faq"
-import { NdviClassesPanel } from "@/components/ndvi-classes-panel"
 import { PageHeader } from "@/components/page-header"
+import { ALL_NDVI_CLASSES, NDVI_CLASS_CONFIG } from "@/lib/green-classes"
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 
@@ -14,7 +14,14 @@ export default function GreenNdviPage() {
         description={STRINGS.vegetationDescription}
       />
       <div className="mt-3">
-        <NdviClassesPanel />
+        <ClassesTogglePanel
+          dataUrl="/data/greenery.geojson"
+          fillLayerId="greenery-fill"
+          outlineLayerId="greenery-outline"
+          propertyKey="ndvi_class"
+          allClasses={ALL_NDVI_CLASSES}
+          config={NDVI_CLASS_CONFIG}
+        />
       </div>
       <Faq>
         Misura quanto una zona è coperta da vegetazione sana confrontando la luce rossa e quella

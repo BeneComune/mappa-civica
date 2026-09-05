@@ -7,7 +7,7 @@ import { addChoroplethOverlay } from "./choropleth"
 // "Vegetazione" (NDVI) from the old app's GreenModule - the default tab,
 // showing land cover from bare soil to dense forest. Built from
 // NDVI_CLASS_CONFIG (lib/green-classes.ts) rather than its own hardcoded
-// match arms, so the map layer and the NdviClassesPanel legend can't drift.
+// match arms, so the map layer and the ClassesTogglePanel legend can't drift.
 export const VEGETATION_LAYER_IDS = ["greenery-fill", "greenery-outline"]
 
 // MapLibre's `match` expression type is a strict tuple, which a dynamically

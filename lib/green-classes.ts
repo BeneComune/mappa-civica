@@ -40,14 +40,19 @@ export const LST_CLASS_CONFIG: Record<LstClass, { label: string; color: string; 
 
 export type ClassStats = { areaM2: number; pct: number }
 
-export function computeNdviStats(
-  features: { properties: Record<string, unknown> }[]
-): Record<NdviClass, ClassStats> | null {
-  const totals: Partial<Record<NdviClass, number>> = {}
+// Generic version of the old app's per-class area/percentage breakdown -
+// shared by the NDVI, NBR and LST toggle panels, keyed by whichever
+// property (ndvi_class, nbr_class, lst_class) each dataset carries.
+export function computeClassStats<T extends string>(
+  features: { properties: Record<string, unknown> }[],
+  allClasses: readonly T[],
+  propertyKey: string
+): Record<T, ClassStats> | null {
+  const totals: Partial<Record<T, number>> = {}
   let hasArea = false
 
   for (const f of features) {
-    const cls = f.properties.ndvi_class as NdviClass
+    const cls = f.properties[propertyKey] as T
     const area = f.properties.area_m2 as number | undefined
     if (!cls || area == null) continue
     hasArea = true
@@ -55,13 +60,13 @@ export function computeNdviStats(
   }
 
   if (!hasArea) return null
-  const totalAll = Object.values(totals).reduce((s, v) => s + (v ?? 0), 0)
+  const totalAll = Object.values(totals).reduce((s: number, v) => s + (v as number), 0)
   if (totalAll === 0) return null
 
   return Object.fromEntries(
-    ALL_NDVI_CLASSES.map((cls) => {
+    allClasses.map((cls) => {
       const areaM2 = totals[cls] ?? 0
       return [cls, { areaM2, pct: (areaM2 / totalAll) * 100 }]
     })
-  ) as Record<NdviClass, ClassStats>
+  ) as Record<T, ClassStats>
 }
