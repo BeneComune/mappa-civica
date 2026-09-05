@@ -60,6 +60,12 @@ export const OUTDOOR_GROUPS = [
         description: STRINGS.slopeDescription,
       },
       {
+        title: STRINGS.peaks,
+        href: "/outdoor/trails/peaks",
+        icon: ICONS.peaks,
+        description: STRINGS.peaksDescription,
+      },
+      {
         title: STRINGS.trailsRoutePlanner,
         href: "/outdoor/trails/routing",
         icon: ICONS.routePlanner,

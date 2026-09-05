@@ -1,0 +1,30 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Monte I Cameroni", "ele": 1471 },
+      "geometry": { "type": "Point", "coordinates": [12.591752, 46.165968] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Monte Fortel", "ele": 1436 },
+      "geometry": { "type": "Point", "coordinates": [12.594606, 46.160629] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Monte Fara", "ele": 1345 },
+      "geometry": { "type": "Point", "coordinates": [12.636238, 46.178693] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Monte Spia", "ele": 548 },
+      "geometry": { "type": "Point", "coordinates": [12.652307, 46.161028] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Monte Gloriassis", "ele": 468 },
+      "geometry": { "type": "Point", "coordinates": [12.643467, 46.157687] }
+    }
+  ]
+}

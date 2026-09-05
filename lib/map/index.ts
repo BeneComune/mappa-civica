@@ -21,6 +21,7 @@ import { addAssetsOverlay, ASSETS_LAYER_IDS } from "./overlays/assets"
 import { addTrailsWaterOverlay, TRAILS_WATER_LAYER_IDS } from "./overlays/trails-water"
 import { addBikeInfraOverlay, BIKE_INFRA_LAYER_IDS } from "./overlays/bike-infra"
 import { addSlopeOverlay, SLOPE_LAYER_IDS } from "./overlays/slope"
+import { addPeaksOverlay, PEAKS_LAYER_IDS } from "./overlays/peaks"
 import { addVegetationOverlay, VEGETATION_LAYER_IDS } from "./overlays/vegetation"
 import { addNaturalShadeOverlay, NATURAL_SHADE_LAYER_IDS } from "./overlays/natural-shade"
 import { addVegetationHealthOverlay, VEGETATION_HEALTH_LAYER_IDS } from "./overlays/vegetation-health"
@@ -44,6 +45,7 @@ export const ROUTE_OVERLAYS: Array<{
   { path: "/outdoor/trails/trails", add: addTrailsWaterOverlay, layerIds: TRAILS_WATER_LAYER_IDS },
   { path: "/outdoor/cyclability/bike-infra", add: addBikeInfraOverlay, layerIds: BIKE_INFRA_LAYER_IDS },
   { path: "/outdoor/trails/slope", add: addSlopeOverlay, layerIds: SLOPE_LAYER_IDS },
+  { path: "/outdoor/trails/peaks", add: addPeaksOverlay, layerIds: PEAKS_LAYER_IDS },
   { path: "/green/ndvi", add: addVegetationOverlay, layerIds: VEGETATION_LAYER_IDS },
   { path: "/green/shade", add: addNaturalShadeOverlay, layerIds: NATURAL_SHADE_LAYER_IDS },
   { path: "/green/nbr", add: addVegetationHealthOverlay, layerIds: VEGETATION_HEALTH_LAYER_IDS },

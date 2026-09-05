@@ -119,4 +119,8 @@ export const COLORS = {
 
   // Report drawer: single-point pin marker (Segnala)
   reportLocationPin: "#e03131",
+
+  // Peaks (cime principali): summit point + label
+  peakSummit: "#4a3728",
+  peakLabel: "#3d2b00",
 } as const
