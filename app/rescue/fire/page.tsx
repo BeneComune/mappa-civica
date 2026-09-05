@@ -1,6 +1,7 @@
 // app\rescue\fire\page.tsx
 "use client"
 
+import { useState } from "react"
 import { ClassesTogglePanel } from "@/components/classes-toggle-panel"
 import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
@@ -49,6 +50,8 @@ const CAUSE_OPTIONS = [
 ]
 
 export default function RescueFirePage() {
+  const [nbrEnabled, setNbrEnabled] = useState(false)
+
   return (
     <div>
       <ClickPopupLayer layerId="fire-perimeters-fill" render={firePopupHTML} />
@@ -91,6 +94,7 @@ export default function RescueFirePage() {
               color={COLORS.fireNbrToggle}
               layerIds={FIRE_NBR_LAYER_IDS}
               defaultChecked={false}
+              onCheckedChange={setNbrEnabled}
             />
           </div>
           <InfoNote label="Come leggere i colori">
@@ -109,6 +113,8 @@ export default function RescueFirePage() {
             propertyKey="nbr_class"
             allClasses={ALL_NBR_CLASSES}
             config={NBR_CLASS_CONFIG}
+            disabled={!nbrEnabled}
+            disabledHint={`Attiva "${STRINGS.fireNbrToggle}" per modificare le classi`}
           />
         </div>
       </div>

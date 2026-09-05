@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header"
 import { MapShell } from "@/components/map-shell"
 import { MapProvider } from "@/components/map-provider"
 import { PanelFrame } from "@/components/panel-frame"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { STRINGS } from "@/lib/strings"
 import "./globals.css"
 
@@ -30,13 +31,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
       <body className="h-full flex flex-col overflow-hidden">
-        <MapProvider>
-          <SiteHeader />
-          <main className="relative min-h-0 flex-1">
-            <MapShell />
-            <PanelFrame>{children}</PanelFrame>
-          </main>
-        </MapProvider>
+        <TooltipProvider>
+          <MapProvider>
+            <SiteHeader />
+            <main className="relative min-h-0 flex-1">
+              <MapShell />
+              <PanelFrame>{children}</PanelFrame>
+            </main>
+          </MapProvider>
+        </TooltipProvider>
       </body>
     </html>
   )

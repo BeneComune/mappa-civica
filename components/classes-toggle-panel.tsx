@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import type { FilterSpecification } from "maplibre-gl"
 import { useMapContext } from "@/components/map-provider"
 import { HoverPopupLayer } from "@/components/hover-popup-layer"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { computeClassStats, type ClassStats } from "@/lib/green-classes"
 
 // Generic version of the old NdviClassesPanel - toggle-by-class chips with
@@ -18,6 +19,8 @@ export function ClassesTogglePanel<T extends string>({
   propertyKey,
   allClasses,
   config,
+  disabled = false,
+  disabledHint,
 }: {
   dataUrl: string
   fillLayerId: string
@@ -25,6 +28,13 @@ export function ClassesTogglePanel<T extends string>({
   propertyKey: string
   allClasses: readonly T[]
   config: Record<T, { label: string; color: string; range?: string }>
+  // For panels gated behind a separate overlay toggle (e.g. the NBR chips on
+  // the Rescue fire page, off unless "Indice NBR" is on) - greys the chips
+  // out and blocks interaction without touching the underlying layer filter.
+  disabled?: boolean
+  // Tooltip shown while hovering the disabled chips, telling the user how
+  // to enable them (e.g. "Attiva ... per modificare le classi").
+  disabledHint?: string
 }) {
   const { setLayersFilter } = useMapContext()
   const [visible, setVisible] = useState<T[]>([...allClasses])
@@ -63,26 +73,29 @@ export function ClassesTogglePanel<T extends string>({
         }}
       />
 
-      <div className="flex flex-wrap gap-2">
-        {allClasses.map((cls) => {
-          const entry = config[cls]
-          const checked = visible.includes(cls)
-          return (
-            <button
-              key={cls}
-              type="button"
-              aria-pressed={checked}
-              onClick={() => toggle(cls)}
-              className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${checked ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent"}`}
-              style={checked ? { borderColor: entry.color } : undefined}
-            >
-              <span className="size-2.5 shrink-0 rounded-full" style={{ background: entry.color }} />
-              {entry.label}
-              {stats && <span className="text-muted-foreground">{stats[cls].pct.toFixed(1)}%</span>}
-            </button>
-          )
-        })}
-      </div>
+      <MaybeTooltip hint={disabled ? disabledHint : undefined}>
+        <div className={`flex flex-wrap gap-2 ${disabled ? "opacity-40" : ""}`}>
+          {allClasses.map((cls) => {
+            const entry = config[cls]
+            const checked = visible.includes(cls)
+            return (
+              <button
+                key={cls}
+                type="button"
+                aria-pressed={checked}
+                disabled={disabled}
+                onClick={() => toggle(cls)}
+                className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${checked ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent"}`}
+                style={checked ? { borderColor: entry.color } : undefined}
+              >
+                <span className="size-2.5 shrink-0 rounded-full" style={{ background: entry.color }} />
+                {entry.label}
+                {stats && <span className="text-muted-foreground">{stats[cls].pct.toFixed(1)}%</span>}
+              </button>
+            )
+          })}
+        </div>
+      </MaybeTooltip>
 
       {stats && (
         <div className="mt-1 flex h-2 overflow-hidden rounded-full">
@@ -96,5 +109,17 @@ export function ClassesTogglePanel<T extends string>({
         </div>
       )}
     </div>
+  )
+}
+
+// Only pays for the tooltip wrapper when there's actually a hint to show
+// (i.e. the chips are disabled) - renders children as-is otherwise.
+function MaybeTooltip({ hint, children }: { hint?: string; children: React.ReactElement }) {
+  if (!hint) return children
+  return (
+    <Tooltip>
+      <TooltipTrigger render={children} />
+      <TooltipContent>{hint}</TooltipContent>
+    </Tooltip>
   )
 }

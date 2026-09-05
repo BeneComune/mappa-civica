@@ -14,21 +14,27 @@ export function OverlayToggleBadge({
   color,
   layerIds,
   defaultChecked = true,
+  onCheckedChange,
 }: {
   label: string
   icon: LucideIcon
   color?: string
   layerIds: string[]
   defaultChecked?: boolean
+  // For pages that need to react to this toggle (e.g. graying out a
+  // dependent panel while the overlay itself is off).
+  onCheckedChange?: (checked: boolean) => void
 }) {
   const { setLayersVisible } = useMapContext()
   const [checked, setChecked] = useState(defaultChecked)
 
   useEffect(() => {
     setLayersVisible(layerIds, checked)
+    onCheckedChange?.(checked)
     // Hide again on unmount (route change away) so a stale "off" layer from
     // one visit doesn't linger visible=true from a previous visibility sync.
     return () => setLayersVisible(layerIds, false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checked, layerIds, setLayersVisible])
 
   return (
