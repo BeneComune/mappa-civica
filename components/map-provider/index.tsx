@@ -69,16 +69,21 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
+  // Gate on map.style existing, not map.isStyleLoaded(): that also requires
+  // every source to have finished loading, so it goes transiently false
+  // while a just-added overlay's geojson is still in flight - silently
+  // dropping this call (and, since callers run in a batch, everything
+  // scheduled after it) with no retry once the source catches up.
   const setLayersVisible = useCallback((layerIds: string[], visible: boolean) => {
     const map = mapRef.current
-    if (map && map.isStyleLoaded()) {
+    if (map && map.style) {
       setOverlayVisibility(map, layerIds, visible)
     }
   }, [])
 
   const setLayersFilter = useCallback((layerIds: string[], filter: FilterSpecification) => {
     const map = mapRef.current
-    if (!map || !map.isStyleLoaded()) return
+    if (!map || !map.style) return
     for (const id of layerIds) {
       if (map.getLayer(id)) map.setFilter(id, filter)
     }

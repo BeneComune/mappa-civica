@@ -43,7 +43,9 @@ export default function MapView() {
 
   useEffect(() => {
     const map = mapRef.current
-    if (!map || !map.isStyleLoaded()) return
+    // See map-provider's setLayersVisible: map.style existing is enough,
+    // isStyleLoaded() also demands every source be fully loaded.
+    if (!map || !map.style) return
     syncOverlayVisibility(map, pathname)
   }, [pathname])
 
