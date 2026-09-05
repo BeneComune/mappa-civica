@@ -7,12 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
     "check:paths": "node scripts/check-file-paths.mjs",
     "check:paths:fix": "node scripts/check-file-paths.mjs --fix",
     "fallow:dead-code": "fallow dead-code",
     "fallow:dupes": "fallow dupes",
     "fallow:dupes:report": "node scripts/fallow-dupes-report.mjs",
-    "fallow:dupes:markers": "node scripts/fallow-dupes-markers-check.mjs",
     "fallow:audit": "fallow audit",
     "fallow:health": "fallow health --score --hotspots --targets"
   },
@@ -40,7 +40,8 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "16.3.4",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.0"
   },
   "packageManager": "pnpm@11.15.1"
 }
