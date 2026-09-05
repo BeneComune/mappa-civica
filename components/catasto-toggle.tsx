@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import type { MapMouseEvent, PointLike } from "maplibre-gl"
+import { Info } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
 import { MUNICIPALITY_CADASTRAL_CODE, MUNICIPALITY_NAME } from "@/lib/config"
 import { CATASTO_LAYER_IDS } from "@/lib/map"
@@ -94,18 +95,19 @@ export function CatastoToggle() {
 
   return (
     <div>
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={enabled}
-          onChange={(e) => {
-            setEnabled(e.target.checked)
-            if (!e.target.checked) setParcel(null)
-          }}
-          className="size-4 accent-primary"
-        />
+      <button
+        type="button"
+        aria-pressed={enabled}
+        onClick={() => {
+          setEnabled((prev) => {
+            if (prev) setParcel(null)
+            return !prev
+          })
+        }}
+        className={`rounded-full border px-2.5 py-1 text-xs ${enabled ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent"}`}
+      >
         Particelle catastali
-      </label>
+      </button>
 
       {enabled && !parcel && (
         <p className="mt-1 text-xs text-muted-foreground">
@@ -114,28 +116,40 @@ export function CatastoToggle() {
       )}
 
       {parcel && (
-        <div className="mt-1 flex flex-col gap-1 text-xs">
-          <strong>
+        <div className="mt-2 rounded-lg border p-3 text-xs">
+          <h3 className="text-sm font-semibold">
             Foglio {parcel.foglio} · Particella {parcel.particella}
-          </strong>
-          <p className="text-muted-foreground">
-            Comune catastale {MUNICIPALITY_CADASTRAL_CODE} ({MUNICIPALITY_NAME}). Serve per
-            pagare IMU/TARI, chiedere una <b>visura</b>, pratiche edilizie (CILA/SCIA),
-            successioni, compravendite, mutui.
+          </h3>
+          <p className="mt-0.5 text-muted-foreground">
+            Comune catastale {MUNICIPALITY_CADASTRAL_CODE} ({MUNICIPALITY_NAME})
           </p>
-          <a
-            href="https://www.agenziaentrate.gov.it/portale/schede/fabbricatiterreni/visura-catastale/consultazione-rendite-catastali"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            Consulta rendita / visura (Agenzia delle Entrate)
-          </a>
-          <p className="text-muted-foreground">
-            Dati aperti onData (CC BY 4.0): solo catasto terreni, senza proprietari né rendite. Il
-            confine catastale non è probatorio, e un fabbricato non mappato qui va verificato a
-            parte.
-          </p>
+
+          <details className="mt-2 border-t pt-2">
+            <summary className="flex cursor-pointer list-none items-center gap-1 font-medium text-muted-foreground hover:text-foreground">
+              <Info className="size-3.5" aria-hidden="true" />A cosa serve, e limiti dei dati
+            </summary>
+            <div className="mt-2 flex flex-col gap-2">
+              <p className="text-muted-foreground">
+                Serve per pagare IMU/TARI, chiedere una <b>visura</b>, pratiche edilizie
+                (CILA/SCIA), successioni, compravendite, mutui.
+              </p>
+
+              <a
+                href="https://www.agenziaentrate.gov.it/portale/schede/fabbricatiterreni/visura-catastale/consultazione-rendite-catastali"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium underline underline-offset-2"
+              >
+                Consulta rendita / visura (Agenzia delle Entrate)
+              </a>
+
+              <p className="text-muted-foreground">
+                Dati aperti onData (CC BY 4.0): solo catasto terreni, senza proprietari né
+                rendite. Il confine catastale non è probatorio, e un fabbricato non mappato qui va
+                verificato a parte.
+              </p>
+            </div>
+          </details>
         </div>
       )}
     </div>
