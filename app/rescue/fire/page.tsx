@@ -6,6 +6,7 @@ import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
 import { FilterBadgeGroup } from "@/components/filter-badge-group"
 import { HoverHighlightLayer } from "@/components/hover-highlight-layer"
+import { InfoNote } from "@/components/info-note"
 import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
 import { PageHeader } from "@/components/page-header"
 import { COLORS } from "@/lib/colors"
@@ -59,11 +60,13 @@ export default function RescueFirePage() {
         title={STRINGS.wildfires}
         description={STRINGS.wildfiresDescription}
       />
-      <p className="mt-1 text-xs text-muted-foreground">
-        Archivio storico (perimetri digitalizzati dai Fogli Notizie Incendi Boschivi, dal 1990):
-        registra dove il fuoco è già passato, non è una mappa previsionale di pericolosità. La
-        precisione dei rilievi più vecchi è variabile.
-      </p>
+      <div className="mt-1">
+        <InfoNote label="Cosa mostra questo archivio">
+          Archivio storico (perimetri digitalizzati dai Fogli Notizie Incendi Boschivi, dal 1990):
+          registra dove il fuoco è già passato, non è una mappa previsionale di pericolosità. La
+          precisione dei rilievi più vecchi è variabile.
+        </InfoNote>
+      </div>
       <div className="mt-3 flex flex-col gap-3">
         <FilterBadgeGroup property="causa_classe" options={CAUSE_OPTIONS} layerIds={FIRE_PERIMETERS_LAYER_IDS} />
         <div className="flex flex-col gap-2 border-t pt-3">
@@ -90,15 +93,15 @@ export default function RescueFirePage() {
               defaultChecked={false}
             />
           </div>
-          <p className="text-xs text-muted-foreground">
+          <InfoNote label="Come leggere i colori">
             Zonazione regionale SITFOR (IRDAT FVG) ritagliata sul confine comunale: giallo =
             pericolo medio, rosso = pericolo alto. È la propensione del territorio agli incendi,
             non un allarme.
-          </p>
-          <p className="text-xs text-muted-foreground">
+          </InfoNote>
+          <InfoNote label="Cosa indica questo indice">
             Da immagine Sentinel-2 (set. 2025): vegetazione secca, degradata o suolo nudo/bruciato.
             È una condizione attuale, non l&apos;effetto di un singolo incendio.
-          </p>
+          </InfoNote>
           <ClassesTogglePanel
             dataUrl="/data/nbr.geojson"
             fillLayerId="rescue-nbr-fill"
