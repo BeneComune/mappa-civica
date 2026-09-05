@@ -67,6 +67,8 @@ export type TransportFeature = {
     grade?: number | string
     highway?: string | null
     surface?: string | null
+    maxspeed?: number | string
+    maxspeed_assumed?: number | string
   }
   geometry?: {
     type?: string
@@ -86,6 +88,9 @@ export type GraphEdge = {
   grade: number
   highway?: string
   surface?: string
+  // Posted (or OSMnx-assumed) speed limit in km/h, driving-only. Absent for
+  // the walking graph's trail segments, which don't carry either tag.
+  maxspeed?: number
 }
 
 export type GraphNode = {

@@ -68,6 +68,7 @@ function buildTransportRoutingGraph(features: TransportFeature[]): RoutingGraph 
       grade: toNumber(properties.grade, 0),
       highway: properties.highway ? String(properties.highway) : undefined,
       surface: properties.surface ? String(properties.surface) : undefined,
+      maxspeed: toNumber(properties.maxspeed ?? properties.maxspeed_assumed, 0) || undefined,
     }
 
     appendEdge({ nodes, edges }, edge, coords[0], coords[coords.length - 1])
