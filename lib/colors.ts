@@ -38,6 +38,10 @@ export const COLORS = {
   fireHydrantsLabel: "#0b4f61",
   assemblyPointsLabel: "#1b5e20",
 
+  // Nearest hospital: fixed destination marker + driving route line
+  hospital: "#c2255c",
+  hospitalLabel: "#7d1a3c",
+
   // Wildfire causes
   fireCauseDolosa: "#e03131",
   fireCauseColposa: "#f76707",

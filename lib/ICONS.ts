@@ -10,6 +10,7 @@ import {
   Footprints,
   GlassWater,
   HeartPulse,
+  Hospital,
   House,
   Lightbulb,
   Map,
@@ -110,6 +111,7 @@ export const ICONS = {
   riverRisk: TriangleAlert,
   wildfires: Flame,
   rescueAssets: HeartPulse,
+  nearestHospital: Hospital,
 
   // Green sections
   vegetation: Flower2,

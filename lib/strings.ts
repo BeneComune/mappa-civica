@@ -94,6 +94,13 @@ export const STRINGS = {
   hems: "Elisoccorso",
   fireHydrants: "Idranti",
   assemblyPoints: "Punti raccolta",
+  nearestHospital: "Ospedale più vicino",
+  nearestHospitalDescription:
+    "Clicca un punto sulla mappa per calcolare il percorso in auto verso l'ospedale più vicino",
+  nearestHospitalHint: "Clicca un punto sulla mappa per calcolare il percorso.",
+  nearestHospitalUnavailable: "Rete stradale non disponibile al momento.",
+  nearestHospitalNotFound: "Nessun percorso stradale trovato da questo punto.",
+  nearestHospitalOpenDirections: "Apri indicazioni (Google Maps)",
   fireCauseDolosa: "Dolose",
   fireCauseColposa: "Colpose",
   fireCauseNaturale: "Naturali (fulmini)",

@@ -1,0 +1,13 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ospedale \"Immacolata Concezione\"",
+        "address": "Via Unità d'Italia, 7, 33085 Maniago"
+      },
+      "geometry": { "type": "Point", "coordinates": [12.7133961, 46.1724028] }
+    }
+  ]
+}

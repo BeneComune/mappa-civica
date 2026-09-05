@@ -98,6 +98,12 @@ export const RESCUE_MENU = {
       icon: ICONS.rescueAssets,
       description: STRINGS.rescueAssetsDescription,
     },
+    {
+      title: STRINGS.nearestHospital,
+      href: "/rescue/hospital",
+      icon: ICONS.nearestHospital,
+      description: STRINGS.nearestHospitalDescription,
+    },
   ],
 } as const
 
