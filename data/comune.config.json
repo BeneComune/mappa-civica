@@ -1,0 +1,13 @@
+{
+  "name": "Montereale Valcellina",
+  "province": "Pordenone",
+  "region": "Friuli-Venezia Giulia",
+  "istatCode": "093027",
+  "provinceIstatCode": "ITD41",
+  "cadastralCode": "F596",
+  "osmAreaId": 3600179223,
+  "email": "info@comune.montereale-valcellina.pn.it",
+  "boundaryFile": "public/data/boundary.geojson",
+  "map": { "center": [12.664, 46.160], "zoom": 12 },
+  "ltsEmbedView": { "lat": 46.15620, "lon": 12.65731, "zoom": 12.86 }
+}
