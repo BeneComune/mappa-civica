@@ -14,9 +14,12 @@ export function HoverPopupLayer({
   layerId: string
   render: (props: Record<string, unknown>) => string | null | undefined
 }) {
-  const { attachHoverPopup } = useMapContext()
+  const { attachHoverPopup, mapReady } = useMapContext()
 
-  useEffect(() => attachHoverPopup(layerId, render), [layerId, render, attachHoverPopup])
+  useEffect(() => {
+    if (!mapReady) return
+    return attachHoverPopup(layerId, render)
+  }, [layerId, render, attachHoverPopup, mapReady])
 
   return null
 }

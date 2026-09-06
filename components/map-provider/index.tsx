@@ -1,7 +1,7 @@
 // components\map-provider\index.tsx
 "use client"
 
-import { createContext, useCallback, useContext, useRef } from "react"
+import { createContext, useCallback, useContext, useRef, useState } from "react"
 import * as maplibregl from "maplibre-gl"
 import type {
   FilterSpecification,
@@ -24,6 +24,11 @@ import type { PopupRenderer } from "./interactions"
 // re-render of the provider's subtree.
 type MapContextValue = {
   registerMap: (map: Map | null) => void
+  // Flips true once MapView (dynamically imported, ssr:false) has mounted and
+  // registered its map. Route children mount and run their effects before
+  // that, so attach* helpers gate on this and re-run when it turns true -
+  // otherwise the map is null at attach time and nothing gets wired.
+  mapReady: boolean
   setLayersVisible: (layerIds: string[], visible: boolean) => void
   setLayersFilter: (layerIds: string[], filter: FilterSpecification) => void
   subscribeMapClick: (handler: (lngLat: LngLat) => void) => () => void
@@ -34,9 +39,13 @@ type MapContextValue = {
   // via `render(properties)` returning an HTML string, or nothing to skip
   // that hover. Shared by every module's hover-popup (Rescue, Green, ...).
   attachHoverPopup: (layerId: string, render: PopupRenderer) => () => void
-  // Shows a popup at the clicked feature's position on `layerId`. Shared by
-  // Rescue's click-to-open popups (rii, fire, assets, ...).
-  attachClickPopup: (layerId: string, render: PopupRenderer) => () => void
+  // Click a feature on `layerId` -> hand its properties to `onSelect`; the
+  // caller renders the detail in a panel card (rescue's rii/fire/assets), so
+  // long content isn't trapped in a non-scrolling map balloon.
+  attachFeatureSelect: (
+    layerId: string,
+    onSelect: (props: Record<string, unknown>) => void
+  ) => () => void
   // Toggles feature-state `hover` on `sourceId` for whichever of `layerIds`
   // is under the cursor, driving hover-highlight paint expressions (see
   // RII_HOVER/FIRE_HOVER in the overlay definitions). Requires features to
@@ -56,12 +65,14 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
   const mapRef = useRef<Map | null>(null)
   const clickHandlersRef = useRef<Set<(lngLat: LngLat) => void>>(new Set())
   const pinMarkerRef = useRef<Marker | null>(null)
+  const [mapReady, setMapReady] = useState(false)
 
   const registerMap = useCallback((map: Map | null) => {
     const previous = mapRef.current
     if (previous) previous.off("click", handleMapClick)
     mapRef.current = map
     pinMarkerRef.current = null
+    setMapReady(map !== null)
     if (map) map.on("click", handleMapClick)
 
     function handleMapClick(e: MapMouseEvent): void {
@@ -131,10 +142,13 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
     return map ? interactions.attachHoverPopup(map, layerId, render) : noop
   }, [])
 
-  const attachClickPopup = useCallback((layerId: string, render: PopupRenderer) => {
-    const map = mapRef.current
-    return map ? interactions.attachClickPopup(map, layerId, render) : noop
-  }, [])
+  const attachFeatureSelect = useCallback(
+    (layerId: string, onSelect: (props: Record<string, unknown>) => void) => {
+      const map = mapRef.current
+      return map ? interactions.attachFeatureSelect(map, layerId, onSelect) : noop
+    },
+    []
+  )
 
   const attachHoverHighlight = useCallback((sourceId: string, layerIds: string[]) => {
     const map = mapRef.current
@@ -145,6 +159,7 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
     <MapContext.Provider
       value={{
         registerMap,
+        mapReady,
         setLayersVisible,
         setLayersFilter,
         subscribeMapClick,
@@ -153,7 +168,7 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
         setSourceData,
         getMap,
         attachHoverPopup,
-        attachClickPopup,
+        attachFeatureSelect,
         attachHoverHighlight,
       }}
     >

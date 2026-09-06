@@ -3,11 +3,11 @@
 
 import { useState } from "react"
 import { ClassesTogglePanel } from "@/components/classes-toggle-panel"
-import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
 import { FilterBadgeGroup } from "@/components/filter-badge-group"
 import { HoverHighlightLayer } from "@/components/hover-highlight-layer"
 import { InfoNote } from "@/components/info-note"
+import { MapFeatureDetail } from "@/components/map-feature-detail"
 import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
 import { PageHeader } from "@/components/page-header"
 import { COLORS } from "@/lib/colors"
@@ -19,7 +19,7 @@ import {
   FIRE_NBR_LAYER_IDS,
   FIRE_PERIMETERS_LAYER_IDS,
 } from "@/lib/map/overlays/fire"
-import { dangerPopupHTML, firePopupHTML, ignitionPopupHTML } from "@/lib/rescue-popups"
+import { dangerDetail, fireDetail, ignitionDetail } from "@/lib/rescue-details"
 import { STRINGS } from "@/lib/strings"
 
 const CAUSE_OPTIONS = [
@@ -54,9 +54,6 @@ export default function RescueFirePage() {
 
   return (
     <div>
-      <ClickPopupLayer layerId="fire-perimeters-fill" render={firePopupHTML} />
-      <ClickPopupLayer layerId="fire-danger-fill" render={dangerPopupHTML} />
-      <ClickPopupLayer layerId="fire-ignition-points" render={ignitionPopupHTML} />
       <HoverHighlightLayer sourceId="firePerimeters" layerIds={FIRE_PERIMETERS_LAYER_IDS} />
       <PageHeader
         icon={ICONS.wildfires}
@@ -127,6 +124,13 @@ export default function RescueFirePage() {
         &quot;ignota&quot;) è quella registrata nel foglio notizie. È un archivio di eventi
         passati, aggiornato quando le Stazioni Forestali trasmettono nuovi rilievi.
       </Faq>
+      <MapFeatureDetail
+        layers={[
+          { id: "fire-perimeters-fill", resolve: fireDetail },
+          { id: "fire-danger-fill", resolve: dangerDetail },
+          { id: "fire-ignition-points", resolve: ignitionDetail },
+        ]}
+      />
     </div>
   )
 }

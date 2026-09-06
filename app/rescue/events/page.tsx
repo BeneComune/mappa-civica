@@ -1,20 +1,18 @@
 // app\rescue\events\page.tsx
 "use client"
 
-import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
 import { HoverHighlightLayer } from "@/components/hover-highlight-layer"
+import { MapFeatureDetail } from "@/components/map-feature-detail"
 import { PageHeader } from "@/components/page-header"
 import { RiiRecencyFilter } from "@/components/rii-recency-filter"
 import { ICONS } from "@/lib/ICONS"
-import { riiPopupHTML } from "@/lib/rescue-popups"
+import { riiDetail } from "@/lib/rescue-details"
 import { STRINGS } from "@/lib/strings"
 
 export default function RescueEventsPage() {
   return (
     <div>
-      <ClickPopupLayer layerId="rii-points" render={riiPopupHTML} />
-      <ClickPopupLayer layerId="rii-line" render={riiPopupHTML} />
       <HoverHighlightLayer sourceId="rii" layerIds={["rii-points", "rii-line"]} />
       <PageHeader
         icon={ICONS.riverRisk}
@@ -34,6 +32,12 @@ export default function RescueEventsPage() {
         2007). Il documento di riferimento è il «Censimento RII», in gestione al Gruppo Comunale
         di Protezione Civile di Montereale Valcellina.
       </Faq>
+      <MapFeatureDetail
+        layers={[
+          { id: "rii-points", resolve: riiDetail },
+          { id: "rii-line", resolve: riiDetail },
+        ]}
+      />
     </div>
   )
 }

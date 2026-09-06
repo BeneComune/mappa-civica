@@ -14,12 +14,15 @@ export function HoverHighlightLayer({
   sourceId: string
   layerIds: string[]
 }) {
-  const { attachHoverHighlight } = useMapContext()
+  const { attachHoverHighlight, mapReady } = useMapContext()
 
   useEffect(
-    () => attachHoverHighlight(sourceId, layerIds),
+    () => {
+      if (!mapReady) return
+      return attachHoverHighlight(sourceId, layerIds)
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [sourceId, attachHoverHighlight, layerIds.join(",")]
+    [sourceId, attachHoverHighlight, layerIds.join(","), mapReady]
   )
 
   return null

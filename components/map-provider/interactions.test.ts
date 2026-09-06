@@ -39,7 +39,7 @@ vi.mock("@/lib/map", () => ({
   },
 }))
 
-const { attachClickPopup, attachHoverHighlight, attachHoverPopup } = await import("./interactions")
+const { attachFeatureSelect, attachHoverHighlight, attachHoverPopup } = await import("./interactions")
 
 type Listener = { event: string; layer?: string; fn: (...a: unknown[]) => void }
 
@@ -146,27 +146,29 @@ describe("attachHoverPopup", () => {
   })
 })
 
-describe("attachClickPopup", () => {
-  it("opens a fresh popup per click", () => {
+describe("attachFeatureSelect", () => {
+  it("hands the clicked feature's properties to onSelect", () => {
     const map = stubMap()
-    attachClickPopup(map as never, "layer-b", (p) => `${p.title}`)
-    fire(map, "click", { features: [{ properties: { title: "one" } }], lngLat: {} })
-    fire(map, "click", { features: [{ properties: { title: "two" } }], lngLat: {} })
-    expect(popups.map((p) => p.html)).toEqual(["one", "two"])
+    const picked: Array<Record<string, unknown>> = []
+    attachFeatureSelect(map as never, "layer-b", (props) => picked.push(props))
+    fire(map, "click", { features: [{ properties: { id: "one" } }] })
+    fire(map, "click", { features: [{ properties: { id: "two" } }] })
+    expect(picked).toEqual([{ id: "one" }, { id: "two" }])
   })
 
-  it("does not open one when the renderer declines", () => {
+  it("ignores a click with no feature under it", () => {
     const map = stubMap()
-    attachClickPopup(map as never, "layer-b", () => undefined)
-    fire(map, "click", { features: [{ properties: {} }], lngLat: {} })
-    expect(popups).toHaveLength(0)
+    const picked: unknown[] = []
+    attachFeatureSelect(map as never, "layer-b", (props) => picked.push(props))
+    fire(map, "click", { features: [] })
+    expect(picked).toHaveLength(0)
   })
 
-  it("toggles the cursor on enter and leave, and detaches all three listeners", () => {
+  it("toggles the cursor on move and leave, and detaches all three listeners", () => {
     const map = stubMap()
-    const detach = attachClickPopup(map as never, "layer-b", () => "x")
+    const detach = attachFeatureSelect(map as never, "layer-b", () => {})
     expect(map.listeners).toHaveLength(3)
-    fire(map, "mouseenter")
+    fire(map, "mousemove")
     expect(map.canvas.style.cursor).toBe("pointer")
     fire(map, "mouseleave")
     expect(map.canvas.style.cursor).toBe("")

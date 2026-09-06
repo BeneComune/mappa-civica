@@ -1,8 +1,8 @@
 // app\rescue\assets\page.tsx
 "use client"
 
-import { ClickPopupLayer } from "@/components/click-popup-layer"
 import { Faq } from "@/components/faq"
+import { MapFeatureDetail } from "@/components/map-feature-detail"
 import { OverlayToggleBadge } from "@/components/overlay-toggle-badge"
 import { PageHeader } from "@/components/page-header"
 import { COLORS } from "@/lib/colors"
@@ -13,16 +13,12 @@ import {
   FIRE_HYDRANT_LAYER_IDS,
   HEMS_LAYER_IDS,
 } from "@/lib/map/overlays/assets"
-import { assetPopupHTML } from "@/lib/rescue-popups"
+import { assetDetail } from "@/lib/rescue-details"
 import { STRINGS } from "@/lib/strings"
 
 export default function RescueAssetsPage() {
   return (
     <div>
-      <ClickPopupLayer layerId="aed-sites" render={assetPopupHTML} />
-      <ClickPopupLayer layerId="hems-sites" render={assetPopupHTML} />
-      <ClickPopupLayer layerId="fire-hydrant-sites" render={assetPopupHTML} />
-      <ClickPopupLayer layerId="assembly-point-sites" render={assetPopupHTML} />
       <PageHeader
         icon={ICONS.rescueAssets}
         title={STRINGS.rescueAssets}
@@ -62,6 +58,14 @@ export default function RescueAssetsPage() {
         dettaglio. Elisuperfici, idranti e punti di raccolta vengono da OpenStreetMap: se ne
         conosci uno mancante puoi aggiungerlo tu stesso.
       </Faq>
+      <MapFeatureDetail
+        layers={[
+          { id: "aed-sites", resolve: assetDetail },
+          { id: "hems-sites", resolve: assetDetail },
+          { id: "fire-hydrant-sites", resolve: assetDetail },
+          { id: "assembly-point-sites", resolve: assetDetail },
+        ]}
+      />
     </div>
   )
 }

@@ -47,17 +47,21 @@ export function attachHoverPopup(map: Map, layerId: string, render: PopupRendere
   }
 }
 
-// A dismissable popup at the clicked feature's position on `layerId`.
-export function attachClickPopup(map: Map, layerId: string, render: PopupRenderer): () => void {
+// Click-to-select on `layerId`: hands the clicked feature's properties to
+// `onSelect` (the caller shows the detail in a panel card, not a map popup),
+// and keeps the pointer cursor while hovering the layer. Re-asserts the
+// cursor on every move, not just on enter: MapLibre's own handlers reset it
+// back to the drag cursor between events, so a one-shot set gets lost.
+export function attachFeatureSelect(
+  map: Map,
+  layerId: string,
+  onSelect: (props: Record<string, unknown>) => void
+): () => void {
   const handleClick = (e: MapLayerMouseEvent) => {
-    const html = render(e.features?.[0]?.properties ?? {})
-    if (!html) return
-    new maplibregl.Popup({ closeButton: true, closeOnClick: true })
-      .setLngLat(e.lngLat)
-      .setHTML(html)
-      .addTo(map)
+    const props = e.features?.[0]?.properties
+    if (props) onSelect(props)
   }
-  const handleEnter = () => {
+  const handleMove = () => {
     map.getCanvas().style.cursor = "pointer"
   }
   const handleLeave = () => {
@@ -66,7 +70,7 @@ export function attachClickPopup(map: Map, layerId: string, render: PopupRendere
 
   const attach = () => {
     map.on("click", layerId, handleClick)
-    map.on("mouseenter", layerId, handleEnter)
+    map.on("mousemove", layerId, handleMove)
     map.on("mouseleave", layerId, handleLeave)
   }
   const unsubStyleReady = onStyleReady(map, attach)
@@ -74,7 +78,7 @@ export function attachClickPopup(map: Map, layerId: string, render: PopupRendere
   return () => {
     unsubStyleReady()
     map.off("click", layerId, handleClick)
-    map.off("mouseenter", layerId, handleEnter)
+    map.off("mousemove", layerId, handleMove)
     map.off("mouseleave", layerId, handleLeave)
   }
 }
