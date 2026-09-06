@@ -2,6 +2,7 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 import { MapShell } from "@/components/map-shell"
 import { MapProvider } from "@/components/map-provider"
 import { PanelFrame } from "@/components/panel-frame"
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <MapShell />
               <PanelFrame>{children}</PanelFrame>
             </main>
+            <SiteFooter />
           </MapProvider>
         </TooltipProvider>
       </body>

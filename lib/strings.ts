@@ -147,5 +147,10 @@ export const STRINGS = {
   reportListEmpty: "Nessuna segnalazione ancora. Usa \"Nuova segnalazione\" per crearne una.",
   reportDelete: "Elimina",
   reportPending: "In attesa",
+
+  // Footer
+  footerCreditPrefix: "realizzato da",
+  footerCreditConjunction: "e",
+  footerSource: "Codice sorgente",
 } as const
 

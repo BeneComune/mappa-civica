@@ -1,5 +1,8 @@
 # Mappa Civica
 
+[![Deploy: Vercel](https://img.shields.io/badge/deploy-Vercel-000?logo=vercel)](https://mappa-civica.vercel.app)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 An open-source, serverless civic-tech platform for sustainable mobility,
 environmental monitoring, territorial resilience and community reporting.
 Published at near-zero hosting cost as a static site on Vercel, currently live
@@ -135,3 +138,7 @@ commits them to `main` (the commit triggers a Vercel deploy):
 - [`pipeline/README.md`](pipeline/README.md) — data pipeline, targets, raw data
 - [`docs/PROGRESS.md`](docs/PROGRESS.md) — project history and architecture
   decision records (ADR style)
+
+## License
+
+[MIT](LICENSE) — Leonardo Venturoso and Emanuele Nardi.
