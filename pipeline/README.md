@@ -1,52 +1,54 @@
-# Pipeline dati GIS
+# GIS data pipeline
 
-Script Python per produrre gli asset statici della piattaforma (Jamstack).
+Python scripts that produce the platform's static assets (Jamstack).
 
-Per usare questa pipeline su un comune diverso da Montereale Valcellina,
-vedi [SETUP.md](../SETUP.md) alla radice del repo - elenca i file di
-configurazione da compilare e i dati grezzi da procurarsi. Ogni script legge
-i valori specifici del comune da `pipeline/lib/comune_config.py`, che a sua
-volta legge `data/comune.config.json`.
+To run this pipeline for a comune other than Montereale Valcellina, see
+[SETUP.md](../SETUP.md) at the repo root - it lists the config files to fill in
+and the raw data to source. Every script reads the comune-specific values from
+`pipeline/lib/comune_config.py`, which in turn reads `data/comune.config.json`.
 
 ## Setup
 
-Richiede **Python >= 3.11** (la CI usa 3.11).
+Requires **Python >= 3.11** (CI uses 3.11).
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt      # oppure requirements-ci.txt per i soli target CI-safe
+pip install -r requirements.txt      # or requirements-ci.txt for the CI-safe targets only
 ```
 
-## Esecuzione
+## Running
 
-Usa il Makefile dalla cartella `pipeline/`:
+Use the Makefile from the `pipeline/` directory:
 
 ```bash
-make help       # mostra tutti i target disponibili
-make all        # pipeline completa
-make outdoor    # solo modulo Outdoor (trails, acqua, ciclabile)
-make green      # solo modulo Ambiente (NDVI, NBR, LST, ombra)
-make rescue     # solo modulo Emergenze
-make base       # statistiche ISTAT (le frazioni sono un input curato, non rigenerato)
-make community  # solo modulo Segnala (inizializza DuckDB)
-make tiles      # PMTiles per catasto.geojson (richiede Tippecanoe)
-make basemap    # Basemap vettoriale dark self-hosted (planetiler + OpenMapTiles, ~450MB, Java 21+)
+make help       # list every target
+make all        # full pipeline
+make outdoor    # Outdoor module only (trails, water, cycleways)
+make green      # Verde module only (NDVI, NBR, LST, shade)
+make rescue     # Soccorso ed Emergenza module only
+make base       # ISTAT statistics (frazioni are a curated input, not regenerated)
+make catasto    # cadastral parcels -> catasto.pmtiles (needs tippecanoe)
+make community  # build community_data.duckdb from data/community/reports.csv
+make basemap    # self-hosted dark vector basemap (planetiler + OpenMapTiles, ~450MB, Java 21+)
 ```
 
-`make basemap` è un'alternativa documentata ma non usata in produzione: il frontend usa gli stili live hosted di Maptoolkit (`styles.maptoolkit.org`), non questo basemap self-hosted.
+`make basemap` is a documented alternative that is not used in production: the
+frontend uses Maptoolkit's hosted live styles (`styles.maptoolkit.org`), not
+this self-hosted basemap.
 
-Ogni target è indipendente: puoi eseguirli singolarmente senza rieseguire l'intera pipeline.
+Every target is independent: you can run them one at a time without rerunning
+the whole pipeline.
 
-## Struttura
+## Structure
 
 ```
 pipeline/
-├── lib/                    # Moduli condivisi importati dagli script
-│   ├── comune_config.py    # Legge data/comune.config.json - vedi SETUP.md
-│   ├── dem_slope.py        # Campionamento DEM e calcolo pendenza
-│   └── exclusions.py       # Geometrie da escludere (opzionale, vedi SETUP.md)
-├── scripts/                # Uno script per target applicativo
+├── lib/                    # Shared modules imported by the scripts
+│   ├── comune_config.py    # Reads data/comune.config.json - see SETUP.md
+│   ├── dem_slope.py        # DEM sampling and slope computation
+│   └── exclusions.py       # Geometries to exclude (optional, see SETUP.md)
+├── scripts/                # One script per app target
 │   ├── fetch_istat_stats.py
 │   ├── build_outdoor_geojson.py
 │   ├── build_bike_infra_geojson.py
@@ -54,12 +56,15 @@ pipeline/
 │   ├── build_rescue_geojson.py
 │   ├── build_fire_geojson.py
 │   ├── build_catasto_geojson.py
+│   ├── build_peaks_geojson.py
+│   ├── build_hospital_geojson.py
 │   ├── build_rii_geojson.py
+│   ├── build_community_duckdb.py
 │   ├── process_green_layers.py
 │   ├── process_nbr.py
 │   ├── process_lst.py
 │   └── process_shade_corridors.py
-├── data/                   # Intermedi e sorgenti (gitignored)
+├── data/                   # Intermediates and sources (gitignored)
 ├── tools/                  # planetiler.jar (gitignored)
 ├── Makefile
 ├── requirements.txt
@@ -67,30 +72,33 @@ pipeline/
 └── README.md
 ```
 
-## Script e output
+## Scripts and output
 
-| Script | Modulo | Output |
+| Script | Module | Output |
 |---|---|---|
-| `fetch_istat_stats.py` | Base | `public/data/municipality_stats.json` (solo campi ISTAT) |
-| `build_outdoor_geojson.py` | Outdoor | `public/data/outdoor/trails_routing.geojson`, `public/data/outdoor/water.geojson`, `pipeline/data/outdoor/trails.geojson` (intermedio) |
+| `fetch_istat_stats.py` | Base | `public/data/municipality_stats.json` (ISTAT fields only) |
+| `build_outdoor_geojson.py` | Outdoor | `public/data/outdoor/trails_routing.geojson`, `public/data/outdoor/water.geojson`, `pipeline/data/outdoor/trails.geojson` (intermediate) |
 | `build_bike_infra_geojson.py` | Outdoor | `public/data/outdoor/bike_infra.geojson` |
 | `build_bike_cyclepaths_geojson.py` | Outdoor | `public/data/outdoor/bike_cyclepaths.geojson` |
-| `build_rescue_geojson.py` | Emergenze | `public/data/rescue/aed.geojson`, `hems.geojson`, `fire_hydrants.geojson`, `emergency_assembly_points.geojson` |
-| `build_fire_geojson.py` | Emergenze | `public/data/rescue/fire_perimeters.geojson`, `fire_danger.geojson`, `fire_ignition_points.geojson` |
-| `build_catasto_geojson.py` | Home | `public/data/catasto.geojson` (Goal 5: diventa `catasto.pmtiles`) |
-| `build_rii_geojson.py` | Emergenze | `public/data/rescue/rii.geojson` + foto in `public/data/rescue/rii/` |
-| `process_green_layers.py` | Ambiente | `public/data/greenery.geojson` |
-| `process_nbr.py` | Ambiente | `public/data/nbr.geojson` |
-| `process_lst.py` | Ambiente | `public/data/lst.geojson` |
-| `process_shade_corridors.py` | Ambiente | `public/data/shade_corridors.geojson` |
+| `build_rescue_geojson.py` | Soccorso | `public/data/rescue/aed.geojson`, `hems.geojson`, `fire_hydrants.geojson`, `emergency_assembly_points.geojson` |
+| `build_fire_geojson.py` | Soccorso | `public/data/rescue/fire_perimeters.geojson`, `fire_danger.geojson`, `fire_ignition_points.geojson` |
+| `build_catasto_geojson.py` | Home | `public/data/catasto.pmtiles` (via tippecanoe; intermediate GeoJSON stays in `pipeline/data/`) |
+| `build_peaks_geojson.py` | Outdoor | `public/data/outdoor/peaks.geojson`, `peaks_poles.geojson` |
+| `build_hospital_geojson.py` | Soccorso | `public/data/rescue/hospital.geojson`, `hospital_roads.geojson` |
+| `build_rii_geojson.py` | Soccorso | `public/data/rescue/rii.geojson` + photos in `public/data/rescue/rii/` |
+| `build_community_duckdb.py` | Segnala | `public/data/community_data.duckdb` (from `data/community/reports.csv`) |
+| `process_green_layers.py` | Verde | `public/data/greenery.geojson` |
+| `process_nbr.py` | Verde | `public/data/nbr.geojson` |
+| `process_lst.py` | Verde | `public/data/lst.geojson` |
+| `process_shade_corridors.py` | Verde | `public/data/shade_corridors.geojson`, `public/data/outdoor/trails_shaded.geojson` |
 
-## Dati locali richiesti (gitignored)
+## Required local data (gitignored)
 
-Questi file devono essere presenti localmente ma non sono versionati:
+These files must be present locally but are not versioned:
 
-- `data/raw/*.SAFE` - scena Sentinel-2 L2A per `process_green_layers.py` e `process_nbr.py`
-- `data/raw/*_lwir11.TIF` - banda termica Landsat 8/9 C2 L2 per `process_lst.py`
-- `data/raw/dem.tif` - DEM/LiDAR per gli script outdoor
-- `data/sources/output_rii_protezione_civile.zip` - censimento rii per `build_rii_geojson.py`
-- `pipeline/data/*.osm.pbf` - dump OSM per il basemap
-- `pipeline/tools/planetiler.jar` - per il basemap
+- `data/raw/*.SAFE` - Sentinel-2 L2A scene for `process_green_layers.py` and `process_nbr.py`
+- `data/raw/*_lwir11.TIF` - Landsat 8/9 C2 L2 thermal band for `process_lst.py`
+- `data/raw/dem.tif` - DEM/LiDAR for the outdoor scripts
+- `data/sources/output_rii_protezione_civile.zip` - rii census for `build_rii_geojson.py`
+- `pipeline/data/*.osm.pbf` - OSM dump for the basemap
+- `pipeline/tools/planetiler.jar` - for the basemap

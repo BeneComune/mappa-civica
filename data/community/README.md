@@ -1,46 +1,45 @@
-# Segnalazioni validate del Comune
+# Reports validated by the comune
 
-`reports.csv` è l'elenco curato a mano delle segnalazioni che il Comune ha
-deciso di pubblicare. `pipeline/scripts/build_community_duckdb.py` lo
-trasforma in `public/data/community_data.duckdb`, il file in sola lettura che
-l'app carica nel browser (`lib/duckdb.ts`). Le segnalazioni ancora da
-validare non sono qui: restano nel `localStorage` del browser di chi le ha
-scritte e arrivano al Comune via email (l'app non ha backend).
+`reports.csv` is the hand-curated list of reports the comune has chosen to
+publish. `pipeline/scripts/build_community_duckdb.py` turns it into
+`public/data/community_data.duckdb`, the read-only file the app loads in the
+browser (`lib/duckdb.ts`). Reports that have not been validated yet are not
+here: they stay in the `localStorage` of whoever wrote them and reach the
+comune by email (the app has no backend).
 
-## Flusso di ingestion
+## Ingestion workflow
 
-1. Una persona del Comune legge le email a `info@comune.montereale-valcellina.pn.it`.
-2. Per ogni segnalazione da pubblicare, aggiunge **una riga** a `reports.csv`.
-3. Se c'è una foto, la salva in `public/data/community/<id>.jpg` e mette il
-   percorso relativo (`community/<id>.jpg`) nella colonna `photo`.
-4. `cd pipeline && make community` rigenera `community_data.duckdb`.
-5. `git commit` + `git push` -> Vercel fa il deploy, la segnalazione diventa
-   pubblica.
+1. Someone at the comune reads the emails sent to
+   `info@comune.montereale-valcellina.pn.it`.
+2. For each report to publish, they append **one row** to `reports.csv`.
+3. If there is a photo, they save it to `public/data/community/<id>.jpg` and put
+   the relative path (`community/<id>.jpg`) in the `photo` column.
+4. `cd pipeline && make community` rebuilds `community_data.duckdb`.
+5. `git commit` + `git push` -> Vercel deploys, the report goes public.
 
-Per togliere una segnalazione: cancella la riga (o metti `status` a
-`resolved` per lasciarla visibile ma segnata come chiusa), poi ripeti 4-5.
+To remove a report: delete the row (or set `status` to `resolved` to keep it
+visible but marked done), then repeat steps 4-5.
 
-## Colonne
+## Columns
 
-| colonna | note |
+| column | notes |
 |---|---|
-| `id` | identificatore univoco della riga (UUID dell'app, o una stringa breve scelta a mano) |
-| `category` | una di: `strade`, `natura`, `rifiuti`, `illuminazione`, `segnaletica`, `proposta` |
-| `title` | obbligatorio |
-| `description` | testo libero |
-| `lon`, `lat` | WGS84, gradi decimali |
-| `created_at` | ISO 8601 (es. `2026-09-06T09:00:00Z`) |
+| `id` | unique row identifier (the app's UUID, or a short hand-picked string) |
+| `category` | one of: `strade`, `natura`, `rifiuti`, `illuminazione`, `segnaletica`, `proposta` |
+| `title` | required |
+| `description` | free text |
+| `lon`, `lat` | WGS84, decimal degrees |
+| `created_at` | ISO 8601 (e.g. `2026-09-06T09:00:00Z`) |
 | `status` | `open` (default), `in_progress`, `resolved` |
-| `foglio`, `particella` | catasto, opzionali |
-| `photo` | percorso relativo dentro `public/data/`, es. `community/<id>.jpg`, opzionale |
+| `foglio`, `particella` | cadastral, optional |
+| `photo` | relative path inside `public/data/`, e.g. `community/<id>.jpg`, optional |
 
-Lo schema delle colonne è volutamente a forma di risposta di una futura API
-`/api/reports`: se un domani si aggiunge un backend vero, cambia solo il
-corpo di `loadCommunityReports()` in `lib/duckdb.ts`, non il resto dell'app.
+The column schema is deliberately shaped like a future `/api/reports` response:
+if a real backend is added later, only the body of `loadCommunityReports()` in
+`lib/duckdb.ts` changes, not the rest of the app.
 
-## Attenzione: la repo è pubblica
+## Warning: the repo is public
 
-`reports.csv` e tutta la sua storia git sono pubblici. Una riga rimossa
-**resta per sempre nella storia**. Non inserire mai dati personali in chiaro
-(nomi, contatti, targhe): solo categoria, titolo, descrizione, posizione,
-data.
+`reports.csv` and its entire git history are public. A removed row **stays in
+the history forever**. Never put personal data in the clear (names, contacts,
+plate numbers): only category, title, description, location, date.
