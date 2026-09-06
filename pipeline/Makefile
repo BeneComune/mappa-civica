@@ -62,7 +62,8 @@ peaks:
 hospital:
 	$(PYTHON) $(SCRIPTS)/build_hospital_geojson.py
 
-# Ported in Goal 8 - process_*.py need local Sentinel-2 / DEM inputs.
+# Not CI-safe: needs a Sentinel-2 .SAFE + a Landsat *_lwir11.TIF in data/raw/,
+# plus greenery/trails from `make green`/`make outdoor` first for shade corridors.
 green:
 	$(PYTHON) $(SCRIPTS)/process_green_layers.py
 	$(PYTHON) $(SCRIPTS)/process_nbr.py

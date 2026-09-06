@@ -88,7 +88,8 @@ pipeline/
 
 Questi file devono essere presenti localmente ma non sono versionati:
 
-- `data/raw/*.SAFE` - scena Sentinel-2 L2A per `process_green_layers.py`
+- `data/raw/*.SAFE` - scena Sentinel-2 L2A per `process_green_layers.py` e `process_nbr.py`
+- `data/raw/*_lwir11.TIF` - banda termica Landsat 8/9 C2 L2 per `process_lst.py`
 - `data/raw/dem.tif` - DEM/LiDAR per gli script outdoor
 - `data/sources/output_rii_protezione_civile.zip` - censimento rii per `build_rii_geojson.py`
 - `pipeline/data/*.osm.pbf` - dump OSM per il basemap
