@@ -97,12 +97,12 @@ export function CommunityPanel() {
 
           return (
             <li key={report.id} className="rounded-lg border p-2">
-              <button
-                type="button"
-                onClick={() => handleSelect(report)}
-                className="flex w-full items-start justify-between gap-2 text-left"
-              >
-                <div className="flex items-start gap-2">
+              <div className="flex w-full items-start justify-between gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleSelect(report)}
+                  className="flex items-start gap-2 text-left"
+                >
                   {Icon && <Icon className="mt-0.5 size-4 shrink-0" style={{ color: category?.color }} />}
                   <div>
                     <p className="text-sm font-medium leading-none">{report.title}</p>
@@ -111,19 +111,16 @@ export function CommunityPanel() {
                       {pending && <span className="ml-1.5 rounded-full bg-accent px-1.5 py-0.5">{STRINGS.reportPending}</span>}
                     </p>
                   </div>
-                </div>
+                </button>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    toggleVote(report.id)
-                  }}
+                  onClick={() => toggleVote(report.id)}
                   className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs ${voted ? "bg-accent text-accent-foreground" : ""}`}
                   title={voted ? "Rimuovi voto" : "Anche a me importa"}
                 >
                   <ThumbsUp className="size-3" aria-hidden="true" /> {votes[report.id] ?? 0}
                 </button>
-              </button>
+              </div>
 
               {selected && (
                 <div className="mt-2 flex flex-col gap-1 border-t pt-2 text-xs">

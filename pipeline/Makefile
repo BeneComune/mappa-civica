@@ -18,7 +18,7 @@ help:
 	@echo "  make peaks      Cime principali + peaks_poles (Overpass natural=peak + data/peaks_curated.json)"
 	@echo "  make hospital   Ospedale piu' vicino (Overpass amenity=hospital)"
 	@echo "  make green      NDVI, NBR, LST, shade corridors (Sentinel-2 + LiDAR)"
-	@echo "  make community  Initialise community_data.duckdb"
+	@echo "  make community  Build community_data.duckdb from data/community/reports.csv"
 	@echo "  make tiles      alias of catasto (the only PMTiles layer)"
 	@echo "  make basemap    Dark vector basemap (planetiler + OpenMapTiles, ~450MB, needs Java 21+)"
 	@echo ""
@@ -69,9 +69,8 @@ green:
 	$(PYTHON) $(SCRIPTS)/process_lst.py
 	$(PYTHON) $(SCRIPTS)/process_shade_corridors.py
 
-# Reworked in Goal 6 - init_duckdb.py is replaced by a real ingestion path.
 community:
-	$(PYTHON) $(SCRIPTS)/init_duckdb.py
+	$(PYTHON) $(SCRIPTS)/build_community_duckdb.py
 
 # catasto is the only PMTiles layer; build_catasto_geojson.py runs tippecanoe
 # itself, so `tiles` is just an alias.

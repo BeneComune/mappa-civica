@@ -3,7 +3,7 @@ name: Refresh GIS data
 on:
   schedule:
     - cron: '0 3 * * 1'    # every Monday 03:00 UTC - rescue + fire + catasto + cyclepaths + peaks + hospital
-    - cron: '0 3 1 * *'    # 1st of each month 03:00 UTC - base
+    - cron: '0 3 1 * *'    # 1st of each month 03:00 UTC - base + community
   workflow_dispatch:
     inputs:
       target:
@@ -11,7 +11,7 @@ on:
         required: true
         default: 'rescue'
         type: choice
-        options: [rescue, fire, catasto, cyclepaths, peaks, hospital, base]
+        options: [rescue, fire, catasto, cyclepaths, peaks, hospital, base, community]
 
 permissions:
   contents: write
@@ -50,9 +50,9 @@ jobs:
         run: make rescue fire catasto cyclepaths peaks hospital
         working-directory: pipeline
 
-      - name: Monthly refresh (base)
+      - name: Monthly refresh (base + community)
         if: github.event.schedule == '0 3 1 * *'
-        run: make base
+        run: make base community
         working-directory: pipeline
 
       - name: Manual target

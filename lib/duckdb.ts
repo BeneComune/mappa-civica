@@ -23,10 +23,13 @@ async function makeDuckDb(): Promise<{
   return { db, worker, workerUrl }
 }
 
-// Official reports the municipality has ingested into the read-only DuckDB
-// snapshot (distinct from locally-pending, unsubmitted reports stored in
-// localStorage - see lib/community.ts). Loaded once on mount and merged with
-// the pending list, favoring pending on id collisions.
+// Official reports the municipality has published: rows the comune curates by
+// hand in data/community/reports.csv, baked into this read-only DuckDB
+// snapshot by pipeline/scripts/build_community_duckdb.py. Distinct from
+// locally-pending, unsubmitted reports in localStorage (see lib/community).
+// Loaded once on mount and merged with the pending list, favoring pending on
+// id collisions. If a real backend is ever added, only this function's body
+// changes - the CSV columns are already shaped like an /api/reports response.
 export async function loadCommunityReports(): Promise<CommunityReport[]> {
   const { db, worker, workerUrl } = await makeDuckDb()
   const conn = await db.connect()
