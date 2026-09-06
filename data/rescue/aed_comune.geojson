@@ -1,0 +1,222 @@
+{
+  "type": "FeatureCollection",
+  "_comment": "DAE forniti dal Comune di Montereale Valcellina (lista indirizzi), geocodificati con Nominatim. Base curata: build_rescue_geojson.py la unisce con OSM (emergency=defibrillator) scrivendo aed.geojson. Sostituire i punti geocodificati con posizioni verificate / nodi OSM quando disponibili.",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Diga di Ravedis",
+        "address": "Diga di Ravedis",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "punto"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.656892,
+          46.171965
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Via Roma 21",
+        "address": "Via Roma 21",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "civico"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.661125,
+          46.162884
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Via Marziano Ciotti 1",
+        "address": "Via Marziano Ciotti 1",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "civico"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.661481,
+          46.159753
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Via Ponte Giulio 38",
+        "address": "Via Ponte Giulio 38",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "civico"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.66697,
+          46.153154
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Via Zona Industriale 5",
+        "address": "Via Zona Industriale 5",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "civico"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.66223,
+          46.138885
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Via dell'Industria 1",
+        "address": "Via dell'Industria 1",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "civico"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.660094,
+          46.136072
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Piazza Giulio Cesare, San Leonardo Valcellina",
+        "address": "Piazza Giulio Cesare, San Leonardo Valcellina",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "via (approssimato)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.683641,
+          46.097546
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Via Alessandro Manzoni 13, Malnisio",
+        "address": "Via Alessandro Manzoni 13, Malnisio",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "civico"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.636475,
+          46.142978
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Centro Anziani Giacomello, Via Mazzini",
+        "address": "Centro Anziani Giacomello, Via Mazzini",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "via (approssimato)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.6505,
+          46.151945
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Via Marziano Ciotti 122",
+        "address": "Via Marziano Ciotti 122",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "civico"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.656129,
+          46.155167
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Via Stazione 32",
+        "address": "Via Stazione 32",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "edificio"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.657918,
+          46.153059
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "defibrillator",
+        "name": "Via Stazione 71",
+        "address": "Via Stazione 71",
+        "source": "Comune di Montereale Valcellina",
+        "geocoded": true,
+        "geo_precision": "civico"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.658749,
+          46.151992
+        ]
+      }
+    }
+  ]
+}

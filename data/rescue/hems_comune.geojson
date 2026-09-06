@@ -1,0 +1,33 @@
+{
+  "type": "FeatureCollection",
+  "_comment": "Elisuperfici per elisoccorso (HEMS) indicate dal Comune di Montereale Valcellina. Base curata: build_rescue_geojson.py la unisce con OSM (aeroway=helipad / emergency=helipad|landing_site) scrivendo hems.geojson.",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "hems",
+        "name": "Braida de Poldo",
+        "source": "Comune di Montereale Valcellina"
+      },
+      "geometry": { "type": "Point", "coordinates": [12.657934, 46.1615264] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "hems",
+        "name": "Polisportiva Comunale",
+        "source": "Comune di Montereale Valcellina"
+      },
+      "geometry": { "type": "Point", "coordinates": [12.6594401, 46.1525382] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "class": "hems",
+        "name": "Val della Roja",
+        "source": "Comune di Montereale Valcellina"
+      },
+      "geometry": { "type": "Point", "coordinates": [12.626771, 46.1569183] }
+    }
+  ]
+}

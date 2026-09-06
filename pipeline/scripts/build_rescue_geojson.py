@@ -137,6 +137,7 @@ def merge_curated(osm_features: list[dict], curated_path: Path, dedupe_m: float 
 def main() -> None:
     repo_root = Path(__file__).resolve().parents[2]
     out_dir = repo_root / "public" / "data" / "rescue"
+    curated_dir = repo_root / "data" / "rescue"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     queries = {
@@ -190,10 +191,11 @@ def main() -> None:
 
     for key, (filename, class_name) in outputs.items():
         out_path = out_dir / filename
-        # Optional comune-provided list, kept in <name>_comune.geojson so a
-        # pipeline run can't wipe it. OSM features take precedence; curated
-        # points only fill gaps where OSM has nothing nearby.
-        curated = out_dir / f"{Path(filename).stem}_comune.geojson"
+        # Optional comune-provided list, a curated input in data/rescue/ (never
+        # under public/data/, which a pipeline run overwrites). OSM features
+        # take precedence; curated points only fill gaps where OSM has nothing
+        # nearby (merge_curated, ~60 m).
+        curated = curated_dir / f"{Path(filename).stem}_comune.geojson"
 
         if curated.exists():
             osm_features = overpass_features(queries[key], class_name)
