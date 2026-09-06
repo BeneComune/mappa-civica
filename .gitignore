@@ -41,3 +41,13 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# data pipeline (Python)
+__pycache__/
+*.pyc
+.venv/
+# curated inputs in data/ are versioned; only raw non-versionable inputs are not
+/data/raw/
+# pipeline intermediates and large tools (planetiler.jar, OSM pbf)
+/pipeline/data/
+/pipeline/tools/

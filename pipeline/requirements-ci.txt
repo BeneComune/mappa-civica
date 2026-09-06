@@ -1,0 +1,11 @@
+# Subset for GitHub Actions CI (no GDAL/rasterio/geopandas needed)
+# Used by: rescue, cyclepaths, base, community targets
+# base (fetch_istat_stats.py) additionally needs pandas + istatapi.
+# numpy is pinned (matching requirements.txt): shapely==2.0.5 has a C-ABI
+# break with numpy>=2.1, and nothing else here constrains it.
+duckdb==1.0.0
+istatapi==1.0.0
+numpy==1.26.4
+pandas==2.3.3
+requests==2.32.3
+shapely==2.0.5
