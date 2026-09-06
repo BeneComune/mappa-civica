@@ -12,6 +12,8 @@ any other comune — see [Reusing this for another comune](#reusing-this-for-ano
 Porting in progress from the Vite + React 18 prototype
 (`montereale-valcellina-frontend`) to Next.js 16.
 
+![Mappa Civica — Home view](docs/screenshot.jpg)
+
 ## Modules
 
 - **Outdoor** — bike traffic-stress map, cycling infrastructure, trails and water
