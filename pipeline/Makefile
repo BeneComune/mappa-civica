@@ -14,12 +14,12 @@ help:
 	@echo "  make rescue     Emergency assets (Overpass)"
 	@echo "  make rii        Rii a rischio esondazione (from data/sources/output_rii_protezione_civile.zip)"
 	@echo "  make fire       Perimetri incendi boschivi (IRDAT FVG WFS, solo comuni FVG)"
-	@echo "  make catasto    Particelle catastali (onData/dati_catastali, per codice catastale)"
+	@echo "  make catasto    Particelle catastali -> catasto.pmtiles (onData; requires tippecanoe)"
 	@echo "  make peaks      Cime principali + peaks_poles (Overpass natural=peak + data/peaks_curated.json)"
 	@echo "  make hospital   Ospedale piu' vicino (Overpass amenity=hospital)"
 	@echo "  make green      NDVI, NBR, LST, shade corridors (Sentinel-2 + LiDAR)"
 	@echo "  make community  Initialise community_data.duckdb"
-	@echo "  make tiles      PMTiles for catasto.geojson (requires Tippecanoe)"
+	@echo "  make tiles      alias of catasto (the only PMTiles layer)"
 	@echo "  make basemap    Dark vector basemap (planetiler + OpenMapTiles, ~450MB, needs Java 21+)"
 	@echo ""
 	@echo "CI-safe targets (run in GitHub Actions, no local data needed):"
@@ -73,10 +73,9 @@ green:
 community:
 	$(PYTHON) $(SCRIPTS)/init_duckdb.py
 
-# Rewritten in Goal 5 - PMTiles for catasto.geojson (not ported from the
-# legacy build_pmtiles.py, which built base_layers.pmtiles from a road CSV).
-tiles:
-	@echo "tiles: rewritten in Goal 5 (PMTiles for catasto)" && exit 1
+# catasto is the only PMTiles layer; build_catasto_geojson.py runs tippecanoe
+# itself, so `tiles` is just an alias.
+tiles: catasto
 
 basemap:
 	$(PYTHON) $(SCRIPTS)/build_basemap.py

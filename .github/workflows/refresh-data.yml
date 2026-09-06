@@ -32,6 +32,19 @@ jobs:
         run: pip install -r requirements-ci.txt
         working-directory: pipeline
 
+      # tippecanoe isn't packaged for Ubuntu; build the maintained fork. Only
+      # needed when the run touches catasto (weekly, or that manual target).
+      - name: Install tippecanoe
+        if: >-
+          github.event.schedule == '0 3 * * 1' ||
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'catasto')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libsqlite3-dev zlib1g-dev
+          git clone --depth 1 https://github.com/felt/tippecanoe.git /tmp/tippecanoe
+          make -C /tmp/tippecanoe -j"$(nproc)"
+          sudo make -C /tmp/tippecanoe install
+
       - name: Weekly refresh (rescue + fire + catasto + cyclepaths + peaks + hospital)
         if: github.event.schedule == '0 3 * * 1'
         run: make rescue fire catasto cyclepaths peaks hospital

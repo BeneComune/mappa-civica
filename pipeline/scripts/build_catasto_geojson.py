@@ -10,15 +10,19 @@ Open cadastral data is geometry + identifiers only: no owner names, no rendita,
 no values. It is "catasto terreni" (land parcels), not "fabbricati" (buildings),
 and it is non-probatorio (not the centimetre-accurate legal boundary).
 
-Output: public/data/catasto.geojson  (Point features: foglio, particella)
+Output: public/data/catasto.pmtiles  (vector tiles, one "catasto" layer of
+Point features: foglio, particella). The intermediate GeoJSON stays in
+pipeline/data/ (gitignored) - the browser only ever loads the .pmtiles.
 
-Needs `duckdb` (already in requirements-ci.txt). `make catasto`.
+Needs `duckdb` (in requirements-ci.txt) and `tippecanoe` on PATH. `make catasto`.
 """
 
 from __future__ import annotations
 
 import json
 import re
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -28,7 +32,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from lib.comune_config import COMUNE  # noqa: E402
 
 REPO_RAW = "https://raw.githubusercontent.com/ondata/dati_catastali/main/S_0000_ITALIA/anagrafica"
-OUT_PATH = Path(__file__).resolve().parents[2] / "public" / "data" / "catasto.geojson"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+GEOJSON_PATH = REPO_ROOT / "pipeline" / "data" / "catasto.geojson"
+PMTILES_PATH = REPO_ROOT / "public" / "data" / "catasto.pmtiles"
 
 # onData regional Parquet file names, matched to comune.config.json `region`.
 REGION_FILES = [
@@ -52,16 +58,17 @@ def region_file(region: str) -> str | None:
     return None
 
 
-def main() -> None:
+def build_geojson() -> int:
+    """Write the intermediate GeoJSON; return the parcel count."""
     code = COMUNE.get("cadastralCode")
     region = COMUNE.get("region", "")
-    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    GEOJSON_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     fname = region_file(region)
     if not code or not fname:
         print(f"[note] no cadastral code / region file for {COMUNE['name']} - writing empty", file=sys.stderr)
-        OUT_PATH.write_text('{"type":"FeatureCollection","features":[]}\n', encoding="utf-8")
-        return
+        GEOJSON_PATH.write_text('{"type":"FeatureCollection","features":[]}\n', encoding="utf-8")
+        return 0
 
     url = f"{REPO_RAW}/{fname}.parquet"
     con = duckdb.connect()
@@ -71,11 +78,11 @@ def main() -> None:
             "SELECT foglio, particella, x, y FROM read_parquet(?) WHERE comune = ?",
             [url, code],
         ).fetchall()
-    except Exception as exc:  # network down: keep the committed file
+    except Exception as exc:  # network down: keep whatever intermediate exists
         print(f"[warn] cadastral fetch failed: {exc}", file=sys.stderr)
-        if OUT_PATH.exists():
-            print("[warn] keeping existing catasto.geojson", file=sys.stderr)
-            return
+        if GEOJSON_PATH.exists():
+            print("[warn] keeping existing pipeline/data/catasto.geojson", file=sys.stderr)
+            return -1
         rows = []
 
     features = []
@@ -103,8 +110,42 @@ def main() -> None:
         },
         "features": features,
     }
-    OUT_PATH.write_text(json.dumps(geojson, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
-    print(f"[OK] catasto.geojson: {len(features)} particelle (comune {code})")
+    GEOJSON_PATH.write_text(json.dumps(geojson, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    print(f"[OK] pipeline/data/catasto.geojson: {len(features)} particelle (comune {code})")
+    return len(features)
+
+
+def build_pmtiles() -> None:
+    if shutil.which("tippecanoe") is None:
+        print("[warn] tippecanoe not on PATH - skipping .pmtiles build "
+              "(install with `brew install tippecanoe` / apt)", file=sys.stderr)
+        if PMTILES_PATH.exists():
+            print("[warn] keeping existing catasto.pmtiles", file=sys.stderr)
+            return
+        sys.exit("[error] no tippecanoe and no committed catasto.pmtiles to fall back on")
+
+    PMTILES_PATH.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(
+        [
+            "tippecanoe",
+            "-o", str(PMTILES_PATH),
+            "-l", "catasto",
+            "-zg",
+            "--drop-densest-as-needed",
+            "--extend-zooms-if-still-dropping",
+            "--force",
+            str(GEOJSON_PATH),
+        ],
+        check=True,
+    )
+    print(f"[OK] catasto.pmtiles: {PMTILES_PATH.stat().st_size // 1024} KB")
+
+
+def main() -> None:
+    count = build_geojson()
+    if count == -1:  # fetch failed, intermediate kept as-is
+        return
+    build_pmtiles()
 
 
 if __name__ == "__main__":

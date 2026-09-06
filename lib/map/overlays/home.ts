@@ -3,19 +3,22 @@ import type { Map } from "maplibre-gl"
 import { COLORS } from "@/lib/colors"
 
 // Home module from the old app's BaseModule: the municipality boundary
-// (always shown on "/") plus cadastral parcels, which stay empty/hidden
-// until the "Particelle catastali" toggle lazily loads the real data and
-// zooms in. minzoom lowered from the old app's 15/16 to 13/14 so parcels
-// show up without having to zoom in quite as far.
+// (always shown on "/") plus cadastral parcels. The parcels are vector tiles
+// (public/data/catasto.pmtiles, one "catasto" layer) served through the
+// pmtiles:// protocol registered in lib/map/base; the layers stay hidden
+// until the "Particelle catastali" toggle shows them and zooms in. minzoom
+// lowered from the old app's 15/16 to 13/14 so parcels show up without
+// having to zoom in quite as far.
 export const HOME_LAYER_IDS = ["boundary-fill", "boundary-outline"]
 export const CATASTO_LAYER_IDS = ["catasto-points", "catasto-labels"]
+const CATASTO_SOURCE_LAYER = "catasto"
 
 export function addHomeOverlay(map: Map): void {
   if (!map.getSource("municipalityBoundary")) {
     map.addSource("municipalityBoundary", { type: "geojson", data: "/data/boundary.geojson" })
   }
   if (!map.getSource("catasto")) {
-    map.addSource("catasto", { type: "geojson", generateId: true, data: { type: "FeatureCollection", features: [] } })
+    map.addSource("catasto", { type: "vector", url: "pmtiles:///data/catasto.pmtiles" })
   }
 
   if (!map.getLayer("boundary-fill")) {
@@ -42,11 +45,27 @@ export function addHomeOverlay(map: Map): void {
     })
   }
 
+  if (!map.getLayer("catasto-hit")) {
+    // Invisible (circle-radius 0), always present and never visibility:none -
+    // that's what keeps the catasto vector source "used" so MapLibre loads
+    // its tiles at every zoom, on every page. querySourceFeatures reads those
+    // tiles for the Segnala parcel autofill (see use-nearest-parcel.ts); the
+    // visible catasto-points layer only exists from zoom 13 and only on "/".
+    map.addLayer({
+      id: "catasto-hit",
+      type: "circle",
+      source: "catasto",
+      "source-layer": CATASTO_SOURCE_LAYER,
+      paint: { "circle-radius": 0 },
+    })
+  }
+
   if (!map.getLayer("catasto-points")) {
     map.addLayer({
       id: "catasto-points",
       type: "circle",
       source: "catasto",
+      "source-layer": CATASTO_SOURCE_LAYER,
       minzoom: 13,
       layout: { visibility: "none" },
       paint: {
@@ -63,6 +82,7 @@ export function addHomeOverlay(map: Map): void {
       id: "catasto-labels",
       type: "symbol",
       source: "catasto",
+      "source-layer": CATASTO_SOURCE_LAYER,
       minzoom: 14,
       layout: {
         visibility: "none",

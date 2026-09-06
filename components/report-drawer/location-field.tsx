@@ -1,6 +1,6 @@
 // components\report-drawer\location-field.tsx
 import { Label } from "@/components/ui/label"
-import type { ParcelPoint } from "@/lib/catasto"
+import type { ParcelPoint } from "./use-nearest-parcel"
 import { STRINGS } from "@/lib/strings"
 
 // Read-only readout of the location picked on the map, plus the cadastral

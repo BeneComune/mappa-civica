@@ -1,7 +1,7 @@
 // components\catasto-toggle.tsx
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import type { MapMouseEvent, PointLike } from "maplibre-gl"
 import { Info } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
@@ -11,10 +11,9 @@ import { CATASTO_LAYER_IDS } from "@/lib/map"
 type Parcel = { foglio: string; particella: string; lng: number; lat: number }
 
 export function CatastoToggle() {
-  const { getMap, setLayersVisible, setSourceData } = useMapContext()
+  const { getMap, setLayersVisible } = useMapContext()
   const [enabled, setEnabled] = useState(false)
   const [parcel, setParcel] = useState<Parcel | null>(null)
-  const loadedRef = useRef(false)
 
   useEffect(() => {
     setLayersVisible(CATASTO_LAYER_IDS, enabled)
@@ -23,10 +22,6 @@ export function CatastoToggle() {
     const map = getMap()
     if (!map) return
 
-    if (!loadedRef.current) {
-      setSourceData("catasto", "/data/catasto.geojson")
-      loadedRef.current = true
-    }
     if (map.getZoom() < 13) map.easeTo({ zoom: 13.5, duration: 700 })
 
     return () => {

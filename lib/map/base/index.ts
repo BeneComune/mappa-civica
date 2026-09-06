@@ -1,6 +1,7 @@
 // lib\map\base\index.ts
 import * as maplibregl from "maplibre-gl"
 import type { Map } from "maplibre-gl"
+import { Protocol } from "pmtiles"
 import { MUNICIPALITY_CENTER, MUNICIPALITY_ZOOM } from "@/lib/config"
 
 // Ported from the old app's lib/map.ts. Base map: basemap style, controls
@@ -19,6 +20,10 @@ import { BASEMAP_STYLE_URLS, DEFAULT_BASEMAP_STYLE, TERRAIN_SOURCE_ID } from "./
 // node_modules/maplibre-gl/dist/ if maplibre-gl is upgraded.
 if (typeof window !== "undefined") {
   maplibregl.setWorkerUrl("/maplibre-gl/maplibre-gl-worker.mjs")
+  // Serves the catasto vector tiles from a single public/data/catasto.pmtiles
+  // archive (source url "pmtiles:///data/catasto.pmtiles"). Only catasto uses
+  // it - every other layer is still plain GeoJSON.
+  maplibregl.addProtocol("pmtiles", new Protocol().tile)
 }
 
 const DEFAULT_CENTER = MUNICIPALITY_CENTER
