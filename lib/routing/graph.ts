@@ -39,6 +39,20 @@ export async function loadRoutingGraphForMode(mode: RoutingMode): Promise<Routin
   return buildWalkingRoutingGraph([...(roadsData.features ?? []), ...(trailsData.features ?? [])])
 }
 
+// A standalone driving graph from any transport-shaped GeoJSON (u/v/length/
+// highway/maxspeed edges). Used by the "Ospedale più vicino" route, whose
+// network reaches past the comune boundary and so can't come from
+// transport.geojson - see build_hospital_geojson.py.
+export async function loadDrivingGraph(url: string): Promise<RoutingGraph> {
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error("Impossibile caricare il dataset routing")
+  }
+
+  const data = await response.json()
+  return buildTransportRoutingGraph(data.features ?? [])
+}
+
 function buildTransportRoutingGraph(features: TransportFeature[]): RoutingGraph {
   const nodes = new Map<NodeId, GraphNode>()
   const edges: GraphEdge[] = []

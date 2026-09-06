@@ -12,7 +12,7 @@
 // reachable structurally through RouteSummary and buildRouteSummary, so
 // re-export them here only once something outside needs to name them.
 export type { RouteSummary, RoutingGraph, RoutingMode } from "./types"
-export { loadRoutingGraphForMode } from "./graph"
+export { loadRoutingGraphForMode, loadDrivingGraph } from "./graph"
 export { buildRouteSummary } from "./summary"
 export { exportRoute, type RouteExportFormat } from "./route-export"
 export { computeDrivingRoute, type DrivingRoute } from "./driving"

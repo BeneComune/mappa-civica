@@ -1,3 +1,4 @@
+// app\green\ndvi\page.tsx
 import { ClassesTogglePanel } from "@/components/classes-toggle-panel"
 import { Faq } from "@/components/faq"
 import { PageHeader } from "@/components/page-header"

@@ -64,6 +64,9 @@ const eslintConfig = defineConfig([
     // kept intact, not hand-formatted to this project's stylistic rules, so
     // `shadcn add` can safely regenerate these files.
     "components/ui/**",
+    // The Python data pipeline - no app code, and its .venv bundles vendored
+    // JS (matplotlib, urllib3) that must not be linted as ours.
+    "pipeline/**",
   ]),
 ])
 

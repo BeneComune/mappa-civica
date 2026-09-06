@@ -5,9 +5,8 @@ import { useEffect, useMemo, useState } from "react"
 import type { GeoJSONSource } from "maplibre-gl"
 import { useMapContext } from "@/components/map-provider"
 import { useMapLocationPicker } from "@/components/report-drawer/use-map-location-picker"
-import { useRoutingGraph } from "@/components/route-planner/use-routing-graph"
 import { formatDistance, formatTime } from "@/components/route-planner/format"
-import { computeDrivingRoute, type DrivingRoute } from "@/lib/routing"
+import { computeDrivingRoute, loadDrivingGraph, type DrivingRoute, type RoutingGraph } from "@/lib/routing"
 import { STRINGS } from "@/lib/strings"
 
 type Hospital = { name: string; address: string; lng: number; lat: number }
@@ -20,7 +19,25 @@ export function NearestHospital() {
   const { getMap } = useMapContext()
   const [hospital, setHospital] = useState<Hospital | null>(null)
   const [point, setPoint] = useState<{ lng: number; lat: number } | null>(null)
-  const { graph, unavailable } = useRoutingGraph("biking")
+  const [graph, setGraph] = useState<RoutingGraph | null>(null)
+  const [unavailable, setUnavailable] = useState(false)
+
+  // The route reaches past the comune boundary, so it needs its own driving
+  // network (hospital_roads.geojson) rather than the comune-only
+  // transport.geojson the other planners use.
+  useEffect(() => {
+    let cancelled = false
+    loadDrivingGraph("/data/rescue/hospital_roads.geojson")
+      .then((loaded) => {
+        if (!cancelled) setGraph(loaded)
+      })
+      .catch(() => {
+        if (!cancelled) setUnavailable(true)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     fetch("/data/rescue/hospital.geojson")
