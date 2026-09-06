@@ -1,11 +1,15 @@
 // components\map-provider\interactions.ts
 // The reusable map interaction recipes behind MapProvider's attach* methods.
-// These are plain functions of a Map - no React - each wiring listeners on
-// style load and returning a detach function that also undoes any visual
-// state it left behind (open popup, hover cursor, feature-state).
+// These are plain functions of a Map - no React - each wiring listeners and
+// returning a detach function that also undoes any visual state it left
+// behind (open popup, hover cursor, feature-state).
+//
+// The listeners are `map.on(...)` delegated event handlers: they bind fine
+// before their layer exists (they query live per event) and survive
+// setStyle, so they attach immediately - no onStyleReady gate, which would
+// skip them while a source is mid-load (e.g. straight after a route change).
 import * as maplibregl from "maplibre-gl"
 import type { Map, MapLayerMouseEvent, MapMouseEvent, Popup } from "maplibre-gl"
-import { onStyleReady } from "@/lib/map"
 
 // Returns the popup HTML for a hovered/clicked feature's properties, or
 // nothing to skip this one.
@@ -33,14 +37,10 @@ export function attachHoverPopup(map: Map, layerId: string, render: PopupRendere
     popup?.remove()
   }
 
-  const attach = () => {
-    map.on("mousemove", layerId, handleMove)
-    map.on("mouseleave", layerId, handleLeave)
-  }
-  const unsubStyleReady = onStyleReady(map, attach)
+  map.on("mousemove", layerId, handleMove)
+  map.on("mouseleave", layerId, handleLeave)
 
   return () => {
-    unsubStyleReady()
     map.off("mousemove", layerId, handleMove)
     map.off("mouseleave", layerId, handleLeave)
     popup?.remove()
@@ -68,15 +68,11 @@ export function attachFeatureSelect(
     map.getCanvas().style.cursor = ""
   }
 
-  const attach = () => {
-    map.on("click", layerId, handleClick)
-    map.on("mousemove", layerId, handleMove)
-    map.on("mouseleave", layerId, handleLeave)
-  }
-  const unsubStyleReady = onStyleReady(map, attach)
+  map.on("click", layerId, handleClick)
+  map.on("mousemove", layerId, handleMove)
+  map.on("mouseleave", layerId, handleLeave)
 
   return () => {
-    unsubStyleReady()
     map.off("click", layerId, handleClick)
     map.off("mousemove", layerId, handleMove)
     map.off("mouseleave", layerId, handleLeave)
@@ -121,14 +117,10 @@ export function attachHoverHighlight(
     map.getCanvas().style.cursor = "pointer"
   }
 
-  const attach = () => {
-    map.on("mousemove", handleMove)
-    map.on("mouseout", clearHover)
-  }
-  const unsubStyleReady = onStyleReady(map, attach)
+  map.on("mousemove", handleMove)
+  map.on("mouseout", clearHover)
 
   return () => {
-    unsubStyleReady()
     map.off("mousemove", handleMove)
     map.off("mouseout", clearHover)
     clearHover()
