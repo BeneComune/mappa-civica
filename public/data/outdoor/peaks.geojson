@@ -3,6 +3,16 @@
   "features": [
     {
       "type": "Feature",
+      "properties": { "name": "Monte Castelat", "ele": 1641 },
+      "geometry": { "type": "Point", "coordinates": [12.56476, 46.146004] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Pala d'Altei", "ele": 1528 },
+      "geometry": { "type": "Point", "coordinates": [12.597902, 46.157298] }
+    },
+    {
+      "type": "Feature",
       "properties": { "name": "Monte I Cameroni", "ele": 1471 },
       "geometry": { "type": "Point", "coordinates": [12.591752, 46.165968] }
     },
@@ -13,8 +23,23 @@
     },
     {
       "type": "Feature",
+      "properties": { "name": "Ciucul Forador", "ele": 1414 },
+      "geometry": { "type": "Point", "coordinates": [12.590065, 46.157721] }
+    },
+    {
+      "type": "Feature",
       "properties": { "name": "Monte Fara", "ele": 1345 },
       "geometry": { "type": "Point", "coordinates": [12.636238, 46.178693] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Zuccul Supigna", "ele": 1054 },
+      "geometry": { "type": "Point", "coordinates": [12.608783, 46.147182] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Col de Solaris", "ele": 961 },
+      "geometry": { "type": "Point", "coordinates": [12.600255, 46.14171] }
     },
     {
       "type": "Feature",

@@ -54,7 +54,7 @@ export const STRINGS = {
   slopeExtreme: "10-20: molto dura",
   slopeImpossible: ">20: estrema",
   peaks: "Cime principali",
-  peaksDescription: "Le cinque vette del comune, con quota e un punto sulla mappa 3D",
+  peaksDescription: "Le vette del comune, con quota e un punto sulla mappa 3D",
   trailsRoutePlanner: "Pianifica percorso",
   trailsRoutePlannerDescription: "Calcola un itinerario a piedi, con distanza, tempo e profilo altimetrico",
 

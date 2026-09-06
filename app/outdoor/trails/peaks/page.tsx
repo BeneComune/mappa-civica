@@ -11,9 +11,9 @@ export default function TrailsPeaksPage() {
     <div>
       <PageHeader icon={ICONS.peaks} title={STRINGS.peaks} description={STRINGS.peaksDescription} />
       <Faq>
-        Le cinque vette principali del comune, da OpenStreetMap. Ogni cima è segnata da un punto e
+        Le vette del comune, da OpenStreetMap. Ogni cima è segnata da un punto e
         un&apos;etichetta con la quota, sormontati da un&apos;asta bianca la cui altezza è
-        proporzionale alla quota relativa fra le cinque (non in scala reale col terreno).
+        proporzionale alla quota relativa fra le cime (non in scala reale col terreno).
       </Faq>
     </div>
   )

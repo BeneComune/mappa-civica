@@ -4,9 +4,79 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Monte Castelat",
+        "ele": 1641,
+        "poleHeight": 500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              12.564695,
+              46.145959
+            ],
+            [
+              12.564824999999999,
+              46.145959
+            ],
+            [
+              12.564824999999999,
+              46.146049
+            ],
+            [
+              12.564695,
+              46.146049
+            ],
+            [
+              12.564695,
+              46.145959
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pala d'Altei",
+        "ele": 1528,
+        "poleHeight": 466
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              12.597837,
+              46.157253
+            ],
+            [
+              12.597966999999999,
+              46.157253
+            ],
+            [
+              12.597966999999999,
+              46.157343
+            ],
+            [
+              12.597837,
+              46.157343
+            ],
+            [
+              12.597837,
+              46.157253
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Monte I Cameroni",
         "ele": 1471,
-        "poleHeight": 500
+        "poleHeight": 449
       },
       "geometry": {
         "type": "Polygon",
@@ -41,7 +111,7 @@
       "properties": {
         "name": "Monte Fortel",
         "ele": 1436,
-        "poleHeight": 488
+        "poleHeight": 439
       },
       "geometry": {
         "type": "Polygon",
@@ -66,6 +136,41 @@
             [
               12.594541000000001,
               46.160584
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ciucul Forador",
+        "ele": 1414,
+        "poleHeight": 432
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              12.59,
+              46.157676
+            ],
+            [
+              12.590129999999998,
+              46.157676
+            ],
+            [
+              12.590129999999998,
+              46.157766
+            ],
+            [
+              12.59,
+              46.157766
+            ],
+            [
+              12.59,
+              46.157676
             ]
           ]
         ]
@@ -76,7 +181,7 @@
       "properties": {
         "name": "Monte Fara",
         "ele": 1345,
-        "poleHeight": 456
+        "poleHeight": 412
       },
       "geometry": {
         "type": "Polygon",
@@ -109,9 +214,79 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Zuccul Supigna",
+        "ele": 1054,
+        "poleHeight": 325
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              12.608718000000001,
+              46.147137
+            ],
+            [
+              12.608848,
+              46.147137
+            ],
+            [
+              12.608848,
+              46.147227
+            ],
+            [
+              12.608718000000001,
+              46.147227
+            ],
+            [
+              12.608718000000001,
+              46.147137
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Col de Solaris",
+        "ele": 961,
+        "poleHeight": 297
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              12.600190000000001,
+              46.141665
+            ],
+            [
+              12.60032,
+              46.141665
+            ],
+            [
+              12.60032,
+              46.141755
+            ],
+            [
+              12.600190000000001,
+              46.141755
+            ],
+            [
+              12.600190000000001,
+              46.141665
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Monte Spia",
         "ele": 548,
-        "poleHeight": 178
+        "poleHeight": 174
       },
       "geometry": {
         "type": "Polygon",

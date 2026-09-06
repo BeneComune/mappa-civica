@@ -56,13 +56,11 @@ fire:
 catasto:
 	$(PYTHON) $(SCRIPTS)/build_catasto_geojson.py
 
-# Slot for Goal 3 - build_peaks_geojson.py not yet written.
 peaks:
-	@echo "peaks: script added in Goal 3 (build_peaks_geojson.py)" && exit 1
+	$(PYTHON) $(SCRIPTS)/build_peaks_geojson.py
 
-# Slot for Goal 3 - build_hospital_geojson.py not yet written.
 hospital:
-	@echo "hospital: script added in Goal 3 (build_hospital_geojson.py)" && exit 1
+	$(PYTHON) $(SCRIPTS)/build_hospital_geojson.py
 
 # Ported in Goal 8 - process_*.py need local Sentinel-2 / DEM inputs.
 green:

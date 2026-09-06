@@ -1,0 +1,4 @@
+{
+  "_comment": "Peaks that OpenStreetMap does not map (or maps without a name or elevation) but that should still appear in the 'Cime principali' overlay (lib/map/overlays/peaks.ts). build_peaks_geojson.py starts from every natural=peak node inside the boundary and adds these on top, matched by name. Empty by default - OSM currently carries every local summit.",
+  "peaks": []
+}

@@ -2,11 +2,11 @@
 import type { Map } from "maplibre-gl"
 import { COLORS } from "@/lib/colors"
 
-// "Cime principali": the five main summits of the municipality, each shown
-// as a white fill-extrusion "pole" (plain line layers can't stand up off the
-// terrain surface) whose height is scaled between the lowest and highest
-// peak - a stylized relative-elevation marker, not a to-scale one - plus a
-// point + label at the actual summit.
+// "Cime principali": the municipality's summits (every OSM natural=peak
+// inside the boundary), each shown as a white fill-extrusion "pole" (plain
+// line layers can't stand up off the terrain surface) whose height is scaled
+// between the lowest and highest peak - a stylized relative-elevation marker,
+// not a to-scale one - plus a point + label at the actual summit.
 export const PEAKS_LAYER_IDS = ["peak-poles", "peak-summits", "peak-labels"]
 
 export function addPeaksOverlay(map: Map): void {
