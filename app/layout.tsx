@@ -1,5 +1,5 @@
 // app\layout.tsx
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
@@ -23,6 +23,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: STRINGS.appName,
   description: STRINGS.appName,
+}
+
+// The <html> element is always in dark mode (see the `dark` class below), and
+// the map wants pinch-zoom, so user scaling is left on.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  colorScheme: "dark",
+  themeColor: "#211f1b",
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
