@@ -127,7 +127,13 @@
   }
   html {
     @apply font-sans;
-    font-size: 118%;
+    /* Phones and narrow tablets get the natural 100% so the rem-based UI
+       isn't oversized; desktop (>= md, 48rem) keeps the 118% zoom for
+       legibility. This one rule rescales the whole interface proportionally. */
+    font-size: 100%;
+    @media (width >= 48rem) {
+      font-size: 118%;
+    }
   }
   /* Tailwind v4's preflight no longer sets this - every clickable button
      (badges/chips included) should show a pointer, not the text-select
@@ -398,7 +404,8 @@
   color: var(--popover-foreground);
 }
 
-@media (max-width: 699px) {
+/* Below md (48rem): bump map-control tap targets to 44px. */
+@media (width < 48rem) {
   .map-style-switcher button,
   .map-style-switcher-header {
     min-height: 44px;
