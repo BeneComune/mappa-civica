@@ -44,11 +44,15 @@ export function createBaseMap(
   printLabel: string,
   productName: string
 ): Map {
+  // Below md the map opens flat (the tilted view is disorienting and the
+  // terrain tiles cost data on a phone); the Terrain 3D button re-enables it.
+  const isMobile = window.matchMedia("(max-width: 47.999rem)").matches
+
   const map = new maplibregl.Map({
     container,
     center: DEFAULT_CENTER,
     zoom: DEFAULT_ZOOM,
-    pitch: 60,
+    pitch: isMobile ? 0 : 60,
     style: BASEMAP_STYLE_URLS[DEFAULT_BASEMAP_STYLE],
     attributionControl: false,
     // Needed for the print/export control to read back a valid PNG from the
@@ -56,7 +60,7 @@ export function createBaseMap(
     canvasContextAttributes: { preserveDrawingBuffer: true },
   })
 
-  let terrainOn = true
+  let terrainOn = !isMobile
 
   map.on("style.load", () => {
     if (!map.getSource(TERRAIN_SOURCE_ID)) {
@@ -73,8 +77,12 @@ export function createBaseMap(
     }
   })
 
+  // Fullscreen is a no-op on mobile browsers and PDF export is a desktop task -
+  // both dropped below md; the rest keep their desktop order.
   map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right")
-  map.addControl(new maplibregl.FullscreenControl(), "top-right")
+  if (!isMobile) {
+    map.addControl(new maplibregl.FullscreenControl(), "top-right")
+  }
   map.addControl(new MapSearchControl(), "top-right")
   map.addControl(
     new MapTerrainControl(terrainOn, (on) => {
@@ -82,11 +90,24 @@ export function createBaseMap(
     }),
     "top-right"
   )
-  map.addControl(new MapPrintControl(printLabel, productName), "top-right")
+  if (!isMobile) {
+    map.addControl(new MapPrintControl(printLabel, productName), "top-right")
+  }
   // Bottom-corner controls stack with the most-recently-added one closest to
-  // the map edge, so attribution (added first) ends up below Legenda.
-  map.addControl(new maplibregl.AttributionControl(), "bottom-right")
-  map.addControl(new MapStyleControl(DEFAULT_BASEMAP_STYLE), "bottom-right")
+  // the map edge, so attribution (added first) ends up below Legenda. On
+  // mobile both start collapsed (attribution to just the "i", Legenda shut).
+  map.addControl(new maplibregl.AttributionControl(isMobile ? { compact: true } : undefined), "bottom-right")
+  map.addControl(new MapStyleControl(DEFAULT_BASEMAP_STYLE, isMobile), "bottom-right")
+
+  if (isMobile) {
+    // MapLibre's compact attribution shows itself once the map loads;
+    // collapse it back to just the "i" (it re-opens on tap).
+    const collapseAttrib = () =>
+      container
+        .querySelector(".maplibregl-ctrl-attrib.maplibregl-compact")
+        ?.classList.remove("maplibregl-compact-show")
+    map.once("idle", collapseAttrib)
+  }
 
   return map
 }

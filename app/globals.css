@@ -404,11 +404,19 @@
   color: var(--popover-foreground);
 }
 
-/* Below md (48rem): bump map-control tap targets to 44px. */
+/* Below md (48rem): 44px tap targets, and lift the bottom-right controls
+   clear of the collapsed bottom-sheet peek bar. */
 @media (width < 48rem) {
   .map-style-switcher button,
   .map-style-switcher-header {
     min-height: 44px;
     font-size: 0.88rem;
+  }
+  .maplibregl-ctrl-top-right .maplibregl-ctrl-group button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .maplibregl-ctrl-bottom-right {
+    bottom: 64px;
   }
 }

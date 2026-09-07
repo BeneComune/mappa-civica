@@ -13,9 +13,11 @@ import {
 export class MapStyleControl implements IControl {
   private container?: HTMLDivElement
   private current: BasemapStyleKey
+  private startCollapsed: boolean
 
-  constructor(initial: BasemapStyleKey) {
+  constructor(initial: BasemapStyleKey, startCollapsed = false) {
     this.current = initial
+    this.startCollapsed = startCollapsed
   }
 
   onAdd(map: Map): HTMLElement {
@@ -31,7 +33,9 @@ export class MapStyleControl implements IControl {
     title.appendChild(icon(Palette, 15))
     title.appendChild(document.createTextNode("Legenda"))
 
-    let toggleIcon = icon(ChevronUp, 15)
+    if (this.startCollapsed) container.classList.add("collapsed")
+
+    let toggleIcon = icon(this.startCollapsed ? ChevronDown : ChevronUp, 15)
     toggleIcon.setAttribute("aria-hidden", "true")
 
     header.appendChild(title)
@@ -48,7 +52,7 @@ export class MapStyleControl implements IControl {
       toggleIcon = nextIcon
       header.setAttribute("aria-expanded", String(!collapsed))
     })
-    header.setAttribute("aria-expanded", "true")
+    header.setAttribute("aria-expanded", String(!this.startCollapsed))
 
     container.appendChild(header)
 
