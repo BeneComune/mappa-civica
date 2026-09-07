@@ -8,7 +8,10 @@ import { FrazioniList } from "@/components/frazioni-list"
 import { MunicipalityStatsPanel, type MunicipalityStats } from "@/components/municipality-stats"
 import { STRINGS } from "@/lib/strings"
 
-const CARD = "pointer-events-auto w-full max-w-xs rounded-lg border bg-background/95 p-3 shadow-lg backdrop-blur"
+// Desktop: a floating card. Mobile (< md): plain content stacked inside the
+// bottom sheet PanelFrame provides, so no card chrome and no width cap.
+const CARD =
+  "pointer-events-auto w-full md:rounded-lg md:border md:bg-background/95 md:p-3 md:shadow-lg md:backdrop-blur"
 
 export function HomePanel() {
   const [stats, setStats] = useState<MunicipalityStats | null>(null)
@@ -20,17 +23,20 @@ export function HomePanel() {
       .catch(() => null)
   }, [])
 
+  // md:contents => on desktop this wrapper generates no box, so the three
+  // groups position absolutely against <main> exactly as before; on mobile
+  // it's a flex column that stacks them inside the sheet.
   return (
-    <>
+    <div className="flex flex-col gap-3 md:contents">
       {/* Top-left: zone name, stats. */}
-      <div className="pointer-events-none absolute top-0 left-0 flex flex-col gap-2 overflow-y-auto p-4">
-        <section className={CARD}>
+      <div className="flex flex-col gap-2 md:pointer-events-none md:absolute md:top-0 md:left-0 md:overflow-y-auto md:p-4">
+        <section className={`${CARD} md:max-w-xs`}>
           <h2 className="text-xl font-semibold">{stats?.municipality.name ?? STRINGS.appName}</h2>
           <p className="mt-1 text-sm text-muted-foreground">{STRINGS.homeSubtitle}</p>
         </section>
 
         {stats && (
-          <section className={`${CARD} max-w-sm`}>
+          <section className={`${CARD} md:max-w-sm`}>
             <MunicipalityStatsPanel stats={stats} />
           </section>
         )}
@@ -38,24 +44,23 @@ export function HomePanel() {
 
       {/* Bottom-left: frazioni + catasto toggle, same anchor point every
           other route's legend panel uses. */}
-      <div className="pointer-events-none absolute bottom-0 left-0 flex flex-col gap-2 p-4">
-        <section className={CARD}>
+      <div className="flex flex-col gap-2 md:pointer-events-none md:absolute md:bottom-0 md:left-0 md:p-4">
+        <section className={`${CARD} md:max-w-xs`}>
           <CatastoToggle />
         </section>
 
-        <section className={CARD}>
+        <section className={`${CARD} md:max-w-xs`}>
           <FrazioniList />
         </section>
       </div>
 
-      {/* Weather floats independently top-right, to the left of the map's
-          own zoom/fullscreen/search/terrain/print control column, at the
-          same height as the top of that column. */}
-      <div className="pointer-events-none absolute top-2.5 right-10">
-        <section className={CARD}>
+      {/* Weather floats independently top-right on desktop, to the left of the
+          map's own control column; on mobile it's just another section. */}
+      <div className="md:pointer-events-none md:absolute md:top-2.5 md:right-10">
+        <section className={`${CARD} md:max-w-xs`}>
           <WeatherCard />
         </section>
       </div>
-    </>
+    </div>
   )
 }

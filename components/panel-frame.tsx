@@ -2,16 +2,28 @@
 "use client"
 
 import { usePathname } from "next/navigation"
+import { MobilePanelSheet } from "@/components/mobile-panel-sheet"
+import { routeTitle } from "@/components/site-header/menus"
+import { useIsMobile } from "@/lib/use-is-mobile"
 
-// Every route's legend-panel content shares one floating card, anchored
-// bottom-left. Two routes bypass it entirely instead: Home (multiple
-// unrelated cards - zone name, weather, catasto toggle, frazioni, stats -
-// that shouldn't nest inside one box) and the LTS embed (replaces the
-// whole map view with an iframe, nothing to put in a card at all).
+// Every route's legend-panel content shares one container. On desktop it's a
+// floating card anchored bottom-left; below md it's a bottom sheet
+// (MobilePanelSheet) so it doesn't cover the map. Two routes have no panel of
+// their own: Home renders its own cards (HomePanel), the LTS embed replaces
+// the whole map with an iframe.
 const FULL_BLEED_ROUTES = ["/", "/outdoor/cyclability/lts"]
+const NO_PANEL_ROUTES = ["/outdoor/cyclability/lts"]
 
 export function PanelFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const isMobile = useIsMobile()
+
+  if (isMobile) {
+    if (NO_PANEL_ROUTES.includes(pathname)) {
+      return <>{children}</>
+    }
+    return <MobilePanelSheet title={routeTitle(pathname)}>{children}</MobilePanelSheet>
+  }
 
   if (FULL_BLEED_ROUTES.includes(pathname)) {
     return <>{children}</>

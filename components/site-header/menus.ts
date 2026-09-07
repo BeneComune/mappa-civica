@@ -138,3 +138,17 @@ export const GREEN_MENU = {
     },
   ],
 } as const
+
+// pathname -> the label shown for that route (mobile panel peek bar), derived
+// from the nav tree so it stays in sync with the menu.
+const ROUTE_TITLES: Record<string, string> = Object.fromEntries([
+  ["/", STRINGS.home],
+  ["/community", STRINGS.community],
+  ...OUTDOOR_GROUPS.flatMap((group) => group.items.map((i) => [i.href, i.title])),
+  ...RESCUE_MENU.items.map((i) => [i.href, i.title]),
+  ...GREEN_MENU.items.map((i) => [i.href, i.title]),
+])
+
+export function routeTitle(pathname: string): string {
+  return ROUTE_TITLES[pathname] ?? STRINGS.appName
+}
