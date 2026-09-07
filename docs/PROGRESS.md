@@ -4,6 +4,28 @@ Curated history and architecture decision records (ADRs) for `mappa-civica`. New
 
 ---
 
+## 2026-09-07 — Mobile: one `md` breakpoint, a bottom sheet, and a flat map by default
+
+**Context:** The layout was built desktop-only — a persistent MapLibre map with floating cards (`components/panel-frame.tsx`, `components/home-panel.tsx`), a horizontal `NavigationMenu`, the interface zoomed to 118% (`html { font-size: 118% }`). Below ~768px it was unusable: nav overflowed, the panel card covered most of the map, the tilted 3D view was disorienting and burned mobile data on terrain tiles. The porting rule was that the desktop experience at `≥ md` must stay byte-identical to the Goal 0 baseline (`docs/baseline/*.jpg`).
+
+**Decision — one breakpoint, Tailwind's default `md` (48rem / 768px).** No custom breakpoints, no per-component thresholds. All mobile behaviour keys off `md:` variants in markup and two `@media (width < 48rem)` / `(width >= 48rem)` blocks in `app/globals.css`. A single SSR-safe `useIsMobile()` (`lib/use-is-mobile.ts`, `useSyncExternalStore` + `matchMedia("(max-width: 47.999rem)")`, `false` on the server) is the one runtime check, used only where CSS can't reach (choosing the sheet vs. the card, the Segnala flow, the map's initial pitch).
+
+**Decision — the font scale is CSS-only.** `html` is `font-size: 100%` with `@media (width >= 48rem) { font-size: 118% }`. Desktop keeps the exact zoom it had; phones get the natural size. Nothing in JS knows about this.
+
+**Decision — the route panel and Home content live in a bottom sheet on mobile, the same page code.** `PanelFrame` renders `MobilePanelSheet` (`components/mobile-panel-sheet.tsx`) below `md` and the floating card at/above it. The sheet is a peek bar pinned to the bottom of the map — collapsed on every route entry, so the map is always fully visible and interactive — that expands to a ~70dvh scroll panel. `home-panel.tsx` uses `md:contents` so its three desktop-absolute groups collapse into plain sheet sections on mobile without a wrapper box. A child deep in the sheet can fold it away via `usePanelSheet()` — used by the two-step flows (below).
+
+**Decision — navigation is a hamburger + slide-out `Drawer`.** `components/site-header/mobile-nav.tsx` (`hidden` at `md`), the full `NavigationMenu` is `hidden md:flex`. The drawer lists every route the desktop menu covers, grouped the same way. `routeTitle(pathname)` (`components/site-header/menus.ts`, derived from the nav tree) gives the sheet peek bar its label.
+
+**Decision — the map opens flat on mobile, with the controls trimmed.** `createBaseMap` reads `matchMedia` once: `pitch: 0` and terrain off below `md` (the Terrain 3D button re-enables it), Fullscreen and Print controls dropped (no-ops / desktop tasks), attribution and the Legenda/style switcher start collapsed. Desktop passes none of these branches and is unchanged.
+
+**Decision — two-step flows where picking a map point matters.** Segnala (`components/report-drawer/index.tsx`) and the route planner (`components/route-planner/index.tsx`) both fold the sheet away and pin a hint over the map when armed, so the tap target is the map, not a covered panel. Desktop keeps its one-step drawer (`modal={false}`, map stays clickable behind it).
+
+**Consequence:** `docs/baseline/` (the Goal 0 desktop screenshots) has served its purpose and is removed; all five baselines were confirmed pixel-identical to the current build at 1440×900. All 20 routes were swept at 360×740 and 390×844 with no horizontal scroll and no unreachable control.
+
+**Status:** Done. `build` / `lint` / `tsc` / `check:paths` / `test` (89) / `fallow:dead-code` all green.
+
+---
+
 ## 2026-09-06 — Data pipeline: its own directory, PMTiles for the cadastre only, and two new scripts
 
 **Context:** The Vite prototype had a Python GIS pipeline that read curated inputs and raw satellite/DEM scenes and wrote GeoJSON to `frontend/public/data/`. The Next.js repo shipped those output files (copied off the old data disk, never through a script) but not the pipeline. Porting it raised three questions worth recording.

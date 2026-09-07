@@ -144,6 +144,9 @@ export const GREEN_MENU = {
 const ROUTE_TITLES: Record<string, string> = Object.fromEntries([
   ["/", STRINGS.home],
   ["/community", STRINGS.community],
+  ["/outdoor", STRINGS.outdoor],
+  [RESCUE_MENU.basePath, STRINGS.rescue],
+  [GREEN_MENU.basePath, STRINGS.green],
   ...OUTDOOR_GROUPS.flatMap((group) => group.items.map((i) => [i.href, i.title])),
   ...RESCUE_MENU.items.map((i) => [i.href, i.title]),
   ...GREEN_MENU.items.map((i) => [i.href, i.title]),
