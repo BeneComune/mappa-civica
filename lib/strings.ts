@@ -76,6 +76,8 @@ export const STRINGS = {
   routePlannerWalking: "a piedi",
   routePlannerBiking: "bici",
   routePlannerEbike: "bici elettrica",
+  routePlannerPickHint: "Tocca la mappa per aggiungere i punti",
+  routePlannerDone: "Fine",
   routePlannerSurfaceTitle: "Tipologia di strada",
   routePlannerProfileTitle: "Profilo altimetrico",
   routePlannerProfileSubtitle: "dislivello relativo",

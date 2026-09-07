@@ -2,8 +2,12 @@
 "use client"
 
 import { useCallback, useMemo, useState } from "react"
+import { createPortal } from "react-dom"
+import { MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { usePanelSheet } from "@/components/mobile-panel-sheet"
 import { STRINGS } from "@/lib/strings"
+import { useIsMobile } from "@/lib/use-is-mobile"
 import { buildRouteSummary, type RouteSummary, type RoutingMode } from "@/lib/routing"
 import type { RoutePoint } from "./format"
 import { useRoutingGraph } from "./use-routing-graph"
@@ -18,6 +22,17 @@ export function RoutePlanner({ mode }: { mode: RoutingMode }) {
   const [enabled, setEnabled] = useState(false)
   const [points, setPoints] = useState<RoutePoint[]>([])
   const { graph, unavailable } = useRoutingGraph(mode)
+  const isMobile = useIsMobile()
+  const sheet = usePanelSheet()
+
+  // On mobile the planner lives in the bottom sheet; arming it folds the
+  // sheet away so the map is tappable, with a hint pinned over the map.
+  const toggleEnabled = useCallback(() => {
+    setEnabled((v) => {
+      if (!v && isMobile) sheet?.collapse()
+      return !v
+    })
+  }, [isMobile, sheet])
 
   const addPoint = useCallback((point: RoutePoint) => {
     setPoints((prev) => [...prev, point])
@@ -58,16 +73,37 @@ export function RoutePlanner({ mode }: { mode: RoutingMode }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <Button size="sm" variant={enabled ? "default" : "outline"} onClick={() => setEnabled((v) => !v)}>
+      <Button size="sm" variant={enabled ? "default" : "outline"} onClick={toggleEnabled}>
         {enabled ? STRINGS.routePlannerActive : STRINGS.routePlannerActivate}
       </Button>
       <p className="text-xs text-muted-foreground">
         {STRINGS.routePlannerHint} {network}.
       </p>
 
+      {/* Portaled to <body> so the collapsed sheet (display:none) can't hide it. */}
+      {isMobile &&
+        enabled &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div className="fixed top-[calc(env(safe-area-inset-top)+4.5rem)] right-14 left-3 z-50 flex items-center justify-between gap-2 rounded-lg border bg-background/95 px-3 py-2 text-sm shadow-lg backdrop-blur">
+            <span className="flex min-w-0 items-center gap-2">
+              <MapPin className="size-4 shrink-0" aria-hidden="true" />
+              <span className="truncate">{STRINGS.routePlannerPickHint}</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => setEnabled(false)}
+              className="shrink-0 font-medium underline underline-offset-2"
+            >
+              {STRINGS.routePlannerDone}
+            </button>
+          </div>,
+          document.body
+        )}
+
       {points.length > 0 && <RoutePointList points={points} onRemove={removePoint} />}
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <Button size="sm" variant="outline" disabled={points.length < 2} onClick={() => setPoints((prev) => [...prev].reverse())}>
           {STRINGS.routePlannerSwap}
         </Button>
