@@ -51,3 +51,6 @@ __pycache__/
 # pipeline intermediates and large tools (planetiler.jar, OSM pbf)
 /pipeline/data/
 /pipeline/tools/
+
+# local planning docs
+/piano-*.md
