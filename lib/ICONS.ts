@@ -15,6 +15,7 @@ import {
   Lightbulb,
   Map,
   MapPinPlus,
+  Menu,
   MapPlus,
   Megaphone,
   MessageSquare,
@@ -52,6 +53,9 @@ import {
 export const ICONS = {
   // App brand mark
   appLogo: MapPlus,
+
+  // Chrome
+  menu: Menu,
 
   // Top-level modules
   home: House,

@@ -15,6 +15,7 @@ import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 import { NavDropdown } from "./nav-dropdown"
 import { OutdoorMenu } from "./outdoor-menu"
+import { MobileNav } from "./mobile-nav"
 import { GREEN_MENU, RESCUE_MENU } from "./menus"
 
 // The site-wide navigation bar. It owns only the top-level bar layout and
@@ -25,11 +26,14 @@ export function SiteHeader() {
   return (
     <header className="border-b bg-background">
       <div className="mx-auto flex max-w-5xl flex-col gap-2 px-4 py-3">
-        <Link href="/" className="flex w-fit items-center gap-2 text-xl font-semibold">
-          <ICONS.appLogo aria-hidden="true" className="size-5" />
-          {STRINGS.appName}
-        </Link>
-        <NavigationMenu className="max-w-none justify-start">
+        <div className="flex items-center justify-between gap-2">
+          <Link href="/" className="flex w-fit items-center gap-2 text-xl font-semibold">
+            <ICONS.appLogo aria-hidden="true" className="size-5" />
+            {STRINGS.appName}
+          </Link>
+          <MobileNav />
+        </div>
+        <NavigationMenu className="hidden max-w-none justify-start md:flex">
           <NavigationMenuList className="flex-wrap justify-start gap-1">
             <NavigationMenuItem>
               <NavigationMenuLink

@@ -148,6 +148,11 @@ export const STRINGS = {
   reportDelete: "Elimina",
   reportPending: "In attesa",
 
+  // Mobile navigation
+  menu: "Menu",
+  menuLabel: "Apri il menu di navigazione",
+  menuDescription: "Naviga tra i moduli della piattaforma.",
+
   // Footer
   footerCreditPrefix: "realizzato da",
   footerCreditConjunction: "e",
