@@ -143,6 +143,8 @@ export const STRINGS = {
   reportParcelLabel: "Particella catastale (indicativa)",
   reportSubmit: "Invia segnalazione",
   reportCancel: "Annulla",
+  reportPickHint: "Tocca la mappa per indicare il punto",
+  reportChangePoint: "Cambia punto sulla mappa",
   reportSubmitted: "Segnalazione pronta: si apre il client email per inviarla al Comune.",
   reportListEmpty: "Nessuna segnalazione ancora. Usa \"Nuova segnalazione\" per crearne una.",
   reportDelete: "Elimina",
