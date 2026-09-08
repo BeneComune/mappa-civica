@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react"
 import { useMapContext } from "@/components/map-provider"
+import { usePanelSheet } from "@/components/mobile-panel-sheet"
 
 type FrazioneFeature = {
   name: string
@@ -14,6 +15,7 @@ type FrazioneFeature = {
 
 export function FrazioniList() {
   const { flyTo } = useMapContext()
+  const sheet = usePanelSheet()
   const [frazioni, setFrazioni] = useState<FrazioneFeature[]>([])
   const [selected, setSelected] = useState<string | null>(null)
 
@@ -43,6 +45,8 @@ export function FrazioniList() {
               onClick={() => {
                 setSelected(f.name)
                 flyTo([f.centroid_lon, f.centroid_lat], 14)
+                // On mobile, fold the sheet away so the fly-to is visible.
+                sheet?.collapse()
               }}
               className={`rounded-full border px-2.5 py-1 text-xs ${
                 selected === f.name ? "bg-accent text-accent-foreground" : "hover:bg-accent"
