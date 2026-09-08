@@ -19,7 +19,7 @@ import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 import { GREEN_MENU, OUTDOOR_GROUPS, RESCUE_MENU } from "./menus"
 
-// The < md navigation: a hamburger that opens a left drawer with the full
+// The < md navigation: a hamburger that opens a right drawer with the full
 // nav tree from ./menus. The >= md NavigationMenu in ./index is untouched.
 export function MobileNav() {
   const pathname = usePathname()
@@ -27,7 +27,7 @@ export function MobileNav() {
   const close = () => setOpen(false)
 
   return (
-    <Drawer open={open} onOpenChange={setOpen} swipeDirection="left">
+    <Drawer open={open} onOpenChange={setOpen} swipeDirection="right">
       <DrawerTrigger
         render={<Button variant="ghost" size="icon" className="md:hidden" aria-label={STRINGS.menuLabel} />}
       >

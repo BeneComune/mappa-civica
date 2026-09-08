@@ -332,6 +332,9 @@
   cursor: pointer;
   color: var(--popover-foreground);
   padding: 0;
+  /* the container drops .maplibregl-ctrl-group's clip (below), so round the
+     button itself to keep the pill corners */
+  border-radius: var(--radius-md);
 }
 
 .map-search-ctrl button:hover {
@@ -345,6 +348,9 @@
 
 .map-search-ctrl {
   position: relative;
+  /* override .maplibregl-ctrl-group's overflow:hidden - it clips the search
+     panel, which is positioned outside the button to its left */
+  overflow: visible;
 }
 
 .map-search-panel {
