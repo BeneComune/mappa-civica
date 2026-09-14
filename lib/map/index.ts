@@ -28,6 +28,7 @@ import { addVegetationHealthOverlay, VEGETATION_HEALTH_LAYER_IDS } from "./overl
 import { addSoilTemperatureOverlay, SOIL_TEMPERATURE_LAYER_IDS } from "./overlays/soil-temperature"
 import { addRouteOverlay, ROUTE_LAYER_IDS } from "./overlays/route"
 import { addHospitalOverlay, HOSPITAL_LAYER_IDS } from "./overlays/hospital"
+import { addLandslideOverlay, LANDSLIDE_LAYER_IDS } from "./overlays/landslide"
 
 // Each entry's overlay is added once (idempotently) on every style load, and
 // shown only when the current route matches `path` (or is included in it,
@@ -44,6 +45,7 @@ export const ROUTE_OVERLAYS: Array<{
   { path: "/rescue/fire", add: addFireOverlay, layerIds: FIRE_LAYER_IDS },
   { path: "/rescue/assets", add: addAssetsOverlay, layerIds: ASSETS_LAYER_IDS },
   { path: "/rescue/hospital", add: addHospitalOverlay, layerIds: HOSPITAL_LAYER_IDS },
+  { path: "/rescue/landslide", add: addLandslideOverlay, layerIds: LANDSLIDE_LAYER_IDS },
   { path: "/outdoor/trails/trails", add: addTrailsWaterOverlay, layerIds: TRAILS_WATER_LAYER_IDS },
   { path: "/outdoor/cyclability/bike-infra", add: addBikeInfraOverlay, layerIds: BIKE_INFRA_LAYER_IDS },
   { path: "/outdoor/trails/slope", add: addSlopeOverlay, layerIds: SLOPE_LAYER_IDS },

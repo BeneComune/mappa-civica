@@ -116,6 +116,7 @@ export const ICONS = {
   wildfires: Flame,
   rescueAssets: HeartPulse,
   nearestHospital: Hospital,
+  landslideHazard: TriangleAlert,
 
   // Green sections
   vegetation: Flower2,

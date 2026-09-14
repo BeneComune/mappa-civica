@@ -56,6 +56,13 @@ export const COLORS = {
   fireDangerMedio: "#f59f00",
   fireDangerDefault: "#adb5bd",
 
+  // Landslide hazard classes (PAI)
+  landslideAa: "#868e96",
+  landslideP1: "#ffd43b",
+  landslideP2: "#f59f00",
+  landslideP3: "#e8590c",
+  landslideP4: "#c92a2a",
+
   // Rii survey recency/state
   riiAggiornato2024: "#1c7ed6",
   riiSoloFoto2024: "#4dabf7",

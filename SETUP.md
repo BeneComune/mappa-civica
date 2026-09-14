@@ -172,7 +172,7 @@ Not in the repo (gitignored, too large). Download for the comune's area:
 |---|---|---|
 | `data/raw/*.SAFE/` - one Sentinel-2 L2A scene | NDVI (`make green`), NBR | [Copernicus Browser](https://browser.dataspace.copernicus.eu/) - pick a recent, low-cloud scene on the tile that covers the comune |
 | `data/raw/*_lwir11.TIF` - Landsat 8/9 C2 L2, thermal band ST_B10 | LST / surface temperature (`make green`) | [USGS EarthExplorer](https://earthexplorer.usgs.gov/) - "Landsat Collection 2 Level-2", the path/row over the comune |
-| `data/raw/dem.tif` - DEM / LiDAR raster | trail & cycleway slope (`make outdoor`) | your region's LiDAR/DEM portal, or [Copernicus DEM](https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model) |
+| `data/raw/dem.tif` - DEM / LiDAR raster | trail & cycleway slope (`make outdoor`) | your region's LiDAR/DEM portal (usually finer and better for this), [Copernicus DEM](https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model), or - if neither is available - Italy's national DTM at 20m via WCS: `wms.pcn.minambiente.it/wcs/dtm_20m` (no auth, no region-specific lookup needed, but coarser than a good regional LiDAR) |
 
 These four layers (`greenery`, `nbr`, `lst`, `shade_corridors`) plus the slope
 layers are the only ones that need local raw data; everything else runs from

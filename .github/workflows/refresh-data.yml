@@ -2,7 +2,7 @@ name: Refresh GIS data
 
 on:
   schedule:
-    - cron: '0 3 * * 1'    # every Monday 03:00 UTC - rescue + fire + catasto + cyclepaths + peaks + hospital
+    - cron: '0 3 * * 1'    # every Monday 03:00 UTC - rescue + fire + landslide + catasto + cyclepaths + peaks + hospital
     - cron: '0 3 1 * *'    # 1st of each month 03:00 UTC - base + community
   workflow_dispatch:
     inputs:
@@ -11,7 +11,7 @@ on:
         required: true
         default: 'rescue'
         type: choice
-        options: [rescue, fire, catasto, cyclepaths, peaks, hospital, base, community, green-refresh, green-refresh-sentinel2, fetch-sentinel2, fetch-landsat]
+        options: [rescue, fire, landslide, catasto, cyclepaths, peaks, hospital, base, community, green-refresh, green-refresh-sentinel2, fetch-sentinel2, fetch-landsat]
 
 permissions:
   contents: write
@@ -58,9 +58,9 @@ jobs:
           make -C /tmp/tippecanoe -j"$(nproc)"
           sudo make -C /tmp/tippecanoe install
 
-      - name: Weekly refresh (rescue + fire + catasto + cyclepaths + peaks + hospital)
+      - name: Weekly refresh (rescue + fire + landslide + catasto + cyclepaths + peaks + hospital)
         if: github.event.schedule == '0 3 * * 1'
-        run: make rescue fire catasto cyclepaths peaks hospital
+        run: make rescue fire landslide catasto cyclepaths peaks hospital
         working-directory: pipeline
 
       - name: Monthly refresh (base + community)

@@ -61,6 +61,7 @@ pipeline/
 │   ├── build_bike_cyclepaths_geojson.py
 │   ├── build_rescue_geojson.py
 │   ├── build_fire_geojson.py
+│   ├── build_landslide_geojson.py
 │   ├── build_catasto_geojson.py
 │   ├── build_peaks_geojson.py
 │   ├── build_hospital_geojson.py
@@ -88,6 +89,7 @@ pipeline/
 | `build_bike_cyclepaths_geojson.py` | Outdoor | `public/data/outdoor/bike_cyclepaths.geojson` |
 | `build_rescue_geojson.py` | Soccorso | `public/data/rescue/aed.geojson`, `hems.geojson`, `fire_hydrants.geojson`, `emergency_assembly_points.geojson` |
 | `build_fire_geojson.py` | Soccorso | `public/data/rescue/fire_perimeters.geojson`, `fire_danger.geojson`, `fire_ignition_points.geojson` |
+| `build_landslide_geojson.py` | Soccorso | `public/data/rescue/landslide_hazard.geojson` (ISPRA PAI WFS - national coverage, works for any comune) |
 | `build_catasto_geojson.py` | Home | `public/data/catasto.pmtiles` (via tippecanoe; intermediate GeoJSON stays in `pipeline/data/`) |
 | `build_peaks_geojson.py` | Outdoor | `public/data/outdoor/peaks.geojson`, `peaks_poles.geojson` |
 | `build_hospital_geojson.py` | Soccorso | `public/data/rescue/hospital.geojson`, `hospital_roads.geojson` |

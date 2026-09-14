@@ -93,6 +93,12 @@ export const RESCUE_MENU = {
       description: STRINGS.wildfiresDescription,
     },
     {
+      title: STRINGS.landslideHazard,
+      href: "/rescue/landslide",
+      icon: ICONS.landslideHazard,
+      description: STRINGS.landslideHazardDescription,
+    },
+    {
       title: STRINGS.rescueAssets,
       href: "/rescue/assets",
       icon: ICONS.rescueAssets,

@@ -110,6 +110,9 @@ export const STRINGS = {
   fireDangerToggle: "Classe di pericolo",
   fireIgnitionToggle: "Punti di innesco",
   fireNbrToggle: "Indice NBR (vegetazione secca/bruciata)",
+  landslideHazard: "Rischio frane",
+  landslideHazardDescription:
+    "Aree a pericolosità da frana (PAI), dai piani di assetto idrogeologico redatti dalle autorità di bacino.",
 
   // Green sections
   vegetation: "Vegetazione",

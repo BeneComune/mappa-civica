@@ -2,7 +2,7 @@ PYTHON := python
 
 SCRIPTS := scripts
 
-.PHONY: help all base outdoor cyclepaths rescue rii fire catasto peaks hospital green green-refresh green-refresh-sentinel2 fetch-sentinel2 fetch-landsat community tiles basemap
+.PHONY: help all base outdoor cyclepaths rescue rii fire landslide catasto peaks hospital green green-refresh green-refresh-sentinel2 fetch-sentinel2 fetch-landsat community tiles basemap
 
 help:
 	@echo "Montereale Valcellina - pipeline GIS"
@@ -14,6 +14,7 @@ help:
 	@echo "  make rescue     Emergency assets (Overpass)"
 	@echo "  make rii        Rii a rischio esondazione (from data/sources/output_rii_protezione_civile.zip)"
 	@echo "  make fire       Perimetri incendi boschivi (IRDAT FVG WFS, solo comuni FVG)"
+	@echo "  make landslide  Rischio frane, aree a pericolosita' PAI (ISPRA WFS, copertura nazionale)"
 	@echo "  make catasto    Particelle catastali -> catasto.pmtiles (onData; requires tippecanoe)"
 	@echo "  make peaks      Cime principali + peaks_poles (Overpass natural=peak + data/peaks_curated.json)"
 	@echo "  make hospital   Ospedale piu' vicino (Overpass amenity=hospital)"
@@ -28,6 +29,7 @@ help:
 	@echo "CI-safe targets (run in GitHub Actions, no local data needed):"
 	@echo "  make rescue     Emergency assets (Overpass only)"
 	@echo "  make fire       Perimetri incendi boschivi (IRDAT FVG WFS)"
+	@echo "  make landslide  Rischio frane, aree a pericolosita' PAI (ISPRA WFS, national)"
 	@echo "  make cyclepaths Bike cyclepaths from committed transport.geojson"
 	@echo "  make peaks      Cime principali (Overpass only)"
 	@echo "  make hospital   Ospedale piu' vicino (Overpass only)"
@@ -35,7 +37,7 @@ help:
 	@echo ""
 	@echo "Setup: python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt"
 
-all: base outdoor cyclepaths rescue fire peaks hospital green community
+all: base outdoor cyclepaths rescue fire landslide peaks hospital green community
 
 base:
 	$(PYTHON) $(SCRIPTS)/fetch_istat_stats.py
@@ -55,6 +57,9 @@ rii:
 
 fire:
 	$(PYTHON) $(SCRIPTS)/build_fire_geojson.py
+
+landslide:
+	$(PYTHON) $(SCRIPTS)/build_landslide_geojson.py
 
 catasto:
 	$(PYTHON) $(SCRIPTS)/build_catasto_geojson.py
