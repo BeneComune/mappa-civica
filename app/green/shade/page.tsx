@@ -29,8 +29,8 @@ export default function GreenShadePage() {
         description={STRINGS.naturalShadeDescription}
       />
       <p className="mt-1 text-xs text-muted-foreground">
-        Verde scuro = strade ombreggiate · verde chiaro = sentieri ombreggiati · opacità
-        proporzionale alla copertura
+        Verde più scuro = maggiore copertura arborea · linee più spesse = strade, più sottili =
+        sentieri
       </p>
       <Faq>
         Percentuale di copertura arborea sopra ogni tratto di strada o sentiero, calcolata

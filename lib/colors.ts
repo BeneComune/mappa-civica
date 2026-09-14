@@ -110,10 +110,6 @@ export const COLORS = {
   catastoPoint: "#8a5a00",
   catastoLabel: "#5c3d00",
 
-  // Natural shade (tree canopy coverage)
-  shadeRoad: "#1a7f3c",
-  shadeTrail: "#52b788",
-
   // Route planner: start/waypoint/end markers, and the computed route line
   routePointStart: "#2f9e44",
   routePointWaypoint: "#f59f00",
