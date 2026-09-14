@@ -20,6 +20,7 @@ import {
   Megaphone,
   MessageSquare,
   Mountain,
+  MountainSnow,
   OctagonAlert,
   PersonStanding,
   PlaneTakeoff,
@@ -116,7 +117,7 @@ export const ICONS = {
   wildfires: Flame,
   rescueAssets: HeartPulse,
   nearestHospital: Hospital,
-  landslideHazard: TriangleAlert,
+  landslideHazard: MountainSnow,
 
   // Green sections
   vegetation: Flower2,
