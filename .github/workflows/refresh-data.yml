@@ -11,7 +11,7 @@ on:
         required: true
         default: 'rescue'
         type: choice
-        options: [rescue, fire, catasto, cyclepaths, peaks, hospital, base, community]
+        options: [rescue, fire, catasto, cyclepaths, peaks, hospital, base, community, green-refresh, fetch-sentinel2, fetch-landsat]
 
 permissions:
   contents: write
@@ -30,6 +30,19 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements-ci.txt
+        working-directory: pipeline
+
+      # rasterio/boto3/etc. are only needed for the monthly satellite refresh
+      # (green-refresh) and its two fetch-only targets (used to test each API
+      # in isolation), not the lighter CI-safe targets above.
+      - name: Install green-refresh dependencies
+        if: >-
+          github.event.schedule == '0 3 1 * *' ||
+          (github.event_name == 'workflow_dispatch' && contains(
+            fromJSON('["green-refresh", "fetch-sentinel2", "fetch-landsat"]'),
+            github.event.inputs.target
+          ))
+        run: pip install -r requirements-green-ci.txt
         working-directory: pipeline
 
       # tippecanoe isn't packaged for Ubuntu; build the maintained fork. Only
@@ -55,10 +68,30 @@ jobs:
         run: make base community
         working-directory: pipeline
 
+      - name: Monthly satellite refresh (NDVI/NBR/LST)
+        if: github.event.schedule == '0 3 1 * *'
+        continue-on-error: true # a bad month here shouldn't block base/community above
+        run: make green-refresh
+        working-directory: pipeline
+        env:
+          CDSE_USERNAME: ${{ secrets.CDSE_USERNAME }}
+          CDSE_PASSWORD: ${{ secrets.CDSE_PASSWORD }}
+          CDSE_S3_ACCESS_KEY: ${{ secrets.CDSE_S3_ACCESS_KEY }}
+          CDSE_S3_SECRET_KEY: ${{ secrets.CDSE_S3_SECRET_KEY }}
+          USGS_USERNAME: ${{ secrets.USGS_USERNAME }}
+          USGS_TOKEN: ${{ secrets.USGS_TOKEN }}
+
       - name: Manual target
         if: github.event_name == 'workflow_dispatch'
         run: make ${{ github.event.inputs.target }}
         working-directory: pipeline
+        env:
+          CDSE_USERNAME: ${{ secrets.CDSE_USERNAME }}
+          CDSE_PASSWORD: ${{ secrets.CDSE_PASSWORD }}
+          CDSE_S3_ACCESS_KEY: ${{ secrets.CDSE_S3_ACCESS_KEY }}
+          CDSE_S3_SECRET_KEY: ${{ secrets.CDSE_S3_SECRET_KEY }}
+          USGS_USERNAME: ${{ secrets.USGS_USERNAME }}
+          USGS_TOKEN: ${{ secrets.USGS_TOKEN }}
 
       - name: Commit updated data
         # No [skip ci]: the data commit lands on main and Vercel auto-deploys

@@ -15,6 +15,7 @@ Requires **Python >= 3.11** (CI uses 3.11).
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt      # or requirements-ci.txt for the CI-safe targets only
+                                      # (requirements-green-ci.txt for green-refresh specifically)
 ```
 
 ## Running
@@ -25,7 +26,9 @@ Use the Makefile from the `pipeline/` directory:
 make help       # list every target
 make all        # full pipeline
 make outdoor    # Outdoor module only (trails, water, cycleways)
-make green      # Verde module only (NDVI, NBR, LST, shade)
+make green      # Verde module only (NDVI, NBR, LST, shade) - needs data/raw/ filled by hand
+make green-refresh  # Same, but fetches the latest Sentinel-2/Landsat scene via API first
+                     # (needs CDSE_*/USGS_* credentials - see SETUP.md §10)
 make rescue     # Soccorso ed Emergenza module only
 make base       # ISTAT statistics (frazioni are a curated input, not regenerated)
 make catasto    # cadastral parcels -> catasto.pmtiles (needs tippecanoe)
@@ -47,9 +50,12 @@ pipeline/
 ├── lib/                    # Shared modules imported by the scripts
 │   ├── comune_config.py    # Reads data/comune.config.json - see SETUP.md
 │   ├── dem_slope.py        # DEM sampling and slope computation
+│   ├── scene_date.py       # Parse the acquisition date out of a Sentinel-2/Landsat filename
 │   └── exclusions.py       # Geometries to exclude (optional, see SETUP.md)
 ├── scripts/                # One script per app target
 │   ├── fetch_istat_stats.py
+│   ├── fetch_sentinel2_scene.py  # Optional: API fetch feeding data/raw/ for `green-refresh`
+│   ├── fetch_landsat_scene.py    # Optional: same, for the Landsat thermal band
 │   ├── build_outdoor_geojson.py
 │   ├── build_bike_infra_geojson.py
 │   ├── build_bike_cyclepaths_geojson.py
@@ -87,9 +93,11 @@ pipeline/
 | `build_hospital_geojson.py` | Soccorso | `public/data/rescue/hospital.geojson`, `hospital_roads.geojson` |
 | `build_rii_geojson.py` | Soccorso | `public/data/rescue/rii.geojson` + photos in `public/data/rescue/rii/` |
 | `build_community_duckdb.py` | Segnala | `public/data/community_data.duckdb` (from `data/community/reports.csv`) |
-| `process_green_layers.py` | Verde | `public/data/greenery.geojson` |
-| `process_nbr.py` | Verde | `public/data/nbr.geojson` |
-| `process_lst.py` | Verde | `public/data/lst.geojson` |
+| `fetch_sentinel2_scene.py` | Verde | Fills `data/raw/*.SAFE` from Copernicus Data Space Ecosystem (needs `CDSE_*` credentials) |
+| `fetch_landsat_scene.py` | Verde | Fills `data/raw/*_ST_B10.TIF` from USGS M2M (needs `USGS_*` credentials) |
+| `process_green_layers.py` | Verde | `public/data/greenery.geojson` (carries top-level `scene_date`) |
+| `process_nbr.py` | Verde | `public/data/nbr.geojson` (carries top-level `scene_date`) |
+| `process_lst.py` | Verde | `public/data/lst.geojson` (carries top-level `scene_date`) |
 | `process_shade_corridors.py` | Verde | `public/data/shade_corridors.geojson`, `public/data/outdoor/trails_shaded.geojson` |
 
 ## Required local data (gitignored)

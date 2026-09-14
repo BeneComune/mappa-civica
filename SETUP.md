@@ -178,6 +178,37 @@ These four layers (`greenery`, `nbr`, `lst`, `shade_corridors`) plus the slope
 layers are the only ones that need local raw data; everything else runs from
 public APIs.
 
+### Automated monthly refresh (optional)
+
+Instead of downloading a scene by hand every time, `make green-refresh`
+(`pipeline/scripts/fetch_sentinel2_scene.py` +
+`pipeline/scripts/fetch_landsat_scene.py`, then `make green`) searches for the
+newest scene over the comune - walking backward in time until it finds one
+under a cloud-cover threshold - and downloads only the bands NDVI/NBR/LST
+actually need, straight into `data/raw/` in the same layout a manual download
+produces. This deployment's `.github/workflows/refresh-data.yml` runs it on
+the monthly cron, so the Green module never goes more than a month stale.
+
+It needs two free accounts and their credentials as GitHub Actions secrets
+(Settings → Secrets and variables → Actions):
+
+| Secret | From |
+|---|---|
+| `CDSE_USERNAME`, `CDSE_PASSWORD` | A [Copernicus Data Space Ecosystem](https://dataspace.copernicus.eu/) account (Sentinel-2) |
+| `CDSE_S3_ACCESS_KEY`, `CDSE_S3_SECRET_KEY` | Same account's dashboard → S3 credentials (separate from the login password - used to download individual bands instead of the whole ~1GB scene) |
+| `USGS_USERNAME`, `USGS_TOKEN` | A [USGS EROS](https://ers.cr.usgs.gov/register) account with M2M access, and an application token from your USGS profile (Landsat) |
+
+Without these secrets set, `make green-refresh` simply fails and the existing
+committed layers are left untouched - `make green` with a manually-downloaded
+scene (the flow described above) keeps working exactly as before, and is
+still the only path documented for other comuni adopting this platform.
+
+The processed GeoJSON (`greenery.geojson`, `nbr.geojson`, `lst.geojson`) each
+carry a top-level `scene_date` (the satellite's actual acquisition date, not
+the pipeline run date) - the Green module and the Rescue Fire page's NBR
+panel read it to show "Immagine satellitare del ..." next to the legend, with
+a warning style once it's more than ~45 days old.
+
 ---
 
 ## 11. Running the pipeline

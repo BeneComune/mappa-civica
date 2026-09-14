@@ -2,7 +2,7 @@ PYTHON := python
 
 SCRIPTS := scripts
 
-.PHONY: help all base outdoor cyclepaths rescue rii fire catasto peaks hospital green community tiles basemap
+.PHONY: help all base outdoor cyclepaths rescue rii fire catasto peaks hospital green green-refresh fetch-sentinel2 fetch-landsat community tiles basemap
 
 help:
 	@echo "Montereale Valcellina - pipeline GIS"
@@ -18,6 +18,8 @@ help:
 	@echo "  make peaks      Cime principali + peaks_poles (Overpass natural=peak + data/peaks_curated.json)"
 	@echo "  make hospital   Ospedale piu' vicino (Overpass amenity=hospital)"
 	@echo "  make green      NDVI, NBR, LST, shade corridors (Sentinel-2 + LiDAR)"
+	@echo "  make green-refresh  Fetch latest Sentinel-2/Landsat via API, then make green"
+	@echo "                      (needs CDSE_*/USGS_* credentials, see SETUP.md)"
 	@echo "  make community  Build community_data.duckdb from data/community/reports.csv"
 	@echo "  make tiles      alias of catasto (the only PMTiles layer)"
 	@echo "  make basemap    Dark vector basemap (planetiler + OpenMapTiles, ~450MB, needs Java 21+)"
@@ -69,6 +71,20 @@ green:
 	$(PYTHON) $(SCRIPTS)/process_nbr.py
 	$(PYTHON) $(SCRIPTS)/process_lst.py
 	$(PYTHON) $(SCRIPTS)/process_shade_corridors.py
+
+# Fetches this month's scenes via API (needs CDSE_*/USGS_* credentials, see
+# SETUP.md) instead of a manual data/raw/ download, then runs `green` as
+# usual. What the monthly refresh workflow calls. Note: process_shade_corridors.py
+# (part of `green`) also needs pipeline/data/outdoor/trails.geojson from
+# `make outdoor`, which needs the DEM - not fetched here, so shade corridors
+# only regenerate correctly if that intermediate already exists locally.
+fetch-sentinel2:
+	$(PYTHON) $(SCRIPTS)/fetch_sentinel2_scene.py
+
+fetch-landsat:
+	$(PYTHON) $(SCRIPTS)/fetch_landsat_scene.py
+
+green-refresh: fetch-sentinel2 fetch-landsat green
 
 community:
 	$(PYTHON) $(SCRIPTS)/build_community_duckdb.py

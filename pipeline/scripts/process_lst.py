@@ -35,6 +35,7 @@ from shapely.validation import make_valid
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from lib.comune_config import BOUNDARY_PATH
+from lib.scene_date import landsat_scene_date
 
 # Landsat C2 L2 scale/offset for ST_B10 → Kelvin
 LST_SCALE = 0.00341802
@@ -58,11 +59,16 @@ SIMPLIFY_TOLERANCE_M = 45
 
 
 def find_lwir_tif(repo_root: Path) -> Path:
-    pattern = str(repo_root / 'data' / 'raw' / '*_lwir11.TIF')
-    matches = sorted(glob.glob(pattern))
+    # *_lwir11.TIF is the old manual-download convention (hand-renamed after
+    # export); *_ST_B10.TIF is the official Landsat Collection 2 band name,
+    # what fetch_landsat_scene.py writes directly - both resolve here.
+    patterns = ['*_lwir11.TIF', '*_ST_B10.TIF']
+    matches = sorted(
+        p for pattern in patterns for p in glob.glob(str(repo_root / 'data' / 'raw' / pattern))
+    )
     if not matches:
         raise FileNotFoundError(
-            'No *_lwir11.TIF found under data/raw/.\n'
+            'No *_lwir11.TIF or *_ST_B10.TIF found under data/raw/.\n'
             'Download a Landsat 8/9 Collection 2 Level-2 scene and unzip it there.'
         )
     return Path(matches[-1])
@@ -161,8 +167,11 @@ def main() -> None:
         })
 
     out_path.write_text(
-        json.dumps({'type': 'FeatureCollection', 'features': features},
-                   separators=(',', ':'), ensure_ascii=False)
+        json.dumps({
+            'type': 'FeatureCollection',
+            'scene_date': landsat_scene_date(tif_path),
+            'features': features,
+        }, separators=(',', ':'), ensure_ascii=False)
     )
     print(f'[OK] {out_path.name}: {len(features)} features')
 

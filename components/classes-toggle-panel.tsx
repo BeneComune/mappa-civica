@@ -8,6 +8,10 @@ import { HoverPopupLayer } from "@/components/hover-popup-layer"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { computeClassStats, type ClassStats } from "@/lib/green-classes"
 
+// A scene older than this many days past the monthly refresh cadence gets
+// flagged in the UI instead of silently showing an out-of-season image.
+const STALE_AFTER_DAYS = 45
+
 // Generic version of the old NdviClassesPanel - toggle-by-class chips with
 // live area stats, reused by the Vegetazione, Salute vegetazione and
 // Temperatura suolo tabs (see app/green/{ndvi,nbr,lst}/page.tsx). Each tab
@@ -39,11 +43,19 @@ export function ClassesTogglePanel<T extends string>({
   const { setLayersFilter } = useMapContext()
   const [visible, setVisible] = useState<T[]>([...allClasses])
   const [stats, setStats] = useState<Record<T, ClassStats> | null>(null)
+  const [sceneDate, setSceneDate] = useState<string | null>(null)
+  const [isStale, setIsStale] = useState(false)
 
   useEffect(() => {
     fetch(dataUrl)
       .then((r) => r.json())
-      .then((fc) => setStats(computeClassStats(fc.features ?? [], allClasses, propertyKey)))
+      .then((fc) => {
+        setStats(computeClassStats(fc.features ?? [], allClasses, propertyKey))
+        const date: string | null = fc.scene_date ?? null
+        setSceneDate(date)
+        const ageDays = date != null ? (Date.now() - new Date(date).getTime()) / 86_400_000 : 0
+        setIsStale(date != null && ageDays > STALE_AFTER_DAYS)
+      })
       .catch(() => null)
     // Each page mounts its own panel instance with fixed props - fetch once on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,6 +75,18 @@ export function ClassesTogglePanel<T extends string>({
 
   return (
     <div className="flex flex-col gap-2">
+      {sceneDate && (
+        <p className={`text-xs ${isStale ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"}`}>
+          Immagine satellitare del{" "}
+          {new Date(sceneDate).toLocaleDateString("it-IT", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
+          {isStale && " · dato non aggiornato di recente"}
+        </p>
+      )}
+
       <HoverPopupLayer
         layerId={fillLayerId}
         render={(props) => {

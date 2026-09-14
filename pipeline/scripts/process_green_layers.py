@@ -37,6 +37,7 @@ from shapely.validation import make_valid
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from lib.comune_config import BOUNDARY_PATH
+from lib.scene_date import sentinel2_scene_date
 
 
 # NDVI classification: (low_inclusive, high_exclusive, label, hex_color)
@@ -200,8 +201,11 @@ def main() -> None:
         })
 
     out_path.write_text(
-        json.dumps({'type': 'FeatureCollection', 'features': features},
-                   separators=(',', ':'), ensure_ascii=False)
+        json.dumps({
+            'type': 'FeatureCollection',
+            'scene_date': sentinel2_scene_date(safe_dir),
+            'features': features,
+        }, separators=(',', ':'), ensure_ascii=False)
     )
     print(f'[OK] {out_path.name}: {len(features)} features')
 

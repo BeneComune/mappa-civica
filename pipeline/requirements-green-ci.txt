@@ -1,0 +1,8 @@
+# Subset for the monthly green-refresh GitHub Actions job (fetch + process
+# NDVI/NBR/LST). Separate from requirements-ci.txt so the lighter CI targets
+# (rescue/base/community/cyclepaths) don't pay the rasterio/GDAL install cost.
+boto3
+numpy==1.26.4
+rasterio==1.3.10
+requests==2.32.3
+shapely==2.0.5
