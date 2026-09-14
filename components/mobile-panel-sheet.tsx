@@ -4,10 +4,12 @@
 import { createContext, useContext, useState } from "react"
 import { ChevronUp } from "lucide-react"
 
-// Lets content deep inside the sheet collapse it - e.g. the Segnala flow
-// needs the map visible while the user picks a point. null outside a sheet
-// (desktop), so consumers call it optionally.
-type PanelSheetHandle = { collapse: () => void }
+// Lets content deep inside the sheet collapse or expand it - e.g. the
+// Segnala flow needs the map visible while the user picks a point, and
+// MapFeatureDetail expands the sheet when a map tap selects a feature so its
+// detail card is actually visible instead of hidden behind the collapsed
+// peek bar. null outside a sheet (desktop), so consumers call it optionally.
+type PanelSheetHandle = { collapse: () => void; expand: () => void }
 const PanelSheetContext = createContext<PanelSheetHandle | null>(null)
 
 export function usePanelSheet(): PanelSheetHandle | null {
@@ -29,7 +31,9 @@ export function MobilePanelSheet({
   const [open, setOpen] = useState(false)
 
   return (
-    <PanelSheetContext.Provider value={{ collapse: () => setOpen(false) }}>
+    <PanelSheetContext.Provider
+      value={{ collapse: () => setOpen(false), expand: () => setOpen(true) }}
+    >
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30">
         <div className="pointer-events-auto mx-2 mb-2 overflow-hidden rounded-xl border bg-background/95 shadow-lg backdrop-blur">
           <button

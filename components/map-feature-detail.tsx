@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react"
 import { X } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
+import { usePanelSheet } from "@/components/mobile-panel-sheet"
 import type { RescueDetail } from "@/lib/rescue-details"
 
 type Resolver = (props: Record<string, unknown>) => RescueDetail | null
@@ -18,13 +19,21 @@ export function MapFeatureDetail({
   layers: Array<{ id: string; resolve: Resolver }>
 }) {
   const { attachFeatureSelect, mapReady } = useMapContext()
+  const sheet = usePanelSheet()
   const [detail, setDetail] = useState<RescueDetail | null>(null)
 
   const layerKey = layers.map((l) => l.id).join(",")
   useEffect(() => {
     if (!mapReady) return
     const detachers = layers.map(({ id, resolve }) =>
-      attachFeatureSelect(id, (props) => setDetail(resolve(props)))
+      attachFeatureSelect(id, (props) => {
+        const resolved = resolve(props)
+        setDetail(resolved)
+        // On mobile the panel starts collapsed to a peek bar - a map tap
+        // should surface the detail card instead of leaving it hidden
+        // behind it until the user opens the sheet by hand.
+        if (resolved) sheet?.expand()
+      })
     )
     return () => detachers.forEach((detach) => detach())
     // eslint-disable-next-line react-hooks/exhaustive-deps
