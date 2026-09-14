@@ -2,7 +2,7 @@ PYTHON := python
 
 SCRIPTS := scripts
 
-.PHONY: help all base outdoor cyclepaths rescue rii fire catasto peaks hospital green green-refresh fetch-sentinel2 fetch-landsat community tiles basemap
+.PHONY: help all base outdoor cyclepaths rescue rii fire catasto peaks hospital green green-refresh green-refresh-sentinel2 fetch-sentinel2 fetch-landsat community tiles basemap
 
 help:
 	@echo "Montereale Valcellina - pipeline GIS"
@@ -20,6 +20,7 @@ help:
 	@echo "  make green      NDVI, NBR, LST, shade corridors (Sentinel-2 + LiDAR)"
 	@echo "  make green-refresh  Fetch latest Sentinel-2/Landsat via API, then make green"
 	@echo "                      (needs CDSE_*/USGS_* credentials, see SETUP.md)"
+	@echo "  make green-refresh-sentinel2  Same, NDVI+NBR only (CDSE_* only, no Landsat/USGS needed)"
 	@echo "  make community  Build community_data.duckdb from data/community/reports.csv"
 	@echo "  make tiles      alias of catasto (the only PMTiles layer)"
 	@echo "  make basemap    Dark vector basemap (planetiler + OpenMapTiles, ~450MB, needs Java 21+)"
@@ -85,6 +86,13 @@ fetch-landsat:
 	$(PYTHON) $(SCRIPTS)/fetch_landsat_scene.py
 
 green-refresh: fetch-sentinel2 fetch-landsat green
+
+# NDVI+NBR only, for testing/using the Copernicus side before USGS credentials
+# are ready - skips process_lst.py (needs Landsat) and process_shade_corridors.py
+# (needs the DEM-derived trails.geojson, also not fetched here).
+green-refresh-sentinel2: fetch-sentinel2
+	$(PYTHON) $(SCRIPTS)/process_green_layers.py
+	$(PYTHON) $(SCRIPTS)/process_nbr.py
 
 community:
 	$(PYTHON) $(SCRIPTS)/build_community_duckdb.py

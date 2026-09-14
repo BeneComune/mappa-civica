@@ -11,7 +11,7 @@ on:
         required: true
         default: 'rescue'
         type: choice
-        options: [rescue, fire, catasto, cyclepaths, peaks, hospital, base, community, green-refresh, fetch-sentinel2, fetch-landsat]
+        options: [rescue, fire, catasto, cyclepaths, peaks, hospital, base, community, green-refresh, green-refresh-sentinel2, fetch-sentinel2, fetch-landsat]
 
 permissions:
   contents: write
@@ -39,7 +39,7 @@ jobs:
         if: >-
           github.event.schedule == '0 3 1 * *' ||
           (github.event_name == 'workflow_dispatch' && contains(
-            fromJSON('["green-refresh", "fetch-sentinel2", "fetch-landsat"]'),
+            fromJSON('["green-refresh", "green-refresh-sentinel2", "fetch-sentinel2", "fetch-landsat"]'),
             github.event.inputs.target
           ))
         run: pip install -r requirements-green-ci.txt
