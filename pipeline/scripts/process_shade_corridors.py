@@ -19,6 +19,7 @@ trails.geojson from `make outdoor` (needs the DEM). `make green`.
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from rasterio.crs import CRS
@@ -151,9 +152,17 @@ def main() -> None:
     roads_path = data_dir / 'transport.geojson'
     trails_path = repo_root / 'pipeline' / 'data' / 'outdoor' / 'trails.geojson'
 
-    for p in (greenery_path, roads_path, trails_path):
+    for p in (greenery_path, roads_path):
         if not p.exists():
             raise FileNotFoundError(f'{p} not found.')
+    if not trails_path.exists():
+        # Gitignored intermediate from `make outdoor` (needs the DEM) - not
+        # produced by `make green-refresh`, which only fetches Sentinel-2/
+        # Landsat. Skip rather than fail the whole `green` chain over it, so
+        # a green-refresh run still commits the NDVI/NBR/LST it did produce
+        # instead of discarding them because of this unrelated step.
+        print(f'[warn] {trails_path} not found - skipping shade corridors.', file=sys.stderr)
+        return
 
     vegetation_union = load_vegetation_union(greenery_path)
 
