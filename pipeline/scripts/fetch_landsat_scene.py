@@ -143,8 +143,10 @@ def request_download_url(api_key: str, entity_id: str, product_id: str) -> str:
     # `label` identifies this download batch - required for the request to
     # actually queue anything, and it's what download-retrieve is later
     # polled with (not the downloadId - that only identifies one item
-    # *within* a label's batch).
-    label = f'mappa-civica-{entity_id}'
+    # *within* a label's batch). Capped at 50 chars by the API; this script
+    # only ever requests one download per run, so a fixed short label is
+    # fine - no need to encode the (much longer) entityId into it.
+    label = 'mappa-civica'
     result = m2m_post('download-request', api_key, {
         'downloads': [{'entityId': entity_id, 'productId': product_id}],
         'label': label,
