@@ -99,7 +99,14 @@ def scene_cloud_cover(scene: dict) -> float | None:
     return float(value) if value is not None else None
 
 
-def find_st_b10_product_id(api_key: str, entity_id: str) -> str:
+def find_st_b10_product_id(api_key: str, entity_id: str) -> tuple[str, str]:
+    """Returns (entityId, productId) for the ST_B10 download-request call.
+
+    A secondary download nested under a bundle carries its own entityId,
+    distinct from the parent scene's - download-request needs that pair,
+    not the parent's entityId with the secondary's id (confirmed live: the
+    latter comes back as an invalid scene with no explanation).
+    """
     options = m2m_post('download-options', api_key, {
         'datasetName': DATASET_NAME,
         'entityIds': [entity_id],
@@ -117,7 +124,8 @@ def find_st_b10_product_id(api_key: str, entity_id: str) -> str:
     for option in candidates:
         haystack = ' '.join(str(v) for v in option.values() if isinstance(v, str)).upper()
         if 'ST_B10' in haystack:
-            return option['id']
+            print(f'[INFO] Matched download option: {json.dumps(option, default=str)}')
+            return option.get('entityId') or entity_id, option['id']
 
     print(f'[ERROR] No ST_B10 option found among {len(candidates)} candidates.', file=sys.stderr)
     print('[ERROR] Full option objects (deduplicated by id):', file=sys.stderr)
@@ -198,8 +206,8 @@ def main() -> None:
     display_id = chosen['displayId']
     print(f'[INFO] Selected: {display_id} (cloud cover {scene_cloud_cover(chosen)}%)')
 
-    product_id = find_st_b10_product_id(api_key, chosen['entityId'])
-    url = request_download_url(api_key, chosen['entityId'], product_id)
+    download_entity_id, product_id = find_st_b10_product_id(api_key, chosen['entityId'])
+    url = request_download_url(api_key, download_entity_id, product_id)
 
     out_path = raw_dir / f'{display_id}_ST_B10.TIF'
     download_file(url, out_path)
