@@ -20,6 +20,7 @@ Not run by `make green` directly - `make green-refresh` runs this first, then
 
 from __future__ import annotations
 
+import json
 import os
 import sys
 import time
@@ -64,7 +65,6 @@ def get_api_key() -> str:
 
 
 def boundary_bbox() -> tuple[float, float, float, float]:
-    import json
     data = json.loads(BOUNDARY_PATH.read_text())
     geom = data['geometry'] if data.get('type') == 'Feature' else (
         data['features'][0]['geometry'] if data.get('features') else data)
@@ -106,19 +106,28 @@ def find_st_b10_product_id(api_key: str, entity_id: str) -> str:
     })
     # The standalone ST_B10 band isn't always a top-level download option -
     # for bundled products it's nested under a bundle's secondaryDownloads.
-    # Search both levels.
+    # Search both levels. productName is often a generic "Band File" label
+    # here (not the band id) - check every string field on the option for
+    # "ST_B10", not just productName, since the real discriminator (seen on
+    # a live run) turned out not to be productName at all.
     candidates = list(options)
     for option in options:
         candidates.extend(option.get('secondaryDownloads') or [])
 
     for option in candidates:
-        name = (option.get('productName') or '').upper()
-        if 'ST_B10' in name or 'SURFACE TEMPERATURE BAND' in name:
+        haystack = ' '.join(str(v) for v in option.values() if isinstance(v, str)).upper()
+        if 'ST_B10' in haystack:
             return option['id']
 
-    print('[ERROR] No ST_B10 option found. Available productName/id pairs:', file=sys.stderr)
+    print(f'[ERROR] No ST_B10 option found among {len(candidates)} candidates.', file=sys.stderr)
+    print('[ERROR] Full option objects (deduplicated by id):', file=sys.stderr)
+    seen: set[str] = set()
     for option in candidates:
-        print(f"  - {option.get('productName')!r} (id={option.get('id')})", file=sys.stderr)
+        opt_id = str(option.get('id'))
+        if opt_id in seen:
+            continue
+        seen.add(opt_id)
+        print(f'  {json.dumps(option, default=str)}', file=sys.stderr)
     raise FileNotFoundError(f'No ST_B10 download option found for entity {entity_id}')
 
 
