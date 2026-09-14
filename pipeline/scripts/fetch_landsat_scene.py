@@ -132,21 +132,28 @@ def find_st_b10_product_id(api_key: str, entity_id: str) -> str:
 
 
 def request_download_url(api_key: str, entity_id: str, product_id: str) -> str:
+    # `label` identifies this download batch - required for the request to
+    # actually queue anything, and it's what download-retrieve is later
+    # polled with (not the downloadId - that only identifies one item
+    # *within* a label's batch).
+    label = f'mappa-civica-{entity_id}'
     result = m2m_post('download-request', api_key, {
         'downloads': [{'entityId': entity_id, 'productId': product_id}],
+        'label': label,
     })
     for item in result.get('availableDownloads', []):
         return item['url']
 
     preparing = result.get('preparingDownloads', [])
     if not preparing:
+        print(f'[ERROR] download-request response: {json.dumps(result, default=str)}', file=sys.stderr)
         raise RuntimeError('download-request returned no available or preparing downloads')
     download_id = preparing[0]['downloadId']
 
     deadline = time.monotonic() + DOWNLOAD_POLL_TIMEOUT_SECONDS
     while time.monotonic() < deadline:
         time.sleep(DOWNLOAD_POLL_SECONDS)
-        retrieve = m2m_post('download-retrieve', api_key, {'label': download_id})
+        retrieve = m2m_post('download-retrieve', api_key, {'label': label})
         for item in retrieve.get('available', []):
             if item.get('downloadId') == download_id:
                 return item['url']
