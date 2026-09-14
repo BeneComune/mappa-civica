@@ -104,12 +104,21 @@ def find_st_b10_product_id(api_key: str, entity_id: str) -> str:
         'datasetName': DATASET_NAME,
         'entityIds': [entity_id],
     })
+    # The standalone ST_B10 band isn't always a top-level download option -
+    # for bundled products it's nested under a bundle's secondaryDownloads.
+    # Search both levels.
+    candidates = list(options)
     for option in options:
-        # USGS labels the standalone surface-temperature band product
-        # differently across dataset revisions; match loosely on the name.
+        candidates.extend(option.get('secondaryDownloads') or [])
+
+    for option in candidates:
         name = (option.get('productName') or '').upper()
         if 'ST_B10' in name or 'SURFACE TEMPERATURE BAND' in name:
             return option['id']
+
+    print('[ERROR] No ST_B10 option found. Available productName/id pairs:', file=sys.stderr)
+    for option in candidates:
+        print(f"  - {option.get('productName')!r} (id={option.get('id')})", file=sys.stderr)
     raise FileNotFoundError(f'No ST_B10 download option found for entity {entity_id}')
 
 
