@@ -14,7 +14,7 @@ export default function GreenNbrPage() {
         title={STRINGS.vegetationHealth}
         description={STRINGS.vegetationHealthDescription}
       />
-      <p className="mt-1 text-xs text-muted-foreground">Da Sentinel-2 · 20 m · settembre 2025 · ombre mascherate</p>
+      <p className="mt-1 text-xs text-muted-foreground">Da Sentinel-2 · 20 m · ombre mascherate</p>
       <div className="mt-3">
         <ClassesTogglePanel
           dataUrl="/data/nbr.geojson"

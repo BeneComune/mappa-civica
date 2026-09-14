@@ -14,7 +14,7 @@ export default function GreenLstPage() {
         title={STRINGS.soilTemperature}
         description={STRINGS.soilTemperatureDescription}
       />
-      <p className="mt-1 text-xs text-muted-foreground">Da Landsat 8 · 30 m · settembre 2023</p>
+      <p className="mt-1 text-xs text-muted-foreground">Da Landsat 8/9 · 30 m</p>
       <div className="mt-3">
         <ClassesTogglePanel
           dataUrl="/data/lst.geojson"
