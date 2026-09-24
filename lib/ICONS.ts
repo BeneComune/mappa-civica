@@ -28,6 +28,7 @@ import {
   PlaneTakeoff,
   Repeat2,
   Route,
+  Ruler,
   Satellite,
   ShieldPlus,
   Signpost,
@@ -38,6 +39,7 @@ import {
   Trash2,
   Trees,
   TreePine,
+  TrendingDown,
   TrendingUp,
   TriangleAlert,
   Undo2,
@@ -86,6 +88,9 @@ export const ICONS = {
   routePlannerSwap: ArrowLeftRight,
   routePlannerUndo: Undo2,
   routePlannerClear: BroomSparkles,
+  routePlannerDistance: Ruler,
+  routePlannerAscent: TrendingUp,
+  routePlannerDescent: TrendingDown,
 
   // Bike infra categories
   bikeInfraCiclabili: Bike,

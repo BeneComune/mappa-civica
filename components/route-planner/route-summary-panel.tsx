@@ -35,6 +35,30 @@ const SURFACE_COLORS: Record<string, string> = {
 
 const surfaceColor = (label: string): string => SURFACE_COLORS[label] ?? COLORS.surfaceDefault
 
+function RouteTotals({ summary }: { summary: RouteSummary }) {
+  const DistanceIcon = ICONS.routePlannerDistance
+  const AscentIcon = ICONS.routePlannerAscent
+  const DescentIcon = ICONS.routePlannerDescent
+
+  return (
+    <div className="grid grid-cols-3 text-sm font-medium">
+      <span className="flex flex-col items-center gap-0.5">
+        <DistanceIcon className="size-4" aria-hidden="true" />
+        {formatDistance(summary.distanceKm)}
+        <span className="text-xs font-normal text-muted-foreground">{STRINGS.routePlannerDistance}</span>
+      </span>
+      <span className="flex flex-col items-center gap-0.5">
+        <AscentIcon className="size-4" aria-hidden="true" />+{Math.round(summary.elevationGainM)} m
+        <span className="text-xs font-normal text-muted-foreground">{STRINGS.routePlannerAscent}</span>
+      </span>
+      <span className="flex flex-col items-center gap-0.5">
+        <DescentIcon className="size-4" aria-hidden="true" />-{Math.round(summary.elevationLossM)} m
+        <span className="text-xs font-normal text-muted-foreground">{STRINGS.routePlannerDescent}</span>
+      </span>
+    </div>
+  )
+}
+
 function TravelTimes({ summary }: { summary: RouteSummary }) {
   const WalkIcon = ICONS.routePlannerWalking
   const BikeIcon = ICONS.routePlannerBiking
@@ -97,11 +121,7 @@ function SurfaceBreakdown({ summary }: { summary: RouteSummary }) {
 export function RouteSummaryPanel({ summary }: { summary: RouteSummary }) {
   return (
     <>
-      <div className="flex items-center gap-3 text-sm font-medium">
-        <span>{formatDistance(summary.distanceKm)}</span>
-        <span>+{Math.round(summary.elevationGainM)} m</span>
-        <span>-{Math.round(summary.elevationLossM)} m</span>
-      </div>
+      <RouteTotals summary={summary} />
 
       <TravelTimes summary={summary} />
 
