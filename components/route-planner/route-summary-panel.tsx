@@ -139,7 +139,7 @@ export function RouteSummaryPanel({ summary }: { summary: RouteSummary }) {
 
       <div className="flex flex-col gap-1">
         <span className="text-xs font-medium">{STRINGS.routePlannerDownloads}</span>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-4 gap-2">
           {EXPORT_FORMATS.map((format) => (
             <Button key={format} size="sm" variant="outline" onClick={() => exportRoute(summary, format)}>
               {format.toUpperCase()}
