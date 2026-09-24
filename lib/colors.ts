@@ -124,6 +124,26 @@ export const COLORS = {
   routeLine: "#1d4ed8",
   routeProfileFill: "#8ecae6",
 
+  // Route planner surface breakdown: one color per road/surface label
+  surfaceAsfalto: "#495057",
+  surfacePavimentazione: "#868e96",
+  surfacePave: "#845ef7",
+  surfaceSterrato: "#a9713a",
+  surfaceGhiaia: "#ced4da",
+  surfacePrato: "#74b816",
+  surfaceSabbia: "#f2d16b",
+  surfacePistaCiclabile: "#2f78c4",
+  surfaceSentiero: "#2b8a3e",
+  surfaceStradaBianca: "#d9a066",
+  surfacePedonale: "#12b886",
+  surfaceScalini: "#c2255c",
+  surfaceStradaUrbana: "#5c7cfa",
+  surfaceStradaServizio: "#748ffc",
+  surfaceStradaMinore: "#4dabf7",
+  surfaceStradaExtraurbana: "#f59f00",
+  surfaceStradaPrincipale: "#e8590c",
+  surfaceDefault: "#adb5bd",
+
   // Report drawer: single-point pin marker (Segnala)
   reportLocationPin: "#e03131",
 
