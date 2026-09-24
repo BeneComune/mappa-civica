@@ -167,5 +167,16 @@ export const STRINGS = {
   footerCreditPrefix: "realizzato da",
   footerCreditConjunction: "e",
   footerSource: "Codice sorgente",
+  footerUpdatedNow: "Aggiornato adesso",
+  footerUpdatedPrefix: "Aggiornato",
+  footerUpdatedSuffix: "fa",
+  // [singular, plural] per unit of lib/time-since.ts
+  footerTimeUnits: {
+    minutes: ["minuto", "minuti"],
+    hours: ["ora", "ore"],
+    days: ["giorno", "giorni"],
+    months: ["mese", "mesi"],
+    years: ["anno", "anni"],
+  },
 } as const
 

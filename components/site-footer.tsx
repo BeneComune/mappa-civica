@@ -1,4 +1,5 @@
 // components\site-footer.tsx
+import { CommitInfo } from "@/components/commit-info"
 import { STRINGS } from "@/lib/strings"
 
 const AUTHORS = [
@@ -30,16 +31,19 @@ export function SiteFooter() {
           ))}
         </span>
 
-        <a
-          href={SOURCE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={STRINGS.footerSource}
-          title={STRINGS.footerSource}
-          className="hover:text-foreground"
-        >
-          <GithubMark />
-        </a>
+        <span className="flex items-center gap-1.5">
+          <a
+            href={SOURCE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={STRINGS.footerSource}
+            title={STRINGS.footerSource}
+            className="hover:text-foreground"
+          >
+            <GithubMark />
+          </a>
+          <CommitInfo />
+        </span>
       </div>
     </footer>
   )
