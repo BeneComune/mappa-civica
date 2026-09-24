@@ -9,6 +9,7 @@ import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 import { exportRoute, type RouteExportFormat, type RouteSummary } from "@/lib/routing"
 import { formatDistance, formatTime } from "./format"
+import { StatCard } from "./stat-card"
 
 const EXPORT_FORMATS: RouteExportFormat[] = ["geojson", "gpx", "kml", "csv"]
 
@@ -36,51 +37,45 @@ const SURFACE_COLORS: Record<string, string> = {
 const surfaceColor = (label: string): string => SURFACE_COLORS[label] ?? COLORS.surfaceDefault
 
 function RouteTotals({ summary }: { summary: RouteSummary }) {
-  const DistanceIcon = ICONS.routePlannerDistance
-  const AscentIcon = ICONS.routePlannerAscent
-  const DescentIcon = ICONS.routePlannerDescent
-
   return (
-    <div className="grid grid-cols-3 text-sm font-medium">
-      <span className="flex flex-col items-center gap-0.5">
-        <DistanceIcon className="size-4" aria-hidden="true" />
-        {formatDistance(summary.distanceKm)}
-        <span className="text-xs font-normal text-muted-foreground">{STRINGS.routePlannerDistance}</span>
-      </span>
-      <span className="flex flex-col items-center gap-0.5">
-        <AscentIcon className="size-4" aria-hidden="true" />+{Math.round(summary.elevationGainM)} m
-        <span className="text-xs font-normal text-muted-foreground">{STRINGS.routePlannerAscent}</span>
-      </span>
-      <span className="flex flex-col items-center gap-0.5">
-        <DescentIcon className="size-4" aria-hidden="true" />-{Math.round(summary.elevationLossM)} m
-        <span className="text-xs font-normal text-muted-foreground">{STRINGS.routePlannerDescent}</span>
-      </span>
+    <div className="grid grid-cols-3">
+      <StatCard
+        icon={ICONS.routePlannerDistance}
+        value={formatDistance(summary.distanceKm)}
+        label={STRINGS.routePlannerDistance}
+      />
+      <StatCard
+        icon={ICONS.routePlannerAscent}
+        value={`+${Math.round(summary.elevationGainM)} m`}
+        label={STRINGS.routePlannerAscent}
+      />
+      <StatCard
+        icon={ICONS.routePlannerDescent}
+        value={`-${Math.round(summary.elevationLossM)} m`}
+        label={STRINGS.routePlannerDescent}
+      />
     </div>
   )
 }
 
 function TravelTimes({ summary }: { summary: RouteSummary }) {
-  const WalkIcon = ICONS.routePlannerWalking
-  const BikeIcon = ICONS.routePlannerBiking
-  const EbikeIcon = ICONS.routePlannerEbike
-
   return (
-    <div className="grid grid-cols-3 text-xs">
-      <span className="flex flex-col items-center gap-0.5">
-        <WalkIcon className="size-4" aria-hidden="true" />
-        {formatTime(summary.times.walking)}
-        <span className="text-muted-foreground">{STRINGS.routePlannerWalking}</span>
-      </span>
-      <span className="flex flex-col items-center gap-0.5">
-        <BikeIcon className="size-4" aria-hidden="true" />
-        {formatTime(summary.times.biking)}
-        <span className="text-muted-foreground">{STRINGS.routePlannerBiking}</span>
-      </span>
-      <span className="flex flex-col items-center gap-0.5">
-        <EbikeIcon className="size-4" aria-hidden="true" />
-        {formatTime(summary.times.ebike)}
-        <span className="text-muted-foreground">{STRINGS.routePlannerEbike}</span>
-      </span>
+    <div className="grid grid-cols-3">
+      <StatCard
+        icon={ICONS.routePlannerWalking}
+        value={formatTime(summary.times.walking)}
+        label={STRINGS.routePlannerWalking}
+      />
+      <StatCard
+        icon={ICONS.routePlannerBiking}
+        value={formatTime(summary.times.biking)}
+        label={STRINGS.routePlannerBiking}
+      />
+      <StatCard
+        icon={ICONS.routePlannerEbike}
+        value={formatTime(summary.times.ebike)}
+        label={STRINGS.routePlannerEbike}
+      />
     </div>
   )
 }
