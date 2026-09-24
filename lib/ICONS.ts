@@ -1,6 +1,6 @@
 // lib\ICONS.ts
 import {
-  ArrowUpDown,
+  ArrowLeftRight,
   Bike,
   BroomSparkles,
   CircleHelp,
@@ -83,7 +83,7 @@ export const ICONS = {
   routePlannerBiking: Bike,
   routePlannerEbike: Zap,
   routePlannerRemovePoint: X,
-  routePlannerSwap: ArrowUpDown,
+  routePlannerSwap: ArrowLeftRight,
   routePlannerUndo: Undo2,
   routePlannerClear: BroomSparkles,
 
