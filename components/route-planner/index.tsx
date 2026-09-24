@@ -6,6 +6,7 @@ import { createPortal } from "react-dom"
 import { MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { usePanelSheet } from "@/components/mobile-panel-sheet"
+import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
 import { useIsMobile } from "@/lib/use-is-mobile"
 import { buildRouteSummary, type RouteSummary, type RoutingMode } from "@/lib/routing"
@@ -68,6 +69,10 @@ export function RoutePlanner({ mode }: { mode: RoutingMode }) {
           ? `${points.length} ${STRINGS.routePlannerStatusConnected}`
           : STRINGS.routePlannerStatusNotFound
 
+  const SwapIcon = ICONS.routePlannerSwap
+  const UndoIcon = ICONS.routePlannerUndo
+  const ClearIcon = ICONS.routePlannerClear
+
   const network =
     mode === "biking" ? STRINGS.routePlannerNetworkBiking : STRINGS.routePlannerNetworkWalking
 
@@ -105,12 +110,15 @@ export function RoutePlanner({ mode }: { mode: RoutingMode }) {
 
       <div className="flex flex-wrap gap-2">
         <Button size="sm" variant="outline" disabled={points.length < 2} onClick={() => setPoints((prev) => [...prev].reverse())}>
+          <SwapIcon aria-hidden="true" />
           {STRINGS.routePlannerSwap}
         </Button>
         <Button size="sm" variant="outline" disabled={points.length === 0} onClick={() => setPoints((prev) => prev.slice(0, -1))}>
+          <UndoIcon aria-hidden="true" />
           {STRINGS.routePlannerUndo}
         </Button>
         <Button size="sm" variant="outline" disabled={points.length === 0} onClick={() => setPoints([])}>
+          <ClearIcon aria-hidden="true" />
           {STRINGS.routePlannerClear}
         </Button>
       </div>

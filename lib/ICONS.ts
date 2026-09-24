@@ -1,6 +1,8 @@
 // lib\ICONS.ts
 import {
+  ArrowUpDown,
   Bike,
+  BroomSparkles,
   CircleHelp,
   CirclePlus,
   Compass,
@@ -38,6 +40,7 @@ import {
   TreePine,
   TrendingUp,
   TriangleAlert,
+  Undo2,
   UtensilsCrossed,
   Users,
   Waves,
@@ -80,6 +83,9 @@ export const ICONS = {
   routePlannerBiking: Bike,
   routePlannerEbike: Zap,
   routePlannerRemovePoint: X,
+  routePlannerSwap: ArrowUpDown,
+  routePlannerUndo: Undo2,
+  routePlannerClear: BroomSparkles,
 
   // Bike infra categories
   bikeInfraCiclabili: Bike,
