@@ -109,15 +109,15 @@ export function RoutePlanner({ mode }: { mode: RoutingMode }) {
       {points.length > 0 && <RoutePointList points={points} onRemove={removePoint} />}
 
       <div className="flex flex-wrap gap-2">
-        <Button size="sm" variant="outline" disabled={points.length < 2} onClick={() => setPoints((prev) => [...prev].reverse())}>
-          <SwapIcon aria-hidden="true" />
-          {STRINGS.routePlannerSwap}
-        </Button>
-        <Button size="sm" variant="outline" disabled={points.length === 0} onClick={() => setPoints((prev) => prev.slice(0, -1))}>
+        <Button size="sm" variant="outline" className="flex-1" disabled={points.length === 0} onClick={() => setPoints((prev) => prev.slice(0, -1))}>
           <UndoIcon aria-hidden="true" />
           {STRINGS.routePlannerUndo}
         </Button>
-        <Button size="sm" variant="outline" disabled={points.length === 0} onClick={() => setPoints([])}>
+        <Button size="sm" variant="outline" className="flex-1" disabled={points.length < 2} onClick={() => setPoints((prev) => [...prev].reverse())}>
+          <SwapIcon aria-hidden="true" />
+          {STRINGS.routePlannerSwap}
+        </Button>
+        <Button size="sm" variant="outline" className="flex-1" disabled={points.length === 0} onClick={() => setPoints([])}>
           <ClearIcon aria-hidden="true" />
           {STRINGS.routePlannerClear}
         </Button>
