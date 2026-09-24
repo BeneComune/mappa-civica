@@ -26,6 +26,9 @@ jobs:
 
       - run: pnpm lint
 
+      # Generates the global LayoutProps/PageProps types tsc needs (.next/types is gitignored)
+      - run: npx next typegen
+
       - run: npx tsc --noEmit
 
       - run: pnpm check:paths
