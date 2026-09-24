@@ -41,7 +41,7 @@ function TravelTimes({ summary }: { summary: RouteSummary }) {
   const EbikeIcon = ICONS.routePlannerEbike
 
   return (
-    <div className="flex items-center gap-4 text-xs">
+    <div className="grid grid-cols-3 text-xs">
       <span className="flex flex-col items-center gap-0.5">
         <WalkIcon className="size-4" aria-hidden="true" />
         {formatTime(summary.times.walking)}
