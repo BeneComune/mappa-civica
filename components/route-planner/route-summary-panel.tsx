@@ -120,7 +120,7 @@ function SurfaceBreakdown({ summary }: { summary: RouteSummary }) {
 
 export function RouteSummaryPanel({ summary }: { summary: RouteSummary }) {
   return (
-    <>
+    <div className="flex flex-col divide-y *:py-3 *:first:pt-0 *:last:pb-0">
       <RouteTotals summary={summary} />
 
       <TravelTimes summary={summary} />
@@ -147,6 +147,6 @@ export function RouteSummaryPanel({ summary }: { summary: RouteSummary }) {
           ))}
         </div>
       </div>
-    </>
+    </div>
   )
 }
