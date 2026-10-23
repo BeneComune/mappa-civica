@@ -3,8 +3,8 @@
 
 import { useEffect, useRef } from "react"
 import * as maplibregl from "maplibre-gl"
-import type { GeoJSONSource } from "maplibre-gl"
 import { useMapContext } from "@/components/map-provider"
+import { setRouteLine } from "@/lib/map/overlays/route"
 import type { RouteSummary } from "@/lib/routing"
 import { routePointColor, type RoutePoint } from "./format"
 
@@ -22,12 +22,7 @@ export function useRouteMapLayers(
   useEffect(() => {
     const map = getMap()
     if (!map) return
-    const source = map.getSource("route") as GeoJSONSource | undefined
-    if (!source) return
-    source.setData({
-      type: "FeatureCollection",
-      features: summary ? [summary.line] : [],
-    } as never)
+    setRouteLine(map, summary ? summary.line : null)
   }, [summary, getMap])
 
   // Markers are rebuilt whenever the point list changes.

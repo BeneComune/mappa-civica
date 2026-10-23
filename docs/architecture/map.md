@@ -94,7 +94,7 @@ different ids, so the two pages toggle independently.
 | `vegetation-health` | `nbr.geojson` |
 | `soil-temperature` | `lst.geojson` |
 | `natural-shade` | `shade_corridors.geojson` |
-| `route` | none - an empty source the planners fill with `setData` |
+| `route` | none - an empty source the planners and the hospital route fill with `setRouteLine` (`overlays/route.ts`) |
 
 All paths are under `public/data/`. How they're produced: [`data-pipeline.md`](data-pipeline.md).
 

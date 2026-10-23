@@ -1,12 +1,13 @@
 // lib\map\overlays\route.ts
-import type { Map } from "maplibre-gl"
+import type { GeoJSONSource, Map } from "maplibre-gl"
 import { COLORS } from "@/lib/colors"
+import type { RouteLine } from "@/lib/routing"
 import { addLayerOnce, addSourceOnce } from "./shared"
 
-// The computed route's line geometry (see lib/routing.ts). Start/end/
+// The computed route's line geometry (see lib/routing/). Start/end/
 // waypoint markers are plain draggable maplibregl.Marker instances owned by
 // RoutePlanner, not layer features - only the line itself lives on this
-// source. Shared by both Outdoor routing pages (Cyclability and Trails).
+// source. Shared by both Outdoor routing pages and the hospital route.
 export const ROUTE_LAYER_IDS = ["route-line-casing", "route-line"]
 
 export function addRouteOverlay(map: Map): void {
@@ -34,4 +35,10 @@ export function addRouteOverlay(map: Map): void {
       "line-width": ["interpolate", ["linear"], ["zoom"], 11, 3, 15, 5.5],
     },
   })
+}
+
+// Draws a route on the shared source, or clears it with null.
+export function setRouteLine(map: Map, line: RouteLine | null): void {
+  const source = map.getSource("route") as GeoJSONSource | undefined
+  source?.setData({ type: "FeatureCollection", features: line ? [line] : [] })
 }

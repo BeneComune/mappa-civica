@@ -10,6 +10,16 @@ commit. Everything before that was backfilled from `git log` as subject lines on
 
 ## 2026-10-23
 
+### Draw the route line through setRouteLine
+
+- The route planner (`use-route-map-layers.ts`) and the hospital route (`nearest-hospital.tsx`)
+  each wrote the shared `route` source by hand. `setRouteLine(map, line | null)` in
+  `lib/map/overlays/route.ts`, next to the source it fills, now does it for both.
+- The two identical line shapes (`RouteSummary.line`, `DrivingRoute.line`) are one `RouteLine`
+  type in `lib/routing/types.ts`; with it `setData` type-checks, so both `as never` casts are gone.
+- After the four dupes fixes: default `fallow dupes` 1 group (the intentional `graph.ts` prologue),
+  `--mode weak` 9 → 3 groups (the rest are overlay calls with different literals).
+
 ### Add overlay sources and layers through addSourceOnce / addLayerOnce
 
 - 60 `if (!map.getSource(X)) map.addSource(X, ...)` / `if (!map.getLayer(X)) map.addLayer({ id: X,

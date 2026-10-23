@@ -5,7 +5,7 @@
 // `times: Record<RouteMode, ...>` and the planner UI built on it assume
 // walking/biking/ebike on the SAME route geometry, which doesn't fit a
 // car-only search.
-import type { Coord, GraphEdge, RoutingGraph, RoutingInputPoint } from "./types"
+import type { Coord, GraphEdge, RouteLine, RoutingGraph, RoutingInputPoint } from "./types"
 import { appendSegmentCoordinates, findNearestNodeId, shortestPathByCost } from "./path"
 
 const NOT_DRIVABLE = new Set(["cycleway", "steps", "footway", "path", "pedestrian"])
@@ -32,7 +32,7 @@ function drivingEdgeCost(edge: GraphEdge): number | null {
 export type DrivingRoute = {
   distanceKm: number
   timeMin: number
-  line: { type: "Feature"; geometry: { type: "LineString"; coordinates: Coord[] }; properties: Record<string, never> }
+  line: RouteLine
 }
 
 export function computeDrivingRoute(

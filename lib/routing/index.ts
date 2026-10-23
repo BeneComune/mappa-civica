@@ -11,7 +11,7 @@
 // RoutingInputPoint and SurfaceRun stay internal to ./types - they are
 // reachable structurally through RouteSummary and buildRouteSummary, so
 // re-export them here only once something outside needs to name them.
-export type { RouteSummary, RoutingGraph, RoutingMode } from "./types"
+export type { RouteLine, RouteSummary, RoutingGraph, RoutingMode } from "./types"
 export { loadRoutingGraphForMode, loadDrivingGraph } from "./graph"
 export { buildRouteSummary } from "./summary"
 export { exportRoute, type RouteExportFormat } from "./route-export"

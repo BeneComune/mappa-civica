@@ -2,8 +2,8 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import type { GeoJSONSource } from "maplibre-gl"
 import { useMapContext } from "@/components/map-provider"
+import { setRouteLine } from "@/lib/map/overlays/route"
 import { useMapLocationPicker } from "@/components/report-drawer/use-map-location-picker"
 import { formatDistance, formatTime } from "@/components/route-planner/format"
 import { computeDrivingRoute, loadDrivingGraph, type DrivingRoute, type RoutingGraph } from "@/lib/routing"
@@ -61,12 +61,7 @@ export function NearestHospital() {
   useEffect(() => {
     const map = getMap()
     if (!map) return
-    const source = map.getSource("route") as GeoJSONSource | undefined
-    if (!source) return
-    source.setData({
-      type: "FeatureCollection",
-      features: route ? [route.line] : [],
-    } as never)
+    setRouteLine(map, route ? route.line : null)
   }, [route, getMap])
 
   const status = unavailable

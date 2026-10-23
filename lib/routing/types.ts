@@ -19,6 +19,16 @@ export type SurfaceRun = {
   km: number
 }
 
+// A computed route's geometry, as drawn on the map's "route" source.
+export type RouteLine = {
+  type: "Feature"
+  geometry: {
+    type: "LineString"
+    coordinates: Coord[]
+  }
+  properties: Record<string, never>
+}
+
 export type RouteSummary = {
   distanceKm: number
   timeMin: number
@@ -35,14 +45,7 @@ export type RouteSummary = {
     elevationM: number
     grade: number
   }>
-  line: {
-    type: "Feature"
-    geometry: {
-      type: "LineString"
-      coordinates: Coord[]
-    }
-    properties: Record<string, never>
-  }
+  line: RouteLine
   points: {
     type: "FeatureCollection"
     features: Array<{
