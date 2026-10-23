@@ -48,6 +48,7 @@ export function ClassesTogglePanel<T extends string>({
   const [isStale, setIsStale] = useState(false)
 
   useEffect(() => {
+    // fallow-ignore-next-line security-sink -- dataUrl is a literal /data/ path set by each page
     fetch(dataUrl)
       .then((r) => r.json())
       .then((fc) => {

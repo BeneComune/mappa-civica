@@ -76,6 +76,7 @@ and update it after.
 and deliberate exclusions are in `.fallowrc.json`.
 
 `fallow:security` reports *candidates*, not vulnerabilities: verify each against the code before
-changing anything. Everything here runs in the browser and the site has no server code, so the
+changing anything. Once a candidate is verified as a false positive, suppress it on the line above
+with a reason: `// fallow-ignore-next-line security-sink -- <why the input is safe>`. Everything here runs in the browser and the site has no server code, so the
 `ssrf` category can't apply yet; it starts to matter if an API route is added (e.g. the
 `/api/reports` the 2026-09-06 ADR anticipates).

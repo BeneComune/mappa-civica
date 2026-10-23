@@ -44,6 +44,7 @@ export async function loadRoutingGraphForMode(mode: RoutingMode): Promise<Routin
 // network reaches past the comune boundary and so can't come from
 // transport.geojson - see build_hospital_geojson.py.
 export async function loadDrivingGraph(url: string): Promise<RoutingGraph> {
+  // fallow-ignore-next-line security-sink -- callers pass a literal /data/ path
   const response = await fetch(url)
   if (!response.ok) {
     throw new Error("Failed to load the routing network")

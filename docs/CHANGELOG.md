@@ -10,6 +10,14 @@ commit. Everything before that was backfilled from `git log` as subject lines on
 
 ## 2026-10-23
 
+### Suppress the six verified fallow:security false positives
+
+- Each sink gets `// fallow-ignore-next-line security-sink -- <reason>` stating why its input is
+  safe: jsPDF `blob:` URL, `mailto:` to the configured address, fixed Nominatim/Open-Meteo
+  origins, literal `/data/` paths. `pnpm fallow:security` now reports 0 items, with no stale
+  suppressions.
+- `docs/AGENTS.md` documents the suppression format for future reviewed false positives.
+
 ### Add a fallow:security script
 
 - `pnpm fallow:security` runs `fallow security`. First run: 6 candidates (4 `ssrf`, 2

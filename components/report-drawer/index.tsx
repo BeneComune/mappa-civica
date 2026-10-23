@@ -106,6 +106,7 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
       particella: parcel?.particella,
     }
 
+    // fallow-ignore-next-line security-sink -- always mailto: to the configured address, fields encoded
     window.location.href = buildReportMailto(report)
     onSubmitted(report)
     setSubmitted(true)

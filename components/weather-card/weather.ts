@@ -22,6 +22,7 @@ export async function fetchWeather(): Promise<Weather> {
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
     "&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m" +
     "&hourly=precipitation&past_days=1&forecast_days=1&timezone=Europe%2FRome"
+  // fallow-ignore-next-line security-sink -- fixed Open-Meteo origin, coordinates from comune config
   const response = await fetch(url)
   if (!response.ok) throw new Error(`Open-Meteo request failed: ${response.status}`)
   const data = await response.json()

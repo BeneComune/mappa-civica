@@ -110,6 +110,7 @@ export class MapSearchControl implements IControl {
     type NominatimResult = { display_name: string; boundingbox: [string, string, string, string] }
     let results: NominatimResult[]
     try {
+      // fallow-ignore-next-line security-sink -- fixed Nominatim origin; the query is an encoded param
       const response = await fetch(url)
       results = await response.json()
     } catch {
