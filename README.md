@@ -138,8 +138,8 @@ commits them to `main` (the commit triggers a Vercel deploy):
 
 - [`SETUP.md`](SETUP.md) — configuring the platform for another comune
 - [`pipeline/README.md`](pipeline/README.md) — data pipeline, targets, raw data
-- [`docs/PROGRESS.md`](docs/PROGRESS.md) — project history and architecture
-  decision records (ADR style)
+- [`docs/README.md`](docs/README.md) — index of the project docs: architecture,
+  history and ADRs, changelog, backlog
 
 ## License
 

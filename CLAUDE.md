@@ -47,7 +47,14 @@ report, including pre-existing issues touched incidentally, not just what you in
 - `AGENTS.md` (symlinked in as `CLAUDE.md`'s content via `@AGENTS.md` above) is rewritten by
   `next dev` on every run — committing it as part of your other changes is expected, not a stray diff.
 
+The process around a change (verification gates, which docs to update per commit, recipes for
+adding a page/overlay/data layer) is in `docs/AGENTS.md`. `docs/README.md` indexes the rest of
+`docs/`.
+
 ## Architecture
+
+The summary below is enough for most changes; `docs/architecture/` has one deeper doc per concern
+(map, routes, routing, community, data pipeline, mobile, UI copy, testing).
 
 ### One persistent map, route-driven overlay visibility
 
