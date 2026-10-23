@@ -84,7 +84,7 @@ describe("fetchWeather", () => {
 
   it("rejects when the endpoint is unavailable", async () => {
     mockFetch({}, false)
-    await expect(fetchWeather()).rejects.toThrow("meteo non disponibile")
+    await expect(fetchWeather()).rejects.toThrow("Open-Meteo request failed")
   })
 })
 

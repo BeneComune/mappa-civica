@@ -11,11 +11,12 @@ function renderShadePopup(props: Record<string, unknown>): string {
   const name = (props.name as string) || ""
   const shadePct = props.shade_pct as number
   const lengthM = props.length_m as number
-  const type = props.type === "trail" ? "Sentiero" : "Strada"
+  const type = props.type === "trail" ? STRINGS.shadeTrail : STRINGS.shadeRoad
+  const length = lengthM >= 1000 ? (lengthM / 1000).toFixed(1) + " km" : lengthM + " m"
   return (
     `<strong>${name || type}</strong><br/>` +
-    `Ombra: <strong>${shadePct}%</strong><br/>` +
-    `Lunghezza: ${lengthM >= 1000 ? (lengthM / 1000).toFixed(1) + " km" : lengthM + " m"}`
+    `${STRINGS.shadeCoverage}: <strong>${shadePct}%</strong><br/>` +
+    `${STRINGS.shadeLength}: ${length}`
   )
 }
 
@@ -28,10 +29,7 @@ export default function GreenShadePage() {
         title={STRINGS.naturalShade}
         description={STRINGS.naturalShadeDescription}
       />
-      <p className="mt-1 text-xs text-muted-foreground">
-        Verde più scuro = maggiore copertura arborea · linee più spesse = strade, più sottili =
-        sentieri
-      </p>
+      <p className="mt-1 text-xs text-muted-foreground">{STRINGS.shadeLegend}</p>
       <Faq>
         Percentuale di copertura arborea sopra ogni tratto di strada o sentiero, calcolata
         incrociando le aree di vegetazione densa (dallo stesso indice di vegetazione) con i

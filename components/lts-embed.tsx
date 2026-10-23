@@ -1,5 +1,6 @@
 // components\lts-embed.tsx
 import { LTS_EMBED_VIEW } from "@/lib/config"
+import { STRINGS } from "@/lib/strings"
 
 // Replaces the whole map view with the stressinbici.it (LTS) embed, same as
 // the old app - this route doesn't show our own map at all.
@@ -21,7 +22,7 @@ export function LtsEmbed() {
   return (
     <iframe
       src={src}
-      title="Stress in bici: livello di stress da traffico per la mobilità ciclabile"
+      title={STRINGS.ltsEmbedTitle}
       className="absolute inset-0 z-10 h-full w-full border-0"
     />
   )

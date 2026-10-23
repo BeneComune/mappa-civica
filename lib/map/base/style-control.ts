@@ -3,6 +3,7 @@
 // the bottom-right corner.
 import type { Map, IControl } from "maplibre-gl"
 import { ChevronDown, ChevronUp, Palette } from "lucide"
+import { STRINGS } from "@/lib/strings"
 import { icon } from "./dom"
 import {
   BASEMAP_STYLE_LABELS,
@@ -31,7 +32,7 @@ export class MapStyleControl implements IControl {
     const title = document.createElement("span")
     title.className = "map-style-switcher-title"
     title.appendChild(icon(Palette, 15))
-    title.appendChild(document.createTextNode("Legenda"))
+    title.appendChild(document.createTextNode(STRINGS.mapLegend))
 
     if (this.startCollapsed) container.classList.add("collapsed")
 

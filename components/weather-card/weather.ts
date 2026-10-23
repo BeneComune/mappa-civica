@@ -23,7 +23,7 @@ export async function fetchWeather(): Promise<Weather> {
     "&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m" +
     "&hourly=precipitation&past_days=1&forecast_days=1&timezone=Europe%2FRome"
   const response = await fetch(url)
-  if (!response.ok) throw new Error("meteo non disponibile")
+  if (!response.ok) throw new Error(`Open-Meteo request failed: ${response.status}`)
   const data = await response.json()
 
   const times: string[] = data.hourly?.time ?? []

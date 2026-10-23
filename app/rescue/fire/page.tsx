@@ -61,7 +61,7 @@ export default function RescueFirePage() {
         description={STRINGS.wildfiresDescription}
       />
       <div className="mt-1">
-        <InfoNote label="Cosa mostra questo archivio">
+        <InfoNote label={STRINGS.fireArchiveInfoLabel}>
           Archivio storico (perimetri digitalizzati dai Fogli Notizie Incendi Boschivi, dal 1990):
           registra dove il fuoco è già passato, non è una mappa previsionale di pericolosità. La
           precisione dei rilievi più vecchi è variabile.
@@ -94,12 +94,12 @@ export default function RescueFirePage() {
               onCheckedChange={setNbrEnabled}
             />
           </div>
-          <InfoNote label="Come leggere i colori">
+          <InfoNote label={STRINGS.fireDangerInfoLabel}>
             Zonazione regionale SITFOR (IRDAT FVG) ritagliata sul confine comunale: giallo =
             pericolo medio, rosso = pericolo alto. È la propensione del territorio agli incendi,
             non un allarme.
           </InfoNote>
-          <InfoNote label="Cosa indica questo indice">
+          <InfoNote label={STRINGS.fireNbrInfoLabel}>
             Da immagine Sentinel-2 (set. 2025): vegetazione secca, degradata o suolo nudo/bruciato.
             È una condizione attuale, non l&apos;effetto di un singolo incendio.
           </InfoNote>
@@ -111,7 +111,7 @@ export default function RescueFirePage() {
             allClasses={ALL_NBR_CLASSES}
             config={NBR_CLASS_CONFIG}
             disabled={!nbrEnabled}
-            disabledHint={`Attiva "${STRINGS.fireNbrToggle}" per modificare le classi`}
+            disabledHint={`${STRINGS.fireNbrDisabledPrefix} "${STRINGS.fireNbrToggle}" ${STRINGS.fireNbrDisabledSuffix}`}
           />
         </div>
       </div>

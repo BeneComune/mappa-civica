@@ -5,6 +5,7 @@ import * as React from "react"
 import Link from "next/link"
 import { ExternalLink, type LucideIcon } from "lucide-react"
 import { NavigationMenuLink } from "@/components/ui/navigation-menu"
+import { STRINGS } from "@/lib/strings"
 import { cn } from "@/lib/utils"
 
 export function ListItem({
@@ -32,7 +33,7 @@ export function ListItem({
               <span className="flex items-center gap-1.5 font-medium leading-none">
                 {title}
                 {external && (
-                  <ExternalLink aria-label="Apre una mappa esterna" className="size-3 text-muted-foreground" />
+                  <ExternalLink aria-label={STRINGS.externalMapLink} className="size-3 text-muted-foreground" />
                 )}
               </span>
               <span className="text-xs text-muted-foreground">{description}</span>

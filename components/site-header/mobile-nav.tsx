@@ -149,7 +149,7 @@ function NavLink({
       <Icon aria-hidden="true" className="size-4 shrink-0" />
       <span className="flex items-center gap-1.5">
         {label}
-        {external && <ExternalLink aria-label="Apre una mappa esterna" className="size-3" />}
+        {external && <ExternalLink aria-label={STRINGS.externalMapLink} className="size-3" />}
       </span>
     </Link>
   )

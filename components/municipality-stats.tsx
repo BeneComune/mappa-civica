@@ -1,5 +1,6 @@
 // components\municipality-stats.tsx
 import { ChevronRight } from "lucide-react"
+import { STRINGS } from "@/lib/strings"
 
 export type MunicipalityStats = {
   municipality: { name: string; province: string; region: string }
@@ -99,30 +100,30 @@ function Stat({
 export function MunicipalityStatsPanel({ stats }: { stats: MunicipalityStats }) {
   return (
     <div className="flex flex-col gap-4">
-      <StatSection title="Territorio">
-        <Stat label="Superficie">{fmt(stats.demographic.area_km2, " km²")}</Stat>
-        <Stat label="Densità">{fmt(stats.demographic.population_density_km2, " ab/km²")}</Stat>
-        <Stat label="Corsi d'acqua" long>
+      <StatSection title={STRINGS.statsTerritory}>
+        <Stat label={STRINGS.statsArea}>{fmt(stats.demographic.area_km2, " km²")}</Stat>
+        <Stat label={STRINGS.statsDensity}>{fmt(stats.demographic.population_density_km2, " ab/km²")}</Stat>
+        <Stat label={STRINGS.statsWaterways} long>
           {stats.geography.waterways.join(", ")}
         </Stat>
-        <Stat label="Cime principali" long>
+        <Stat label={STRINGS.peaks} long>
           {stats.geography.peaks.map((p) => `${p.name} (${p.elevation_m.toLocaleString("it-IT")} m)`).join(", ")}
         </Stat>
-        <Stat label="Vegetazione densa">{fmt(stats.pipeline_derived.green_area_pct, "%")}</Stat>
-        <Stat label="Sentieri CAI">{fmt(stats.pipeline_derived.trails_cai_km, " km")}</Stat>
-        <Stat label="Percorsi MTB">{fmt(stats.pipeline_derived.trails_mtb_km, " km")}</Stat>
-        <Stat label="Piste ciclabili">{fmt(stats.pipeline_derived.cycling_km, " km")}</Stat>
+        <Stat label={STRINGS.statsDenseVegetation}>{fmt(stats.pipeline_derived.green_area_pct, "%")}</Stat>
+        <Stat label={STRINGS.statsCaiTrails}>{fmt(stats.pipeline_derived.trails_cai_km, " km")}</Stat>
+        <Stat label={STRINGS.statsMtbTrails}>{fmt(stats.pipeline_derived.trails_mtb_km, " km")}</Stat>
+        <Stat label={STRINGS.statsCycleways}>{fmt(stats.pipeline_derived.cycling_km, " km")}</Stat>
       </StatSection>
 
-      <StatSection title="Popolazione">
-        <Stat label="Residenti">
+      <StatSection title={STRINGS.statsPopulation}>
+        <Stat label={STRINGS.statsResidents}>
           {stats.demographic.population != null
             ? `${stats.demographic.population.toLocaleString("it-IT")} (${stats.demographic.population_year ?? ""})`
             : "-"}
         </Stat>
-        <Stat label="Famiglie">{fmt(stats.demographic.households)}</Stat>
-        <Stat label="Componenti medi">{fmt(stats.demographic.avg_household_size)}</Stat>
-        <Stat label="Età media">
+        <Stat label={STRINGS.statsHouseholds}>{fmt(stats.demographic.households)}</Stat>
+        <Stat label={STRINGS.statsHouseholdSize}>{fmt(stats.demographic.avg_household_size)}</Stat>
+        <Stat label={STRINGS.statsAvgAge}>
           {stats.demographic.avg_age != null ? (
             <>
               {stats.demographic.avg_age} anni
@@ -134,7 +135,7 @@ export function MunicipalityStatsPanel({ stats }: { stats: MunicipalityStats }) 
             "-"
           )}
         </Stat>
-        <Stat label="Indice di vecchiaia">
+        <Stat label={STRINGS.statsOldAgeIndex}>
           {stats.demographic.old_age_index != null ? (
             <>
               {stats.demographic.old_age_index}
@@ -146,7 +147,7 @@ export function MunicipalityStatsPanel({ stats }: { stats: MunicipalityStats }) 
             "-"
           )}
         </Stat>
-        <Stat label="Pop. ≥ 65 anni">
+        <Stat label={STRINGS.statsOver65}>
           {stats.demographic.pct_pop_65_over != null ? (
             <>
               {stats.demographic.pct_pop_65_over}%<span className="text-muted-foreground"> (PN)</span>
@@ -157,8 +158,8 @@ export function MunicipalityStatsPanel({ stats }: { stats: MunicipalityStats }) 
         </Stat>
       </StatSection>
 
-      <StatSection title="Rischio territorio">
-        <Stat label="Zona sismica" long>
+      <StatSection title={STRINGS.statsRisk}>
+        <Stat label={STRINGS.statsSeismicZone} long>
           {stats.risk.seismic_zone != null ? (
             <>
               Zona {stats.risk.seismic_zone}
@@ -170,18 +171,18 @@ export function MunicipalityStatsPanel({ stats }: { stats: MunicipalityStats }) 
             "-"
           )}
         </Stat>
-        <Stat label="Rischio idrogeologico">{stats.risk.hydrogeological_risk_class ?? "-"}</Stat>
+        <Stat label={STRINGS.statsHydrogeologicalRisk}>{stats.risk.hydrogeological_risk_class ?? "-"}</Stat>
       </StatSection>
 
-      <StatSection title="Servizi">
-        <Stat label="Sportelli bancari">{fmt(stats.services.bank_branches)}</Stat>
-        <Stat label="Farmacia" long>
-          {stats.services.pharmacy_name ?? (stats.services.pharmacy ? "Sì" : stats.services.pharmacy === false ? "No" : "-")}
+      <StatSection title={STRINGS.statsServices}>
+        <Stat label={STRINGS.statsBankBranches}>{fmt(stats.services.bank_branches)}</Stat>
+        <Stat label={STRINGS.statsPharmacy} long>
+          {stats.services.pharmacy_name ?? (stats.services.pharmacy ? STRINGS.yes : stats.services.pharmacy === false ? STRINGS.no : "-")}
         </Stat>
-        <Stat label="Scuole" long>
+        <Stat label={STRINGS.statsSchools} long>
           {stats.services.schools ?? "-"}
         </Stat>
-        <Stat label="Pronto soccorso" long>
+        <Stat label={STRINGS.statsEmergencyRoom} long>
           {stats.services.nearest_emergency_room.name ? (
             <>
               {stats.services.nearest_emergency_room.name}

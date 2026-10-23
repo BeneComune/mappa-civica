@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react"
 import { useMapContext } from "@/components/map-provider"
 import { usePanelSheet } from "@/components/mobile-panel-sheet"
+import { STRINGS } from "@/lib/strings"
 
 type FrazioneFeature = {
   name: string
@@ -36,7 +37,7 @@ export function FrazioniList() {
 
   return (
     <div>
-      <h3 className="text-sm font-semibold">Frazioni</h3>
+      <h3 className="text-sm font-semibold">{STRINGS.frazioni}</h3>
       <ul className="mt-1 flex flex-wrap gap-1.5">
         {visible.map((f) => (
           <li key={f.name}>

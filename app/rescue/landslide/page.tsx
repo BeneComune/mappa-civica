@@ -16,7 +16,7 @@ export default function RescueLandslidePage() {
         description={STRINGS.landslideHazardDescription}
       />
       <div className="mt-1">
-        <InfoNote label="Cosa mostra questa mappa">
+        <InfoNote label={STRINGS.landslideInfoLabel}>
           Perimetrazioni ISPRA (mosaicatura nazionale) delle aree a pericolosità da frana definite
           nei Piani di Assetto Idrogeologico. Non prevede dove accadrà una frana: descrive dove il
           territorio è già classificato a rischio dalle autorità di bacino competenti.

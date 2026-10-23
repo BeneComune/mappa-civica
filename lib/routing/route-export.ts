@@ -3,6 +3,7 @@
 // numbers as properties; GPX/KML are the line as a track; CSV is the
 // elevation/grade profile, one row per sampled point.
 
+import { STRINGS } from "@/lib/strings"
 import type { RouteSummary } from "./types"
 
 function xmlEscape(value: string): string {
@@ -41,9 +42,9 @@ function routeToGPX(summary: RouteSummary): string {
     })
     .join("\n")
   return `<?xml version="1.0" encoding="UTF-8"?>
-<gpx version="1.1" creator="Mappa Civica" xmlns="http://www.topografix.com/GPX/1/1">
+<gpx version="1.1" creator="${STRINGS.appName}" xmlns="http://www.topografix.com/GPX/1/1">
 ${wpts}
-  <trk><name>Percorso</name><trkseg>
+  <trk><name>${STRINGS.routeExportName}</name><trkseg>
 ${pts}
   </trkseg></trk>
 </gpx>
@@ -61,9 +62,9 @@ function routeToKML(summary: RouteSummary): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
-    <name>Percorso</name>
+    <name>${STRINGS.routeExportName}</name>
 ${marks}
-    <Placemark><name>Percorso</name><LineString><tessellate>1</tessellate><coordinates>${coords}</coordinates></LineString></Placemark>
+    <Placemark><name>${STRINGS.routeExportName}</name><LineString><tessellate>1</tessellate><coordinates>${coords}</coordinates></LineString></Placemark>
   </Document>
 </kml>
 `

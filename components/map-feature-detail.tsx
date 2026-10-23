@@ -6,6 +6,7 @@ import { X } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
 import { usePanelSheet } from "@/components/mobile-panel-sheet"
 import type { RescueDetail } from "@/lib/rescue-details"
+import { STRINGS } from "@/lib/strings"
 
 type Resolver = (props: Record<string, unknown>) => RescueDetail | null
 
@@ -54,7 +55,7 @@ export function MapFeatureDetail({
         <button
           type="button"
           onClick={() => setDetail(null)}
-          aria-label="Chiudi"
+          aria-label={STRINGS.close}
           className="shrink-0 text-muted-foreground hover:text-foreground"
         >
           <X className="size-4" aria-hidden="true" />

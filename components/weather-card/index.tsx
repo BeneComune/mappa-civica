@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react"
 import { ChevronDown, Droplet, Umbrella, Wind } from "lucide-react"
+import { STRINGS } from "@/lib/strings"
 import { useIsMobile } from "@/lib/use-is-mobile"
 import { describe } from "./wmo-codes"
 import { fetchWeather, readCache, writeCache, type Weather } from "./weather"
@@ -46,7 +47,7 @@ export function WeatherCard() {
   const time = new Date(weather.observedAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })
 
   return (
-    <div className="flex flex-col gap-2" aria-label="Meteo attuale">
+    <div className="flex flex-col gap-2" aria-label={STRINGS.weatherLabel}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}

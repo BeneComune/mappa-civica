@@ -2,6 +2,7 @@
 // Render the current map canvas into an A4 PDF with a title block and a
 // real cartographic scale, then open it in a new tab.
 import type { Map } from "maplibre-gl"
+import { STRINGS } from "@/lib/strings"
 
 // Ground resolution (metres per CSS pixel) of standard Web Mercator tiles at
 // a given latitude/zoom - used to turn the on-screen map into a real
@@ -55,8 +56,8 @@ export async function exportMapToPdf(
   const center = map.getCenter()
   const groundWidthMm = metersPerPixel(center.lat, map.getZoom()) * canvas.clientWidth * 1000
   const scaleDenominator = Math.round(groundWidthMm / imgWidth)
-  const centerText = `Centro: ${formatCoord(center.lat, "N", "S")}, ${formatCoord(center.lng, "E", "O")}`
-  const scaleText = `Scala 1:${scaleDenominator.toLocaleString("it-IT")}`
+  const centerText = `${STRINGS.pdfCenter}: ${formatCoord(center.lat, "N", "S")}, ${formatCoord(center.lng, "E", "O")}`
+  const scaleText = `${STRINGS.pdfScale} 1:${scaleDenominator.toLocaleString("it-IT")}`
 
   doc.setFontSize(8)
   doc.setTextColor(130)

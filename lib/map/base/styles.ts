@@ -1,6 +1,7 @@
 // lib\map\base\styles.ts
 // Basemap appearance: which style documents the switcher offers, and the
 // terrain source the 3D relief reads from.
+import { STRINGS } from "@/lib/strings"
 
 // Live basemap styles from Maptoolkit - the same tile+style service the old
 // app's integrated stressinbici.it (LTS) map uses.
@@ -14,10 +15,10 @@ export const BASEMAP_STYLE_URLS: Record<BasemapStyleKey, string> = {
 }
 
 export const BASEMAP_STYLE_LABELS: Record<BasemapStyleKey, string> = {
-  light: "Sfondo chiaro",
-  summer: "Sfondo estivo",
-  cycling: "Sfondo ciclabile",
-  dark: "Sfondo scuro",
+  light: STRINGS.basemapLight,
+  summer: STRINGS.basemapSummer,
+  cycling: STRINGS.basemapCycling,
+  dark: STRINGS.basemapDark,
 }
 
 export const DEFAULT_BASEMAP_STYLE: BasemapStyleKey = "dark"

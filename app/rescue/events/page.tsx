@@ -6,6 +6,7 @@ import { HoverHighlightLayer } from "@/components/hover-highlight-layer"
 import { MapFeatureDetail } from "@/components/map-feature-detail"
 import { PageHeader } from "@/components/page-header"
 import { RiiRecencyFilter } from "@/components/rii-recency-filter"
+import { MUNICIPALITY_NAME } from "@/lib/config"
 import { ICONS } from "@/lib/ICONS"
 import { riiDetail } from "@/lib/rescue-details"
 import { STRINGS } from "@/lib/strings"
@@ -30,7 +31,7 @@ export default function RescueEventsPage() {
         senza nome presso Cao Malnisio) abbiamo usato il suo tracciato. Un ulteriore rio censito
         nel 2013 non compare in mappa perché privo di coordinate e di nome certo (foto datate
         2007). Il documento di riferimento è il «Censimento RII», in gestione al Gruppo Comunale
-        di Protezione Civile di Montereale Valcellina.
+        di Protezione Civile di {MUNICIPALITY_NAME}.
       </Faq>
       <MapFeatureDetail
         layers={[

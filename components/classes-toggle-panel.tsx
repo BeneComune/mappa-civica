@@ -7,6 +7,7 @@ import { useMapContext } from "@/components/map-provider"
 import { HoverPopupLayer } from "@/components/hover-popup-layer"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { computeClassStats, type ClassStats } from "@/lib/green-classes"
+import { STRINGS } from "@/lib/strings"
 
 // A scene older than this many days past the monthly refresh cadence gets
 // flagged in the UI instead of silently showing an out-of-season image.
@@ -77,13 +78,13 @@ export function ClassesTogglePanel<T extends string>({
     <div className="flex flex-col gap-2">
       {sceneDate && (
         <p className={`text-xs ${isStale ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"}`}>
-          Immagine satellitare del{" "}
+          {STRINGS.sceneDatePrefix}{" "}
           {new Date(sceneDate).toLocaleDateString("it-IT", {
             day: "numeric",
             month: "long",
             year: "numeric",
           })}
-          {isStale && " · dato non aggiornato di recente"}
+          {isStale && ` · ${STRINGS.sceneStale}`}
         </p>
       )}
 

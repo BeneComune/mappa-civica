@@ -3,6 +3,7 @@
 // danger / ignition, assets). MapFeatureDetail renders it as a panel card,
 // matching the catasto parcel readout - replaces the old map balloons, which
 // overflowed the popup with no way to scroll.
+import { STRINGS } from "@/lib/strings"
 
 export type DetailRow = {
   label: string
@@ -63,16 +64,16 @@ export function riiDetail(props: Record<string, unknown>): RescueDetail | null {
     ? "posizione approssimata"
     : `posizione ${text(props.pos_affidabilita) || "da verificare"}`
   return {
-    title: text(props.nome) || "Rio",
+    title: text(props.nome) || STRINGS.riiFallbackTitle,
     subtitle: [badge, posLabel].filter(Boolean).join(" · "),
     photo: props.foto ? `/${text(props.foto)}` : undefined,
     rows: keep([
-      row("Bacino", props.area),
-      row("Rilievo", props.anno_rilievo),
-      section("Criticità", props.descrizione),
-      section("Punti critici", props.punti_critici),
-      section("Interventi proposti", props.interventi),
-      section("Eventi recenti", props.eventi_recenti),
+      row(STRINGS.riiBasin, props.area),
+      row(STRINGS.riiSurvey, props.anno_rilievo),
+      section(STRINGS.riiIssues, props.descrizione),
+      section(STRINGS.riiCriticalPoints, props.punti_critici),
+      section(STRINGS.riiProposedWorks, props.interventi),
+      section(STRINGS.riiRecentEvents, props.eventi_recenti),
     ]),
   }
 }
@@ -84,19 +85,19 @@ function moreRow(label: string, value: unknown): DetailRow | null {
 
 export function fireDetail(props: Record<string, unknown>): RescueDetail | null {
   if (!props) return null
-  const localita = text(props.localita) || "Località non indicata"
+  const localita = text(props.localita) || STRINGS.fireUnknownPlace
   return {
     title: props.anno ? `${localita} (${text(props.anno)})` : localita,
     subtitle: text(props.causa),
     // Only date + duration up front; the rest under "Altri dettagli".
-    moreLabel: "Altri dettagli",
+    moreLabel: STRINGS.fireMoreDetails,
     rows: keep([
-      row("Data di inizio", props.data_inizio),
-      row("Durata", props.durata),
-      moreRow("Luogo di innesco", props.luogo_inizio),
-      moreRow("Stato della vegetazione", props.stato_vegetazione),
-      moreRow("Vincoli naturali", props.vincoli_naturali),
-      moreRow("Codice foglio notizie", props.codice),
+      row(STRINGS.fireStartDate, props.data_inizio),
+      row(STRINGS.fireDuration, props.durata),
+      moreRow(STRINGS.fireIgnitionPlace, props.luogo_inizio),
+      moreRow(STRINGS.fireVegetationState, props.stato_vegetazione),
+      moreRow(STRINGS.fireNaturalConstraints, props.vincoli_naturali),
+      moreRow(STRINGS.fireReportCode, props.codice),
     ]),
   }
 }
@@ -106,7 +107,7 @@ export function dangerDetail(props: Record<string, unknown>): RescueDetail | nul
   const grado = text(props.grado)
   const label = grado === "alta" ? "alto" : grado === "medio" ? "medio" : grado || "n/d"
   return {
-    title: `Classe di pericolo incendi: ${label}`,
+    title: `${STRINGS.fireDangerTitle}: ${label}`,
     rows: [],
     note:
       "Zonazione regionale SITFOR (IRDAT FVG), ritagliata sul confine comunale. Indica la " +
@@ -117,7 +118,7 @@ export function dangerDetail(props: Record<string, unknown>): RescueDetail | nul
 export function ignitionDetail(props: Record<string, unknown>): RescueDetail | null {
   if (!props) return null
   return {
-    title: `Punto di innesco${props.anno ? ` (${text(props.anno)})` : ""}`,
+    title: `${STRINGS.fireIgnitionTitle}${props.anno ? ` (${text(props.anno)})` : ""}`,
     rows: [],
     note:
       `Stazione forestale ${text(props.sigla_staz)} - foglio notizie n. ${text(props.num_fnib)}`,
@@ -142,19 +143,20 @@ const ACCESS_LABEL: Record<string, string> = {
 
 export function assetDetail(props: Record<string, unknown>): RescueDetail | null {
   if (!props) return null
-  const kind = ASSET_KIND[text(props.class)] ?? "Presidio"
+  const kind = ASSET_KIND[text(props.class)] ?? STRINGS.assetFallbackTitle
   const name = text(props["name:it"]) || text(props.name) || text(props.address)
   const hours = text(props.opening_hours)
+  const access = text(props.access)
   return {
     title: name || kind,
     subtitle: kind,
     rows: keep([
-      row("Dove si trova", props["defibrillator:location"] ?? props.description),
-      row("Orari", hours === "24/7" ? "Sempre accessibile (24/7)" : hours),
-      props.access ? row("Accesso", ACCESS_LABEL[text(props.access)] ?? text(props.access)) : null,
-      props.indoor === "yes" ? row("Collocazione", "Interno") : null,
-      row("Gestore", props.operator),
-      row("Telefono", props.phone),
+      row(STRINGS.assetLocation, props["defibrillator:location"] ?? props.description),
+      row(STRINGS.assetHours, hours === "24/7" ? "Sempre accessibile (24/7)" : hours),
+      access ? row(STRINGS.assetAccess, ACCESS_LABEL[access] ?? access) : null,
+      props.indoor === "yes" ? row(STRINGS.assetPlacement, "Interno") : null,
+      row(STRINGS.assetOperator, props.operator),
+      row(STRINGS.assetPhone, props.phone),
     ]),
     note: props.geocoded
       ? `Posizione ricavata dall'indirizzo (${text(props.geo_precision) || "approssimata"}), da verificare sul posto.`

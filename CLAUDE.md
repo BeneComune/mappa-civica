@@ -113,8 +113,21 @@ already-ingested official reports, and locally-pending unsubmitted reports in `l
 
 ### Strings and design tokens are centralized
 
-Every Italian UI string lives in `lib/strings.ts` (`STRINGS`) — check there before hardcoding new
-text. Colors live in `lib/colors.ts` (`COLORS`), icons in `lib/ICONS.ts` (`ICONS`); overlay paint
+Every short Italian UI string — labels, buttons, titles, aria-labels, popup field names, status and
+error messages shown to the user — lives in `lib/strings.ts` (`STRINGS`); check there before
+hardcoding new text. Three deliberate exceptions stay inline:
+
+- **Long explanatory prose** (`<Faq>` / `<InfoNote>` bodies, the catasto explainer) stays in its
+  page, often with inline markup. Comune-specific facts in it come from `lib/config.ts`
+  (`MUNICIPALITY_NAME`), never a hardcoded name.
+- **Code-to-label lookup tables** stay next to the codes they map, colors included:
+  `lib/green-classes.ts`, `lib/landslide-classes.ts`, `lib/routing/summary.ts` (OSM surface/highway),
+  `components/weather-card/wmo-codes.ts`, the value maps in `lib/rescue-details.ts`.
+- **Words inside formatted values** (`45 anni`, `foglio 5, particella 12`, units) stay in the
+  template that formats them.
+
+Errors that are thrown and caught without ever reaching the UI are developer messages, in English.
+Colors live in `lib/colors.ts` (`COLORS`), icons in `lib/ICONS.ts` (`ICONS`); overlay paint
 expressions and legend components both read from these so they can't disagree with each other.
 
 ### Municipality config

@@ -36,7 +36,7 @@ export function RoutePointList({
           <button
             type="button"
             className="ml-auto text-muted-foreground hover:text-foreground"
-            title="Rimuovi"
+            title={STRINGS.routePlannerRemovePoint}
             onClick={() => onRemove(point.id)}
           >
             <RemoveIcon className="size-3.5" />

@@ -8,20 +8,20 @@ import type { CommunityReport } from "./types"
 
 export function buildReportMailto(report: CommunityReport): string {
   const catLabel = categoryLabel(report.category)
-  const subject = `[Segnalazione] ${catLabel}: ${report.title}`
+  const subject = `${STRINGS.reportEmailSubjectPrefix} ${catLabel}: ${report.title}`
   const body = [
-    `Categoria: ${catLabel}`,
-    `Posizione: lat ${report.lat.toFixed(5)}, lon ${report.lon.toFixed(5)}`,
+    `${STRINGS.reportCategoryLabel}: ${catLabel}`,
+    `${STRINGS.reportLocationLabel}: lat ${report.lat.toFixed(5)}, lon ${report.lon.toFixed(5)}`,
     ...(report.foglio && report.particella
-      ? [`Particella catastale (indicativa): foglio ${report.foglio}, particella ${report.particella}`]
+      ? [`${STRINGS.reportParcelLabel}: foglio ${report.foglio}, particella ${report.particella}`]
       : []),
     ``,
-    `Descrizione:`,
-    report.description || "(nessuna descrizione)",
-    ...(report.photoDataUrl ? [``, `Fotografia allegata: → allegare il file all'email prima di inviare.`] : []),
+    `${STRINGS.reportDescriptionLabel}:`,
+    report.description || STRINGS.reportEmailNoDescription,
+    ...(report.photoDataUrl ? [``, STRINGS.reportEmailPhotoNote] : []),
     ``,
     `---`,
-    `Inviato dal portale ${STRINGS.appName}`,
+    `${STRINGS.reportEmailSignature} ${STRINGS.appName}`,
   ].join("\n")
 
   return `mailto:${MUNICIPALITY_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`

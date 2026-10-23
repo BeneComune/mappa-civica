@@ -116,7 +116,7 @@ export function CommunityPanel() {
                   type="button"
                   onClick={() => toggleVote(report.id)}
                   className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs ${voted ? "bg-accent text-accent-foreground" : ""}`}
-                  title={voted ? "Rimuovi voto" : "Anche a me importa"}
+                  title={voted ? STRINGS.reportUnvote : STRINGS.reportVote}
                 >
                   <ThumbsUp className="size-3" aria-hidden="true" /> {votes[report.id] ?? 0}
                 </button>

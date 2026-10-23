@@ -2,6 +2,7 @@
 "use client"
 
 import { CATEGORIES } from "@/lib/community"
+import { STRINGS } from "@/lib/strings"
 
 // Multi-select: each chip is an independent toggle, consistent with the
 // checkbox-based filters elsewhere in the app (fire cause, rii recency).
@@ -26,7 +27,7 @@ export function FilterChips({
         onClick={() => onChange(CATEGORIES.map((c) => c.id))}
         className={`rounded-full border px-2.5 py-1 text-xs ${allSelected ? "bg-accent text-accent-foreground" : "hover:bg-accent"}`}
       >
-        Tutte
+        {STRINGS.reportFilterAll}
       </button>
       {CATEGORIES.map((c) => {
         const Icon = c.icon

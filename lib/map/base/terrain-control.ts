@@ -1,6 +1,7 @@
 // lib\map\base\terrain-control.ts
 import type { Map, IControl } from "maplibre-gl"
 import { Mountain } from "lucide"
+import { STRINGS } from "@/lib/strings"
 import { createControlButton } from "./dom"
 import { TERRAIN_SOURCE_ID } from "./styles"
 
@@ -19,7 +20,7 @@ export class MapTerrainControl implements IControl {
   }
 
   onAdd(map: Map): HTMLElement {
-    const { container, button } = createControlButton(Mountain, "Terreno 3D")
+    const { container, button } = createControlButton(Mountain, STRINGS.mapTerrain)
     button.classList.toggle("active", this.initial)
     button.addEventListener("click", () => {
       const isOn = !!map.getTerrain()

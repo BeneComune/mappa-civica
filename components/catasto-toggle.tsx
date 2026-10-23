@@ -7,6 +7,7 @@ import { Info } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
 import { MUNICIPALITY_CADASTRAL_CODE, MUNICIPALITY_NAME } from "@/lib/config"
 import { CATASTO_LAYER_IDS } from "@/lib/map"
+import { STRINGS } from "@/lib/strings"
 
 type Parcel = { foglio: string; particella: string; lng: number; lat: number }
 
@@ -101,7 +102,7 @@ export function CatastoToggle() {
         }}
         className={`rounded-full border px-2.5 py-1 text-xs ${enabled ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent"}`}
       >
-        Particelle catastali
+        {STRINGS.catastoToggle}
       </button>
 
       {enabled && !parcel && (
@@ -121,7 +122,8 @@ export function CatastoToggle() {
 
           <details className="mt-2 border-t pt-2">
             <summary className="flex cursor-pointer list-none items-center gap-1 font-medium text-muted-foreground hover:text-foreground">
-              <Info className="size-3.5" aria-hidden="true" />A cosa serve, e limiti dei dati
+              <Info className="size-3.5" aria-hidden="true" />
+              {STRINGS.catastoInfoLabel}
             </summary>
             <div className="mt-2 flex flex-col gap-2">
               <p className="text-muted-foreground">
@@ -135,7 +137,7 @@ export function CatastoToggle() {
                 rel="noopener noreferrer"
                 className="font-medium underline underline-offset-2"
               >
-                Consulta rendita / visura (Agenzia delle Entrate)
+                {STRINGS.catastoVisuraLink}
               </a>
 
               <p className="text-muted-foreground">

@@ -19,7 +19,7 @@ export async function loadRoutingGraphForMode(mode: RoutingMode): Promise<Routin
   if (mode === "biking") {
     const response = await fetch("/data/transport.geojson")
     if (!response.ok) {
-      throw new Error("Impossibile caricare il dataset routing")
+      throw new Error("Failed to load the routing network")
     }
 
     const data = await response.json()
@@ -32,7 +32,7 @@ export async function loadRoutingGraphForMode(mode: RoutingMode): Promise<Routin
   ])
 
   if (!roadsResponse.ok || !trailsResponse.ok) {
-    throw new Error("Impossibile caricare il dataset routing")
+    throw new Error("Failed to load the routing network")
   }
 
   const [roadsData, trailsData] = await Promise.all([roadsResponse.json(), trailsResponse.json()])
@@ -46,7 +46,7 @@ export async function loadRoutingGraphForMode(mode: RoutingMode): Promise<Routin
 export async function loadDrivingGraph(url: string): Promise<RoutingGraph> {
   const response = await fetch(url)
   if (!response.ok) {
-    throw new Error("Impossibile caricare il dataset routing")
+    throw new Error("Failed to load the routing network")
   }
 
   const data = await response.json()

@@ -1,6 +1,7 @@
 // lib\map\base\search-control.ts
 import type { Map, IControl } from "maplibre-gl"
 import { Search } from "lucide"
+import { STRINGS } from "@/lib/strings"
 import { icon } from "./dom"
 
 // Same Nominatim geocoder as the old app: jsonv2, restricted to Italy,
@@ -24,8 +25,8 @@ export class MapSearchControl implements IControl {
 
     const button = document.createElement("button")
     button.type = "button"
-    button.title = "Cerca un indirizzo o un luogo"
-    button.setAttribute("aria-label", "Cerca un indirizzo o un luogo")
+    button.title = STRINGS.mapSearch
+    button.setAttribute("aria-label", STRINGS.mapSearch)
     button.appendChild(icon(Search))
     button.addEventListener("click", () => this.toggle())
 
@@ -35,7 +36,7 @@ export class MapSearchControl implements IControl {
     const input = document.createElement("input")
     input.type = "text"
     input.autocomplete = "off"
-    input.setAttribute("aria-label", "Cerca indirizzo o luogo")
+    input.setAttribute("aria-label", STRINGS.mapSearchInput)
 
     const resultsList = document.createElement("div")
     resultsList.className = "map-search-results hidden"

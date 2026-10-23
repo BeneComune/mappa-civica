@@ -1,14 +1,66 @@
 // lib\strings.ts
 /**
- * Single source of truth for every Italian UI string in the app. Check here
- * before hardcoding new text — reuse an existing constant if the string
- * already exists, rather than duplicating it inline.
+ * Single source of truth for every short Italian UI string in the app: labels,
+ * buttons, titles, aria-labels, status and error messages. Check here before
+ * hardcoding new text — reuse an existing constant if the string already
+ * exists, rather than duplicating it inline. Long explanatory prose (FAQ,
+ * InfoNote bodies) stays in its page, and code-to-label lookup tables
+ * (lib/green-classes.ts, lib/routing/summary.ts, ...) stay in their modules.
  */
 export const STRINGS = {
   appName: "Mappa Civica",
   homeSubtitle:
     "Piattaforma civica open-source per la mobilità sostenibile, l'ambiente, la resilienza del territorio e la partecipazione della comunità.",
   portingNotice: "Porting in corso dal prototipo Vite.",
+  mapLoading: "Caricamento mappa…",
+  faqSummary: "Cos'è e come è calcolato?",
+  close: "Chiudi",
+  externalMapLink: "Apre una mappa esterna",
+  yes: "Sì",
+  no: "No",
+
+  // Map controls
+  mapSearch: "Cerca un indirizzo o un luogo",
+  mapSearchInput: "Cerca indirizzo o luogo",
+  mapTerrain: "Terreno 3D",
+  mapPrint: "Stampa mappa",
+  mapLegend: "Legenda",
+  basemapLight: "Sfondo chiaro",
+  basemapSummer: "Sfondo estivo",
+  basemapCycling: "Sfondo ciclabile",
+  basemapDark: "Sfondo scuro",
+  pdfCenter: "Centro",
+  pdfScale: "Scala",
+
+  // Home
+  frazioni: "Frazioni",
+  weatherLabel: "Meteo attuale",
+  catastoToggle: "Particelle catastali",
+  catastoInfoLabel: "A cosa serve, e limiti dei dati",
+  catastoVisuraLink: "Consulta rendita / visura (Agenzia delle Entrate)",
+  statsTerritory: "Territorio",
+  statsArea: "Superficie",
+  statsDensity: "Densità",
+  statsWaterways: "Corsi d'acqua",
+  statsDenseVegetation: "Vegetazione densa",
+  statsCaiTrails: "Sentieri CAI",
+  statsMtbTrails: "Percorsi MTB",
+  statsCycleways: "Piste ciclabili",
+  statsPopulation: "Popolazione",
+  statsResidents: "Residenti",
+  statsHouseholds: "Famiglie",
+  statsHouseholdSize: "Componenti medi",
+  statsAvgAge: "Età media",
+  statsOldAgeIndex: "Indice di vecchiaia",
+  statsOver65: "Pop. ≥ 65 anni",
+  statsRisk: "Rischio territorio",
+  statsSeismicZone: "Zona sismica",
+  statsHydrogeologicalRisk: "Rischio idrogeologico",
+  statsServices: "Servizi",
+  statsBankBranches: "Sportelli bancari",
+  statsPharmacy: "Farmacia",
+  statsSchools: "Scuole",
+  statsEmergencyRoom: "Pronto soccorso",
 
   // Top-level nav / page titles
   home: "Home",
@@ -24,6 +76,7 @@ export const STRINGS = {
   cyclability: "Percorsi in bici",
   trafficStress: "Stress da traffico",
   trafficStressDescription: "Quanto ogni strada è stressante o sicura da percorrere in bici, mappa di stressinbici.it",
+  ltsEmbedTitle: "Stress in bici: livello di stress da traffico per la mobilità ciclabile",
   bikeInfra: "Infrastrutture ciclabili",
   bikeInfraDescription: "Piste ciclabili, rastrelliere, bike sharing e altri servizi per la bici",
   bikeInfraCiclabili: "Ciclabili / MV 06",
@@ -85,16 +138,47 @@ export const STRINGS = {
   routePlannerProfileTitle: "Profilo altimetrico",
   routePlannerProfileSubtitle: "dislivello relativo",
   routePlannerDownloads: "Scarica",
+  routePlannerRemovePoint: "Rimuovi",
+  routeExportName: "Percorso",
 
   // Rescue sections
   riverRisk: "Rii a rischio",
   riverRiskDescription:
     "Censimento dei piccoli corsi d'acqua (\"rii\") sopra l'abitato che esondano durante le piogge intense.",
+  riiRecent: "Rilievi 2024",
+  riiOlder: "Rilievi meno recenti",
+  riiFallbackTitle: "Rio",
+  riiBasin: "Bacino",
+  riiSurvey: "Rilievo",
+  riiIssues: "Criticità",
+  riiCriticalPoints: "Punti critici",
+  riiProposedWorks: "Interventi proposti",
+  riiRecentEvents: "Eventi recenti",
   wildfires: "Incendi boschivi",
   wildfiresDescription:
     "Perimetri degli incendi boschivi rilevati dalle Stazioni Forestali della Regione FVG, colorati per causa dell'innesco.",
+  fireArchiveInfoLabel: "Cosa mostra questo archivio",
+  fireDangerInfoLabel: "Come leggere i colori",
+  fireNbrInfoLabel: "Cosa indica questo indice",
+  fireUnknownPlace: "Località non indicata",
+  fireMoreDetails: "Altri dettagli",
+  fireStartDate: "Data di inizio",
+  fireDuration: "Durata",
+  fireIgnitionPlace: "Luogo di innesco",
+  fireVegetationState: "Stato della vegetazione",
+  fireNaturalConstraints: "Vincoli naturali",
+  fireReportCode: "Codice foglio notizie",
+  fireDangerTitle: "Classe di pericolo incendi",
+  fireIgnitionTitle: "Punto di innesco",
   rescueAssets: "Presidi di soccorso",
   rescueAssetsDescription: "Defibrillatori, elisoccorso, idranti e punti di raccolta.",
+  assetFallbackTitle: "Presidio",
+  assetLocation: "Dove si trova",
+  assetHours: "Orari",
+  assetAccess: "Accesso",
+  assetPlacement: "Collocazione",
+  assetOperator: "Gestore",
+  assetPhone: "Telefono",
   aed: "Defibrillatori",
   hems: "Elisoccorso",
   fireHydrants: "Idranti",
@@ -113,9 +197,13 @@ export const STRINGS = {
   fireDangerToggle: "Classe di pericolo",
   fireIgnitionToggle: "Punti di innesco",
   fireNbrToggle: "Indice NBR (vegetazione secca/bruciata)",
+  // Wraps fireNbrToggle: `Attiva "<toggle>" per modificare le classi`
+  fireNbrDisabledPrefix: "Attiva",
+  fireNbrDisabledSuffix: "per modificare le classi",
   landslideHazard: "Rischio frane",
   landslideHazardDescription:
     "Aree a pericolosità da frana (PAI), dai piani di assetto idrogeologico redatti dalle autorità di bacino.",
+  landslideInfoLabel: "Cosa mostra questa mappa",
 
   // Green sections
   vegetation: "Vegetazione",
@@ -129,6 +217,16 @@ export const STRINGS = {
     "Individua vegetazione in sofferenza, degradata o bruciata: non solo quanto verde c'è, ma come sta.",
   soilTemperature: "Temperatura suolo",
   soilTemperatureDescription: "Le zone più calde e quelle più fresche del territorio, misurate dal satellite.",
+  sceneDatePrefix: "Immagine satellitare del",
+  sceneStale: "dato non aggiornato di recente",
+  nbrSource: "Da Sentinel-2 · 20 m · ombre mascherate",
+  lstSource: "Da Landsat 8/9 · 30 m",
+  shadeLegend:
+    "Verde più scuro = maggiore copertura arborea · linee più spesse = strade, più sottili = sentieri",
+  shadeTrail: "Sentiero",
+  shadeRoad: "Strada",
+  shadeCoverage: "Ombra",
+  shadeLength: "Lunghezza",
 
   // Community (Segnala)
   communityDescription: "Invia una segnalazione al Comune: strade, sentieri, rifiuti, illuminazione o proposte.",
@@ -157,6 +255,13 @@ export const STRINGS = {
   reportListEmpty: "Nessuna segnalazione ancora. Usa \"Nuova segnalazione\" per crearne una.",
   reportDelete: "Elimina",
   reportPending: "In attesa",
+  reportFilterAll: "Tutte",
+  reportVote: "Anche a me importa",
+  reportUnvote: "Rimuovi voto",
+  reportEmailSubjectPrefix: "[Segnalazione]",
+  reportEmailNoDescription: "(nessuna descrizione)",
+  reportEmailPhotoNote: "Fotografia allegata: → allegare il file all'email prima di inviare.",
+  reportEmailSignature: "Inviato dal portale",
 
   // Mobile navigation
   menu: "Menu",

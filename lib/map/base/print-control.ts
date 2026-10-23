@@ -1,6 +1,7 @@
 // lib\map\base\print-control.ts
 import type { Map, IControl } from "maplibre-gl"
 import { Printer } from "lucide"
+import { STRINGS } from "@/lib/strings"
 import { createControlButton } from "./dom"
 import { exportMapToPdf } from "./pdf-export"
 
@@ -15,7 +16,7 @@ export class MapPrintControl implements IControl {
   }
 
   onAdd(map: Map): HTMLElement {
-    const { container, button } = createControlButton(Printer, "Stampa mappa")
+    const { container, button } = createControlButton(Printer, STRINGS.mapPrint)
     button.addEventListener("click", () => {
       button.disabled = true
       exportMapToPdf(map, this.moduleLabel, this.productName)

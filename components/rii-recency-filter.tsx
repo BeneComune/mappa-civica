@@ -6,6 +6,7 @@ import type { FilterSpecification } from "maplibre-gl"
 import { Clock, History } from "lucide-react"
 import { useMapContext } from "@/components/map-provider"
 import { COLORS } from "@/lib/colors"
+import { STRINGS } from "@/lib/strings"
 import { useToggleSet } from "@/lib/use-toggle-set"
 
 // Rii's recency filter groups two `stato` values per badge (unlike fire's
@@ -50,7 +51,7 @@ export function RiiRecencyFilter() {
           aria-hidden="true"
           style={{ color: recenti ? COLORS.riiAggiornato2024 : undefined }}
         />
-        Rilievi 2024
+        {STRINGS.riiRecent}
       </button>
       <button
         type="button"
@@ -64,7 +65,7 @@ export function RiiRecencyFilter() {
           aria-hidden="true"
           style={{ color: storici ? COLORS.riiStorico2007 : undefined }}
         />
-        Rilievi meno recenti
+        {STRINGS.riiOlder}
       </button>
     </div>
   )
