@@ -2,7 +2,6 @@
 "use client"
 
 import { useCallback, useState } from "react"
-import { createPortal } from "react-dom"
 import { MapPin } from "lucide-react"
 import {
   Drawer,
@@ -17,6 +16,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { MapPickHint } from "@/components/map-pick-hint"
 import { usePanelSheet } from "@/components/mobile-panel-sheet"
 import { CATEGORIES, buildReportMailto, type CategoryId, type CommunityReport } from "@/lib/community"
 import { ICONS } from "@/lib/ICONS"
@@ -125,26 +125,13 @@ export function ReportDrawer({ onSubmitted }: { onSubmitted: (report: CommunityR
         {STRINGS.newReport}
       </Button>
 
-      {/* Portaled to <body> so the collapsed panel sheet (display:none) can't
-          hide it. */}
-      {picking &&
-        typeof document !== "undefined" &&
-        createPortal(
-          <div className="fixed top-[calc(env(safe-area-inset-top)+4.5rem)] right-14 left-3 z-50 flex items-center justify-between gap-2 rounded-lg border bg-background/95 px-3 py-2 text-sm shadow-lg backdrop-blur">
-            <span className="flex min-w-0 items-center gap-2">
-              <MapPin className="size-4 shrink-0" aria-hidden="true" />
-              <span className="truncate">{STRINGS.reportPickHint}</span>
-            </span>
-            <button
-              type="button"
-              onClick={() => setPicking(false)}
-              className="shrink-0 font-medium underline underline-offset-2"
-            >
-              {STRINGS.reportCancel}
-            </button>
-          </div>,
-          document.body
-        )}
+      {picking && (
+        <MapPickHint
+          hint={STRINGS.reportPickHint}
+          actionLabel={STRINGS.reportCancel}
+          onAction={() => setPicking(false)}
+        />
+      )}
 
       <Drawer
         open={open}

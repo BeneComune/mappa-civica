@@ -2,9 +2,8 @@
 "use client"
 
 import { useCallback, useMemo, useState } from "react"
-import { createPortal } from "react-dom"
-import { MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { MapPickHint } from "@/components/map-pick-hint"
 import { usePanelSheet } from "@/components/mobile-panel-sheet"
 import { ICONS } from "@/lib/ICONS"
 import { STRINGS } from "@/lib/strings"
@@ -85,26 +84,13 @@ export function RoutePlanner({ mode }: { mode: RoutingMode }) {
         {STRINGS.routePlannerHint} {network}.
       </p>
 
-      {/* Portaled to <body> so the collapsed sheet (display:none) can't hide it. */}
-      {isMobile &&
-        enabled &&
-        typeof document !== "undefined" &&
-        createPortal(
-          <div className="fixed top-[calc(env(safe-area-inset-top)+4.5rem)] right-14 left-3 z-50 flex items-center justify-between gap-2 rounded-lg border bg-background/95 px-3 py-2 text-sm shadow-lg backdrop-blur">
-            <span className="flex min-w-0 items-center gap-2">
-              <MapPin className="size-4 shrink-0" aria-hidden="true" />
-              <span className="truncate">{STRINGS.routePlannerPickHint}</span>
-            </span>
-            <button
-              type="button"
-              onClick={() => setEnabled(false)}
-              className="shrink-0 font-medium underline underline-offset-2"
-            >
-              {STRINGS.routePlannerDone}
-            </button>
-          </div>,
-          document.body
-        )}
+      {isMobile && enabled && (
+        <MapPickHint
+          hint={STRINGS.routePlannerPickHint}
+          actionLabel={STRINGS.routePlannerDone}
+          onAction={() => setEnabled(false)}
+        />
+      )}
 
       {points.length > 0 && <RoutePointList points={points} onRemove={removePoint} />}
 

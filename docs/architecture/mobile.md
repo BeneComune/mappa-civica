@@ -35,5 +35,5 @@ callers use optional chaining (`sheet?.collapse()`):
 - `expand`: `MapFeatureDetail`, so a map tap that selects a feature shows its detail card.
 
 The sheet's content stays mounted (just hidden) when collapsed, so picking mode and form state
-survive a collapse. Overlays that must stay visible while the sheet is collapsed (the "tap the
-map" hints) are portaled to `<body>`.
+survive a collapse. The "tap the map" banner both two-step flows show is `MapPickHint`
+(`components/map-pick-hint.tsx`), portaled to `<body>` so the collapsed sheet can't hide it.

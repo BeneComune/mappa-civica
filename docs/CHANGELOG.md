@@ -10,6 +10,12 @@ commit. Everything before that was backfilled from `git log` as subject lines on
 
 ## 2026-10-23
 
+### Extract MapPickHint for the mobile "tap the map" banner
+
+- Segnala and the route planner each carried the same 18-line portaled banner (identical markup
+  and Tailwind classes). `components/map-pick-hint.tsx` now renders it from `hint`, `actionLabel`
+  and `onAction`; both callers pass their own strings. Markup unchanged.
+
 ### Build route lines with one appendSegmentCoordinates
 
 - `summary.ts` called `appendSegmentCoordinates` only to reverse an edge, then re-implemented its
