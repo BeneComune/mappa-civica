@@ -77,6 +77,10 @@ and deliberate exclusions are in `.fallowrc.json`.
 
 `fallow:security` reports *candidates*, not vulnerabilities: verify each against the code before
 changing anything. Once a candidate is verified as a false positive, suppress it on the line above
-with a reason: `// fallow-ignore-next-line security-sink -- <why the input is safe>`. Everything here runs in the browser and the site has no server code, so the
+with a reason: `// fallow-ignore-next-line security-sink -- <why the input is safe>`.
+
+Duplication kept on purpose gets the same treatment, above the first instance of the clone:
+`// fallow-ignore-next-line code-duplication -- <why it stays duplicated>`. One comment silences
+the whole clone group. Everything here runs in the browser and the site has no server code, so the
 `ssrf` category can't apply yet; it starts to matter if an API route is added (e.g. the
 `/api/reports` the 2026-09-06 ADR anticipates).

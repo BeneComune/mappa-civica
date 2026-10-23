@@ -54,6 +54,7 @@ export async function loadDrivingGraph(url: string): Promise<RoutingGraph> {
   return buildTransportRoutingGraph(data.features ?? [])
 }
 
+// fallow-ignore-next-line code-duplication -- same loop prologue as buildWalkingRoutingGraph, bodies differ
 function buildTransportRoutingGraph(features: TransportFeature[]): RoutingGraph {
   const nodes = new Map<NodeId, GraphNode>()
   const edges: GraphEdge[] = []

@@ -10,6 +10,13 @@ commit. Everything before that was backfilled from `git log` as subject lines on
 
 ## 2026-10-23
 
+### Suppress the intentional graph.ts clone in fallow:dupes
+
+- The two graph builders share their loop prologue (13 lines) but nothing after it. That was
+  reviewed and kept, so a `code-duplication` suppression with the reason now sits above
+  `buildTransportRoutingGraph`. `pnpm fallow:dupes` reports no duplication.
+- `docs/AGENTS.md` documents the suppression format for future deliberate clones.
+
 ### Draw the route line through setRouteLine
 
 - The route planner (`use-route-map-layers.ts`) and the hospital route (`nearest-hospital.tsx`)
