@@ -1,6 +1,7 @@
 // lib\map\overlays\choropleth.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
 import { COLORS } from "@/lib/colors"
+import { addLayerOnce, addSourceOnce } from "./shared"
 
 // Shared shape behind the Green module's class-coloured polygon overlays
 // (vegetation, vegetation-health, soil-temperature): one GeoJSON source, a
@@ -36,27 +37,21 @@ export function addChoroplethOverlay(
     fillOpacity = 0.65,
   } = options
 
-  if (!map.getSource(sourceId)) {
-    map.addSource(sourceId, { type: "geojson", data: dataUrl })
-  }
+  addSourceOnce(map, sourceId, { type: "geojson", data: dataUrl })
 
-  if (!map.getLayer(fillLayerId)) {
-    map.addLayer({
-      id: fillLayerId,
-      type: "fill",
-      source: sourceId,
-      layout: { visibility: "none" },
-      paint: { "fill-color": fillColor, "fill-opacity": fillOpacity },
-    })
-  }
+  addLayerOnce(map, {
+    id: fillLayerId,
+    type: "fill",
+    source: sourceId,
+    layout: { visibility: "none" },
+    paint: { "fill-color": fillColor, "fill-opacity": fillOpacity },
+  })
 
-  if (!map.getLayer(outlineLayerId)) {
-    map.addLayer({
-      id: outlineLayerId,
-      type: "line",
-      source: sourceId,
-      layout: { visibility: "none" },
-      paint: { "line-color": COLORS.white, "line-width": 0.3, "line-opacity": 0.4 },
-    })
-  }
+  addLayerOnce(map, {
+    id: outlineLayerId,
+    type: "line",
+    source: sourceId,
+    layout: { visibility: "none" },
+    paint: { "line-color": COLORS.white, "line-width": 0.3, "line-opacity": 0.4 },
+  })
 }

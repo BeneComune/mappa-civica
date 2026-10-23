@@ -1,6 +1,7 @@
 // lib\map\overlays\trails-water.ts
 import type { FilterSpecification, Map } from "maplibre-gl"
 import { COLORS } from "@/lib/colors"
+import { addLayerOnce, addSourceOnce } from "./shared"
 
 // "Sentieri e punti acqua" from the old app's OutdoorModule: hiking/MTB
 // trail network (casing + coloured line + label per category) plus
@@ -27,57 +28,51 @@ function addTrailLayers(
   filter: FilterSpecification,
   options: { casingColor: string; lineColor: string; labelColor: string; dasharray: number[] }
 ): void {
-  if (!map.getLayer(`trail-casing-${categoryId}`)) {
-    map.addLayer({
-      id: `trail-casing-${categoryId}`,
-      type: "line",
-      source: sourceId,
-      filter,
-      layout: { visibility: "none" },
-      paint: {
-        "line-color": options.casingColor,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 3.4, 14, 7.8],
-        "line-opacity": 0.9,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: `trail-casing-${categoryId}`,
+    type: "line",
+    source: sourceId,
+    filter,
+    layout: { visibility: "none" },
+    paint: {
+      "line-color": options.casingColor,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 11, 3.4, 14, 7.8],
+      "line-opacity": 0.9,
+    },
+  })
 
-  if (!map.getLayer(`trail-network-${categoryId}`)) {
-    map.addLayer({
-      id: `trail-network-${categoryId}`,
-      type: "line",
-      source: sourceId,
-      filter,
-      layout: { visibility: "none" },
-      paint: {
-        "line-color": options.lineColor,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 0.9, 14, 2.4],
-        "line-opacity": 1,
-        "line-dasharray": options.dasharray,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: `trail-network-${categoryId}`,
+    type: "line",
+    source: sourceId,
+    filter,
+    layout: { visibility: "none" },
+    paint: {
+      "line-color": options.lineColor,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 11, 0.9, 14, 2.4],
+      "line-opacity": 1,
+      "line-dasharray": options.dasharray,
+    },
+  })
 
-  if (!map.getLayer(`trail-labels-${categoryId}`)) {
-    map.addLayer({
-      id: `trail-labels-${categoryId}`,
-      type: "symbol",
-      source: sourceId,
-      filter,
-      layout: {
-        visibility: "none",
-        "symbol-placement": "line",
-        "text-field": ["coalesce", ["get", "name:it"], ["get", "name"], ""],
-        "text-size": ["interpolate", ["linear"], ["zoom"], 12, 10, 15, 13],
-        "text-font": ["Noto Sans Regular"],
-      },
-      paint: {
-        "text-color": options.labelColor,
-        "text-halo-color": COLORS.white,
-        "text-halo-width": 1.8,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: `trail-labels-${categoryId}`,
+    type: "symbol",
+    source: sourceId,
+    filter,
+    layout: {
+      visibility: "none",
+      "symbol-placement": "line",
+      "text-field": ["coalesce", ["get", "name:it"], ["get", "name"], ""],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 12, 10, 15, 13],
+      "text-font": ["Noto Sans Regular"],
+    },
+    paint: {
+      "text-color": options.labelColor,
+      "text-halo-color": COLORS.white,
+      "text-halo-width": 1.8,
+    },
+  })
 }
 
 function addWaterLayers(
@@ -87,52 +82,44 @@ function addWaterLayers(
   filter: FilterSpecification,
   color: string
 ): void {
-  if (!map.getLayer(`water-poi-${categoryId}`)) {
-    map.addLayer({
-      id: `water-poi-${categoryId}`,
-      type: "circle",
-      source: sourceId,
-      filter,
-      layout: { visibility: "none" },
-      paint: {
-        "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 3, 15, 7],
-        "circle-color": color,
-        "circle-stroke-color": COLORS.white,
-        "circle-stroke-width": 1.5,
-        "circle-opacity": 0.95,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: `water-poi-${categoryId}`,
+    type: "circle",
+    source: sourceId,
+    filter,
+    layout: { visibility: "none" },
+    paint: {
+      "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 3, 15, 7],
+      "circle-color": color,
+      "circle-stroke-color": COLORS.white,
+      "circle-stroke-width": 1.5,
+      "circle-opacity": 0.95,
+    },
+  })
 
-  if (!map.getLayer(`water-poi-labels-${categoryId}`)) {
-    map.addLayer({
-      id: `water-poi-labels-${categoryId}`,
-      type: "symbol",
-      source: sourceId,
-      filter,
-      layout: {
-        visibility: "none",
-        "text-field": ["coalesce", ["get", "name:it"], ["get", "name"], ""],
-        "text-offset": [0, 1.2],
-        "text-size": ["interpolate", ["linear"], ["zoom"], 12, 9, 15, 12],
-        "text-font": ["Noto Sans Regular"],
-      },
-      paint: {
-        "text-color": COLORS.waterPointsLabel,
-        "text-halo-color": COLORS.white,
-        "text-halo-width": 1.2,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: `water-poi-labels-${categoryId}`,
+    type: "symbol",
+    source: sourceId,
+    filter,
+    layout: {
+      visibility: "none",
+      "text-field": ["coalesce", ["get", "name:it"], ["get", "name"], ""],
+      "text-offset": [0, 1.2],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 12, 9, 15, 12],
+      "text-font": ["Noto Sans Regular"],
+    },
+    paint: {
+      "text-color": COLORS.waterPointsLabel,
+      "text-halo-color": COLORS.white,
+      "text-halo-width": 1.2,
+    },
+  })
 }
 
 export function addTrailsWaterOverlay(map: Map): void {
-  if (!map.getSource("trails")) {
-    map.addSource("trails", { type: "geojson", data: "/data/outdoor/trails_shaded.geojson" })
-  }
-  if (!map.getSource("water")) {
-    map.addSource("water", { type: "geojson", data: "/data/outdoor/water.geojson" })
-  }
+  addSourceOnce(map, "trails", { type: "geojson", data: "/data/outdoor/trails_shaded.geojson" })
+  addSourceOnce(map, "water", { type: "geojson", data: "/data/outdoor/water.geojson" })
 
   addTrailLayers(
     map,

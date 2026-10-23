@@ -1,6 +1,7 @@
 // lib\map\overlays\slope.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
 import { COLORS } from "@/lib/colors"
+import { addLayerOnce, addSourceOnce } from "./shared"
 
 // "Pendenza" from the old app's OutdoorModule: trails/roads coloured by
 // steepness class.
@@ -19,22 +20,18 @@ const SLOPE_COLOR: ExpressionSpecification = [
 ]
 
 export function addSlopeOverlay(map: Map): void {
-  if (!map.getSource("trailsRouting")) {
-    map.addSource("trailsRouting", { type: "geojson", data: "/data/outdoor/trails_routing.geojson" })
-  }
+  addSourceOnce(map, "trailsRouting", { type: "geojson", data: "/data/outdoor/trails_routing.geojson" })
 
-  if (!map.getLayer("slope-network-trails")) {
-    map.addLayer({
-      id: "slope-network-trails",
-      type: "line",
-      source: "trailsRouting",
-      filter: ["has", "slope_class"],
-      layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
-      paint: {
-        "line-color": SLOPE_COLOR,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 1.4, 14, 4.2],
-        "line-opacity": 0.95,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: "slope-network-trails",
+    type: "line",
+    source: "trailsRouting",
+    filter: ["has", "slope_class"],
+    layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
+    paint: {
+      "line-color": SLOPE_COLOR,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 11, 1.4, 14, 4.2],
+      "line-opacity": 0.95,
+    },
+  })
 }

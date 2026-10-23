@@ -55,7 +55,9 @@ current pathname, `none` on the rest. `MapView` re-runs it on every pathname cha
 Rules for an overlay file (`lib/map/overlays/<name>.ts`):
 
 - Export `add<Name>Overlay(map)` and its layer-id array.
-- `add` is idempotent: `if (!map.getSource(...))`, `if (!map.getLayer(...))`.
+- `add` is idempotent: sources and layers go through `addSourceOnce` / `addLayerOnce`
+  (`overlays/shared.ts`), which read the id from the object being added, so the existence check
+  can't drift from it.
 - Every layer starts with `layout: { visibility: "none" }`.
 - Import only maplibre-gl **types**. `lib/map/index.ts` and `lib/map/base/**` are the only runtime
   importers, so `lib/map/index.ts` is client-only: a Server Component that imports it breaks the

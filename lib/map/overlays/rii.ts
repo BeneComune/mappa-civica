@@ -1,6 +1,7 @@
 // lib\map\overlays\rii.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
 import { COLORS } from "@/lib/colors"
+import { addLayerOnce, addSourceOnce } from "./shared"
 
 // "Rii a rischio esondazione" - the volunteer stream census (Censimento
 // RII) from the old app's RescueModule. Geometry is a mix: the real
@@ -26,87 +27,77 @@ const RII_COLOR: ExpressionSpecification = [
 const RII_HOVER: ExpressionSpecification = ["boolean", ["feature-state", "hover"], false]
 
 export function addRiiOverlay(map: Map): void {
-  if (!map.getSource(RII_SOURCE_ID)) {
-    map.addSource(RII_SOURCE_ID, {
-      type: "geojson",
-      data: "/data/rescue/rii.geojson",
-    })
-  }
+  addSourceOnce(map, RII_SOURCE_ID, {
+    type: "geojson",
+    data: "/data/rescue/rii.geojson",
+  })
 
-  if (!map.getLayer("rii-line-casing")) {
-    // White casing under the stream line, for legibility over the basemap.
-    map.addLayer({
-      id: "rii-line-casing",
-      type: "line",
-      source: RII_SOURCE_ID,
-      filter: ["==", ["geometry-type"], "LineString"],
-      layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
-      paint: {
-        "line-color": COLORS.white,
-        "line-opacity": 0.7,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 4.5, 15, 9],
-      },
-    })
-  }
+  // White casing under the stream line, for legibility over the basemap.
+  addLayerOnce(map, {
+    id: "rii-line-casing",
+    type: "line",
+    source: RII_SOURCE_ID,
+    filter: ["==", ["geometry-type"], "LineString"],
+    layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
+    paint: {
+      "line-color": COLORS.white,
+      "line-opacity": 0.7,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 11, 4.5, 15, 9],
+    },
+  })
 
-  if (!map.getLayer("rii-line")) {
-    map.addLayer({
-      id: "rii-line",
-      type: "line",
-      source: RII_SOURCE_ID,
-      filter: ["==", ["geometry-type"], "LineString"],
-      layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
-      paint: {
-        "line-color": RII_COLOR,
-        "line-width": [
-          "interpolate", ["linear"], ["zoom"],
-          11, ["case", RII_HOVER, 4.5, 2.5],
-          15, ["case", RII_HOVER, 8, 5.5],
-        ],
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: "rii-line",
+    type: "line",
+    source: RII_SOURCE_ID,
+    filter: ["==", ["geometry-type"], "LineString"],
+    layout: { "line-cap": "round", "line-join": "round", visibility: "none" },
+    paint: {
+      "line-color": RII_COLOR,
+      "line-width": [
+        "interpolate", ["linear"], ["zoom"],
+        11, ["case", RII_HOVER, 4.5, 2.5],
+        15, ["case", RII_HOVER, 8, 5.5],
+      ],
+    },
+  })
 
-  if (!map.getLayer("rii-points")) {
-    map.addLayer({
-      id: "rii-points",
-      type: "circle",
-      source: RII_SOURCE_ID,
-      filter: ["==", ["geometry-type"], "Point"],
-      layout: { visibility: "none" },
-      paint: {
-        "circle-radius": [
-          "interpolate", ["linear"], ["zoom"],
-          11, ["case", RII_HOVER, 8, 6],
-          15, ["case", RII_HOVER, 15, 11],
-        ],
-        "circle-color": RII_COLOR,
-        "circle-opacity": ["case", ["boolean", ["get", "pos_approssimata"], false], 0.5, 0.9],
-        "circle-stroke-color": COLORS.white,
-        "circle-stroke-width": ["case", RII_HOVER, 3, 1.8],
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: "rii-points",
+    type: "circle",
+    source: RII_SOURCE_ID,
+    filter: ["==", ["geometry-type"], "Point"],
+    layout: { visibility: "none" },
+    paint: {
+      "circle-radius": [
+        "interpolate", ["linear"], ["zoom"],
+        11, ["case", RII_HOVER, 8, 6],
+        15, ["case", RII_HOVER, 15, 11],
+      ],
+      "circle-color": RII_COLOR,
+      "circle-opacity": ["case", ["boolean", ["get", "pos_approssimata"], false], 0.5, 0.9],
+      "circle-stroke-color": COLORS.white,
+      "circle-stroke-width": ["case", RII_HOVER, 3, 1.8],
+    },
+  })
 
-  if (!map.getLayer("rii-labels")) {
-    map.addLayer({
-      id: "rii-labels",
-      type: "symbol",
-      source: RII_SOURCE_ID,
-      minzoom: 12,
-      layout: {
-        visibility: "none",
-        "text-field": ["get", "nome"],
-        "text-offset": [0, 1.3],
-        "text-size": ["interpolate", ["linear"], ["zoom"], 12, 10, 15, 13],
-        "text-font": ["Noto Sans Regular"],
-        "text-optional": true,
-      },
-      paint: {
-        "text-color": COLORS.riiLabel,
-        "text-halo-color": COLORS.white,
-        "text-halo-width": 1.6,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: "rii-labels",
+    type: "symbol",
+    source: RII_SOURCE_ID,
+    minzoom: 12,
+    layout: {
+      visibility: "none",
+      "text-field": ["get", "nome"],
+      "text-offset": [0, 1.3],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 12, 10, 15, 13],
+      "text-font": ["Noto Sans Regular"],
+      "text-optional": true,
+    },
+    paint: {
+      "text-color": COLORS.riiLabel,
+      "text-halo-color": COLORS.white,
+      "text-halo-width": 1.6,
+    },
+  })
 }

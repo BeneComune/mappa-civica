@@ -1,6 +1,7 @@
 // lib\map\overlays\natural-shade.ts
 import type { ExpressionSpecification, Map } from "maplibre-gl"
 import { COLORS } from "@/lib/colors"
+import { addLayerOnce, addSourceOnce } from "./shared"
 
 // "Ombra naturale" from the old app's GreenModule - roads/trails coloured
 // by tree canopy coverage. Colour (light -> dark green, reusing the NDVI
@@ -44,35 +45,29 @@ const SHADE_WIDTH: ExpressionSpecification = [
 ]
 
 export function addNaturalShadeOverlay(map: Map): void {
-  if (!map.getSource("shadeCorridors")) {
-    map.addSource("shadeCorridors", { type: "geojson", data: "/data/shade_corridors.geojson" })
-  }
+  addSourceOnce(map, "shadeCorridors", { type: "geojson", data: "/data/shade_corridors.geojson" })
 
-  if (!map.getLayer("shade-corridors-casing")) {
-    map.addLayer({
-      id: "shade-corridors-casing",
-      type: "line",
-      source: "shadeCorridors",
-      layout: { visibility: "none" },
-      paint: {
-        "line-color": COLORS.white,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 3.5, 15, 7.5],
-        "line-opacity": 0.7,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: "shade-corridors-casing",
+    type: "line",
+    source: "shadeCorridors",
+    layout: { visibility: "none" },
+    paint: {
+      "line-color": COLORS.white,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 11, 3.5, 15, 7.5],
+      "line-opacity": 0.7,
+    },
+  })
 
-  if (!map.getLayer("shade-corridors")) {
-    map.addLayer({
-      id: "shade-corridors",
-      type: "line",
-      source: "shadeCorridors",
-      layout: { visibility: "none" },
-      paint: {
-        "line-color": SHADE_COLOR,
-        "line-width": SHADE_WIDTH,
-        "line-opacity": SHADE_OPACITY,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: "shade-corridors",
+    type: "line",
+    source: "shadeCorridors",
+    layout: { visibility: "none" },
+    paint: {
+      "line-color": SHADE_COLOR,
+      "line-width": SHADE_WIDTH,
+      "line-opacity": SHADE_OPACITY,
+    },
+  })
 }

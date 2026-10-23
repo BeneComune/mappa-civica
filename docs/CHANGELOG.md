@@ -10,6 +10,18 @@ commit. Everything before that was backfilled from `git log` as subject lines on
 
 ## 2026-10-23
 
+### Add overlay sources and layers through addSourceOnce / addLayerOnce
+
+- 60 `if (!map.getSource(X)) map.addSource(X, ...)` / `if (!map.getLayer(X)) map.addLayer({ id: X,
+  ... })` blocks across 12 overlay files become `addSourceOnce(map, X, ...)` /
+  `addLayerOnce(map, { id: X, ... })` (`lib/map/overlays/shared.ts`). The layer id is now written
+  once, so the existence check can't drift from the id being added (a drift would re-add the layer
+  on the next basemap switch and MapLibre would throw).
+- Converted with a one-off codemod that checked every block's id against its layer object first:
+  no mismatches existed. New unit test for the two helpers.
+- Smoke-tested on a production build: `/rescue/fire` and `/outdoor/trails/trails` render their
+  layers, and switching basemap (which re-adds every overlay) raises no console errors.
+
 ### Extract MapPickHint for the mobile "tap the map" banner
 
 - Segnala and the route planner each carried the same 18-line portaled banner (identical markup

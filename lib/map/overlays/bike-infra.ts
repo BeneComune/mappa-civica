@@ -1,6 +1,7 @@
 // lib\map\overlays\bike-infra.ts
 import type { FilterSpecification, Map } from "maplibre-gl"
 import { COLORS } from "@/lib/colors"
+import { addLayerOnce, addSourceOnce } from "./shared"
 
 // "Infrastrutture ciclabili" from the old app's OutdoorModule: the cycle
 // lane network plus parking, rental, repair, and e-bike charging points.
@@ -20,11 +21,8 @@ function addBikeInfraPoints(
   filter: FilterSpecification,
   color: string
 ): void {
-  const id = `bike-infra-${categoryId}`
-  if (map.getLayer(id)) return
-
-  map.addLayer({
-    id,
+  addLayerOnce(map, {
+    id: `bike-infra-${categoryId}`,
     type: "circle",
     source: "bikeInfra",
     filter,
@@ -40,61 +38,51 @@ function addBikeInfraPoints(
 }
 
 export function addBikeInfraOverlay(map: Map): void {
-  if (!map.getSource("cyclepaths")) {
-    map.addSource("cyclepaths", { type: "geojson", data: "/data/outdoor/bike_cyclepaths.geojson" })
-  }
-  if (!map.getSource("bikeInfra")) {
-    map.addSource("bikeInfra", { type: "geojson", data: "/data/outdoor/bike_infra.geojson" })
-  }
+  addSourceOnce(map, "cyclepaths", { type: "geojson", data: "/data/outdoor/bike_cyclepaths.geojson" })
+  addSourceOnce(map, "bikeInfra", { type: "geojson", data: "/data/outdoor/bike_infra.geojson" })
 
-  if (!map.getLayer("bike-lane-casing")) {
-    map.addLayer({
-      id: "bike-lane-casing",
-      type: "line",
-      source: "cyclepaths",
-      layout: { visibility: "none" },
-      paint: {
-        "line-color": COLORS.bikeInfraCasing,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 3.2, 14, 6.6],
-        "line-opacity": 0.95,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: "bike-lane-casing",
+    type: "line",
+    source: "cyclepaths",
+    layout: { visibility: "none" },
+    paint: {
+      "line-color": COLORS.bikeInfraCasing,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 11, 3.2, 14, 6.6],
+      "line-opacity": 0.95,
+    },
+  })
 
-  if (!map.getLayer("bike-lane-network")) {
-    map.addLayer({
-      id: "bike-lane-network",
-      type: "line",
-      source: "cyclepaths",
-      layout: { visibility: "none" },
-      paint: {
-        "line-color": COLORS.bikeInfraCiclabili,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 1.2, 14, 3.2],
-        "line-opacity": 1,
-        "line-dasharray": [1, 0],
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: "bike-lane-network",
+    type: "line",
+    source: "cyclepaths",
+    layout: { visibility: "none" },
+    paint: {
+      "line-color": COLORS.bikeInfraCiclabili,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 11, 1.2, 14, 3.2],
+      "line-opacity": 1,
+      "line-dasharray": [1, 0],
+    },
+  })
 
-  if (!map.getLayer("bike-lane-labels")) {
-    map.addLayer({
-      id: "bike-lane-labels",
-      type: "symbol",
-      source: "cyclepaths",
-      layout: {
-        visibility: "none",
-        "symbol-placement": "line",
-        "text-field": ["coalesce", ["get", "name:it"], ["get", "name"], ["get", "ref"], ""],
-        "text-size": ["interpolate", ["linear"], ["zoom"], 12, 10, 15, 13],
-        "text-font": ["Noto Sans Regular"],
-      },
-      paint: {
-        "text-color": COLORS.bikeInfraLabel,
-        "text-halo-color": COLORS.white,
-        "text-halo-width": 1.5,
-      },
-    })
-  }
+  addLayerOnce(map, {
+    id: "bike-lane-labels",
+    type: "symbol",
+    source: "cyclepaths",
+    layout: {
+      visibility: "none",
+      "symbol-placement": "line",
+      "text-field": ["coalesce", ["get", "name:it"], ["get", "name"], ["get", "ref"], ""],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 12, 10, 15, 13],
+      "text-font": ["Noto Sans Regular"],
+    },
+    paint: {
+      "text-color": COLORS.bikeInfraLabel,
+      "text-halo-color": COLORS.white,
+      "text-halo-width": 1.5,
+    },
+  })
 
   addBikeInfraPoints(
     map,
