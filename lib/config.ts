@@ -10,6 +10,8 @@ export const MUNICIPALITY_CENTER = comune.map.center as [number, number]
 export const MUNICIPALITY_ZOOM = comune.map.zoom
 export const MUNICIPALITY_NAME = comune.name
 export const MUNICIPALITY_CADASTRAL_CODE = comune.cadastralCode
+// Where Segnala's pre-filled report emails are addressed.
+export const MUNICIPALITY_EMAIL = comune.email
 
 // Default view for the embedded stressinbici.it (LTS) map - "Percorsi in
 // bici > Stress da traffico" replaces the map view entirely with this

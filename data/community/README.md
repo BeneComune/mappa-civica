@@ -9,8 +9,8 @@ comune by email (the app has no backend).
 
 ## Ingestion workflow
 
-1. Someone at the comune reads the emails sent to
-   `info@comune.montereale-valcellina.pn.it`.
+1. Someone at the comune reads the emails sent to the `email` address in
+   `data/comune.config.json`.
 2. For each report to publish, they append **one row** to `reports.csv`.
 3. If there is a photo, they save it to `public/data/community/<id>.jpg` and put
    the relative path (`community/<id>.jpg`) in the `photo` column.

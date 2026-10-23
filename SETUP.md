@@ -40,7 +40,7 @@ Python pipeline script (`pipeline/lib/comune_config.py`).
   "provinceIstatCode": "ITDxx",   // province NUTS3 / ISTAT code
   "cadastralCode": "X000",        // codice catastale / Belfiore (parcels layer)
   "osmAreaId": 3600000000,        // OSM relation id + 3600000000, see below
-  "email": "info@comune.example.it",
+  "email": "info@comune.example.it", // where Segnala reports are emailed
   "boundaryFile": "public/data/boundary.geojson",
   "map": { "center": [lon, lat], "zoom": 12 },
   "ltsEmbedView": { "lat": 0, "lon": 0, "zoom": 12.86 }

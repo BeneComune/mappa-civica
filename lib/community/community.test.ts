@@ -4,6 +4,7 @@
 // a snapshot must be referentially stable between changes, or React re-renders
 // forever.
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import { MUNICIPALITY_EMAIL } from "@/lib/config"
 
 function stubStorage(seed: Record<string, string> = {}) {
   const store = new Map(Object.entries(seed))
@@ -167,7 +168,7 @@ describe("buildReportMailto", () => {
       createdAt: "",
     } as never)
 
-    expect(url.startsWith("mailto:info@comune.montereale-valcellina.pn.it?")).toBe(true)
+    expect(url.startsWith(`mailto:${MUNICIPALITY_EMAIL}?`)).toBe(true)
     expect(decodeURIComponent(url)).toContain("Buca")
     expect(decodeURIComponent(url)).toContain("46.16000")
   })

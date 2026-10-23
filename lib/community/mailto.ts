@@ -1,11 +1,10 @@
 // lib\community\mailto.ts
 // A report leaves the app as a pre-filled email to the municipality; there
 // is no backend to POST to.
+import { MUNICIPALITY_EMAIL } from "@/lib/config"
 import { STRINGS } from "@/lib/strings"
 import { categoryLabel } from "./categories"
 import type { CommunityReport } from "./types"
-
-const MUNICIPALITY_EMAIL = "info@comune.montereale-valcellina.pn.it"
 
 export function buildReportMailto(report: CommunityReport): string {
   const catLabel = categoryLabel(report.category)
