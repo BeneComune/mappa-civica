@@ -69,7 +69,8 @@ docs/         extended documentation and ADRs
 
 ## Getting started
 
-Prerequisites: Node 20+, and Python ≥ 3.11 for the data pipeline only.
+Prerequisites: Node 24 LTS (what CI uses; 22.12+ also works), pnpm, and
+Python ≥ 3.11 for the data pipeline only.
 
 ```bash
 pnpm install

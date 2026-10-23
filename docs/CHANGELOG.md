@@ -10,6 +10,13 @@ commit. Everything before that was backfilled from `git log` as subject lines on
 
 ## 2026-10-23
 
+### Require Node 24 LTS (22.12+) in README and CONTRIBUTING
+
+- Both said Node 20+, but vitest 5's declared engine range is `^22.12 || ^24 || >=26`, so Node 20
+  is outside what the test runner supports. CI already uses 24, and Vercel deprecated Node 20 on
+  2026-10-01.
+- The `paper/paper.md` affiliation TODO is left for the authors (tracked in `TODO.md`).
+
 ### Add the docs/ structure: index, agent guide, changelog, backlog, architecture, audits
 
 - `docs/` follows the standard layout used across projects: `README.md` (index), `AGENTS.md`

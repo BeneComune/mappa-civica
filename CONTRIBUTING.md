@@ -12,7 +12,7 @@ usually enough to start a conversation before any code gets written.
 
 ## Setting up the frontend
 
-You need Node 20+ and pnpm.
+You need Node 24 LTS (what CI uses; 22.12+ also works) and pnpm.
 
 ```bash
 pnpm install
