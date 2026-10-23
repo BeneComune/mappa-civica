@@ -49,14 +49,14 @@ export function computeDrivingRoute(
 
   let distanceMeters = 0
   let timeMin = 0
-  let coordinates: Coord[] = []
+  const coordinates: Coord[] = []
 
   for (let index = 0; index < path.edgePath.length; index += 1) {
     const edge = graph.edges[path.edgePath[index]]
     const fromNode = path.nodePath[index]
     distanceMeters += edge.length
     timeMin += drivingTravelTimeMinutes(edge)
-    coordinates = appendSegmentCoordinates(coordinates, edge.coords, edge.from !== fromNode)
+    appendSegmentCoordinates(coordinates, edge.coords, edge.from !== fromNode)
   }
 
   return {

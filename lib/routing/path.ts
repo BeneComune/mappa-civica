@@ -121,23 +121,23 @@ export function shortestPathByCost(
   return { nodePath, edgePath }
 }
 
+// Appends an edge's geometry to a route line in place, reversed when the edge is traversed
+// backwards, skipping the point it shares with the previous edge.
 export function appendSegmentCoordinates(
   coordinates: Coord[],
   segment: Coord[],
   reverse: boolean
-): Coord[] {
+): void {
   const segmentCoordinates = reverse ? [...segment].reverse() : segment
   if (coordinates.length === 0) {
-    return [...segmentCoordinates]
+    coordinates.push(...segmentCoordinates)
+    return
   }
 
-  const merged = [...coordinates]
   for (const coordinate of segmentCoordinates) {
-    const last = merged[merged.length - 1]
+    const last = coordinates[coordinates.length - 1]
     if (!last || last[0] !== coordinate[0] || last[1] !== coordinate[1]) {
-      merged.push(coordinate)
+      coordinates.push(coordinate)
     }
   }
-
-  return merged
 }

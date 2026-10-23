@@ -10,6 +10,14 @@ commit. Everything before that was backfilled from `git log` as subject lines on
 
 ## 2026-10-23
 
+### Build route lines with one appendSegmentCoordinates
+
+- `summary.ts` called `appendSegmentCoordinates` only to reverse an edge, then re-implemented its
+  joint-skipping merge inline (a `fallow dupes --mode semantic` find). The helper now appends in
+  place, so `buildRouteSummary` and `computeDrivingRoute` both just call it; it no longer copies
+  the whole line on every edge.
+- Same output as before for both callers; new unit test for the helper.
+
 ### Share one Dijkstra between the route planners and the driving route
 
 - `driving.ts` had its own copy of `path.ts`'s Dijkstra, differing only in the edge cost and in

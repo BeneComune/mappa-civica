@@ -153,17 +153,7 @@ export function buildRouteSummary(
       }
 
       const reverse = edge.from !== fromNode || edge.to !== toNode ? edge.to === fromNode : false
-      const segment = appendSegmentCoordinates([], edge.coords, reverse)
-      if (routeCoordinates.length === 0) {
-        routeCoordinates.push(...segment)
-      } else {
-        for (const coordinate of segment) {
-          const last = routeCoordinates[routeCoordinates.length - 1]
-          if (!last || last[0] !== coordinate[0] || last[1] !== coordinate[1]) {
-            routeCoordinates.push(coordinate)
-          }
-        }
-      }
+      appendSegmentCoordinates(routeCoordinates, edge.coords, reverse)
     }
   }
 

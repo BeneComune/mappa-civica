@@ -8,7 +8,7 @@ import { clamp, coordKey, distanceMeters, hasRoutableGeometry, segmentLength, to
 import { edgeTravelTimeMinutes } from "./cost"
 import { MinHeap } from "./min-heap"
 import { loadDrivingGraph, loadRoutingGraphForMode } from "./graph"
-import { findNearestNodeId, shortestPath } from "./path"
+import { appendSegmentCoordinates, findNearestNodeId, shortestPath } from "./path"
 import { buildRouteSummary } from "./summary"
 import { computeDrivingRoute } from "./driving"
 import type { Coord, GraphEdge, RoutingGraph } from "./types"
@@ -247,6 +247,13 @@ describe("path", () => {
     })
     const graph = await loadRoutingGraphForMode("biking")
     expect(shortestPath(graph, "A", "Z", "biking")).toBeNull()
+  })
+
+  it("appends edge geometry in place, reversing on demand and dropping the shared joint", () => {
+    const line: Coord[] = []
+    appendSegmentCoordinates(line, [A, B], false)
+    appendSegmentCoordinates(line, [C, B], true)
+    expect(line).toEqual([A, B, C])
   })
 })
 
