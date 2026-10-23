@@ -14,7 +14,8 @@
     "fallow:dupes": "fallow dupes",
     "fallow:dupes:report": "node scripts/fallow-dupes-report.mjs",
     "fallow:audit": "fallow audit",
-    "fallow:health": "fallow health --score --hotspots --targets"
+    "fallow:health": "fallow health --score --hotspots --targets",
+    "fallow:security": "fallow security"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

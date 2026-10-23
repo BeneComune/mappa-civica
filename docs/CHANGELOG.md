@@ -10,6 +10,14 @@ commit. Everything before that was backfilled from `git log` as subject lines on
 
 ## 2026-10-23
 
+### Add a fallow:security script
+
+- `pnpm fallow:security` runs `fallow security`. First run: 6 candidates (4 `ssrf`, 2
+  `open-redirect`), all verified false positives. Every fetch/navigation target is a fixed origin,
+  a literal `/data/...` path, a jsPDF `blob:` URL or a `mailto:` to the configured address, and
+  there's no server code for SSRF to apply to. A pass that adds `hardcoded-secret` finds nothing.
+- `CLAUDE.md` and `docs/AGENTS.md` list the script and note that its findings need verifying.
+
 ### Require Node 24 LTS (22.12+) in README and CONTRIBUTING
 
 - Both said Node 20+, but vitest 5's declared engine range is `^22.12 || ^24 || >=26`, so Node 20

@@ -28,6 +28,7 @@ pnpm fallow:dead-code        # unused exports/files
 pnpm fallow:dupes            # duplicate code
 pnpm fallow:audit            # combined static audit
 pnpm fallow:health           # score + hotspots + targets
+pnpm fallow:security         # security candidates (unverified - check each before acting)
 ```
 
 Lint and type-check are both treated as zero-warning/zero-error gates — fix everything they

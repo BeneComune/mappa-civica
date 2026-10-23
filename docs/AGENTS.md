@@ -72,4 +72,10 @@ and update it after.
 ## Static analysis
 
 `pnpm fallow:dead-code` after removing or renaming exports, `pnpm fallow:dupes` for duplication,
-`pnpm fallow:health` for hotspots. Configuration and deliberate exclusions are in `.fallowrc.json`.
+`pnpm fallow:health` for hotspots, `pnpm fallow:security` for security candidates. Configuration
+and deliberate exclusions are in `.fallowrc.json`.
+
+`fallow:security` reports *candidates*, not vulnerabilities: verify each against the code before
+changing anything. Everything here runs in the browser and the site has no server code, so the
+`ssrf` category can't apply yet; it starts to matter if an API route is added (e.g. the
+`/api/reports` the 2026-09-06 ADR anticipates).
