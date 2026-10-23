@@ -10,6 +10,19 @@ commit. Everything before that was backfilled from `git log` as subject lines on
 
 ## 2026-10-23
 
+### Share one Dijkstra between the route planners and the driving route
+
+- `driving.ts` had its own copy of `path.ts`'s Dijkstra, differing only in the edge cost and in
+  skipping non-drivable ways (3 of the 4 `fallow dupes` clone groups). `path.ts` now has
+  `shortestPathByCost(graph, start, end, edgeCost)`, where `edgeCost` returning `null` means the
+  edge can't be used. `shortestPath` (planners) and `computeDrivingRoute` both go through it.
+- `computeDrivingRoute` had no tests. Four cases were added first and passed against the old code:
+  speed-limit cost, the 40 km/h fallback, a shorter cycleway avoided in favour of a road detour,
+  `null` when only non-drivable ways connect the points.
+- Duplication goes from 0.94% to 0.27%. The remaining clone (the two graph builders' shared loop
+  prologue in `graph.ts`, 13 lines) is left on purpose: the bodies differ, and extracting it would
+  add indirection without removing real logic.
+
 ### Suppress the six verified fallow:security false positives
 
 - Each sink gets `// fallow-ignore-next-line security-sink -- <reason>` stating why its input is

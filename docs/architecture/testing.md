@@ -11,8 +11,8 @@ per test). `pnpm test` runs everything; CI runs it on every push and PR.
 
 | Area | Unit | Notes |
 |---|:---:|---|
-| Routing: geo, cost model, heap, graph builders, pathfinding, route summary | 🟩 | `lib/routing/routing.test.ts` |
-| Routing: driving (hospital), export (GPX/KML/CSV/GeoJSON) | 🟥 | `driving.ts`, `route-export.ts` |
+| Routing: geo, cost model, heap, graph builders, pathfinding, route summary, driving (hospital) | 🟩 | `lib/routing/routing.test.ts` |
+| Routing: export (GPX/KML/CSV/GeoJSON) | 🟥 | `route-export.ts` |
 | Route planner formatting (distance, time, point colors) | 🟩 | `components/route-planner/format.test.ts` |
 | Map interactions (`attachHoverPopup`, `attachFeatureSelect`, `attachHoverHighlight`) | 🟩 | `components/map-provider/interactions.test.ts`, against a stub map |
 | Community stores (pending reports, votes), `readJSON`, mailto | 🟩 | `lib/community/community.test.ts` |

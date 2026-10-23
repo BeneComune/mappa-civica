@@ -1,13 +1,12 @@
 // lib\routing\driving.ts
-// A separate, minimal Dijkstra for car travel over the same road graph the
-// bike planner uses (loadRoutingGraphForMode("biking") - transport.geojson
-// only, no trails). Kept apart from RouteMode/buildRouteSummary: that type's
+// Car travel for the "Ospedale più vicino" route: the shared Dijkstra
+// (path.ts) with a driving cost that excludes cycleways, steps and footpaths
+// outright. Kept apart from RouteMode/buildRouteSummary: that type's
 // `times: Record<RouteMode, ...>` and the planner UI built on it assume
 // walking/biking/ebike on the SAME route geometry, which doesn't fit a
-// car-only search that must exclude cycleways and steps outright.
-import type { Coord, GraphEdge, NodeId, RoutingGraph, RoutingInputPoint } from "./types"
-import { findNearestNodeId, appendSegmentCoordinates } from "./path"
-import { MinHeap } from "./min-heap"
+// car-only search.
+import type { Coord, GraphEdge, RoutingGraph, RoutingInputPoint } from "./types"
+import { appendSegmentCoordinates, findNearestNodeId, shortestPathByCost } from "./path"
 
 const NOT_DRIVABLE = new Set(["cycleway", "steps", "footway", "path", "pedestrian"])
 
@@ -25,62 +24,9 @@ function drivingTravelTimeMinutes(edge: GraphEdge): number {
   return (distanceKm / drivingSpeedKmh(edge)) * 60
 }
 
-function shortestDrivingPath(
-  graph: RoutingGraph,
-  startId: NodeId,
-  endId: NodeId
-): { nodePath: NodeId[]; edgePath: number[] } | null {
-  const distances = new Map<NodeId, number>()
-  const previousNode = new Map<NodeId, NodeId>()
-  const previousEdge = new Map<NodeId, number>()
-  const queue = new MinHeap()
-
-  distances.set(startId, 0)
-  queue.push({ node: startId, cost: 0 })
-
-  while (true) {
-    const current = queue.pop()
-    if (!current) break
-
-    const knownDistance = distances.get(current.node)
-    if (knownDistance !== undefined && current.cost > knownDistance) continue
-    if (current.node === endId) break
-
-    const node = graph.nodes.get(current.node)
-    if (!node) continue
-
-    for (const edgeIndex of node.edges) {
-      const edge = graph.edges[edgeIndex]
-      if (edge.highway && NOT_DRIVABLE.has(edge.highway)) continue
-
-      const neighbor = edge.from === current.node ? edge.to : edge.from
-      const nextCost = current.cost + drivingTravelTimeMinutes(edge)
-      const previousBest = distances.get(neighbor)
-      if (previousBest !== undefined && previousBest <= nextCost) continue
-
-      distances.set(neighbor, nextCost)
-      previousNode.set(neighbor, current.node)
-      previousEdge.set(neighbor, edgeIndex)
-      queue.push({ node: neighbor, cost: nextCost })
-    }
-  }
-
-  if (!distances.has(endId)) return null
-
-  const nodePath = [endId]
-  const edgePath: number[] = []
-  let current: NodeId = endId
-  while (current !== startId) {
-    const prevNode = previousNode.get(current)
-    const prevEdge = previousEdge.get(current)
-    if (prevNode === undefined || prevEdge === undefined) return null
-    nodePath.push(prevNode)
-    edgePath.push(prevEdge)
-    current = prevNode
-  }
-  nodePath.reverse()
-  edgePath.reverse()
-  return { nodePath, edgePath }
+function drivingEdgeCost(edge: GraphEdge): number | null {
+  if (edge.highway && NOT_DRIVABLE.has(edge.highway)) return null
+  return drivingTravelTimeMinutes(edge)
 }
 
 export type DrivingRoute = {
@@ -98,7 +44,7 @@ export function computeDrivingRoute(
   const endId = findNearestNodeId(graph, to)
   if (!startId || !endId) return null
 
-  const path = shortestDrivingPath(graph, startId, endId)
+  const path = shortestPathByCost(graph, startId, endId, drivingEdgeCost)
   if (!path) return null
 
   let distanceMeters = 0

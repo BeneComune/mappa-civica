@@ -7,9 +7,10 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 import { clamp, coordKey, distanceMeters, hasRoutableGeometry, segmentLength, toNumber } from "./geo"
 import { edgeTravelTimeMinutes } from "./cost"
 import { MinHeap } from "./min-heap"
-import { loadRoutingGraphForMode } from "./graph"
+import { loadDrivingGraph, loadRoutingGraphForMode } from "./graph"
 import { findNearestNodeId, shortestPath } from "./path"
 import { buildRouteSummary } from "./summary"
+import { computeDrivingRoute } from "./driving"
 import type { Coord, GraphEdge, RoutingGraph } from "./types"
 
 // ---------------------------------------------------------------- helpers
@@ -362,5 +363,61 @@ describe("buildRouteSummary", () => {
     })
     const graph = await loadRoutingGraphForMode("biking")
     expect(buildRouteSummary(graph, [{ lng: A[0], lat: A[1] }, { lng: 13.001, lat: 46.0 }], "biking")).toBeNull()
+  })
+})
+
+// --------------------------------------------------------------- driving
+
+// North of B, so A -> D -> C is a detour around the straight A -> C.
+const D: Coord = [12.601, 46.161]
+const HOSPITAL_ROADS = "/data/rescue/hospital_roads.geojson"
+
+async function drivingGraph(features: unknown[]): Promise<RoutingGraph> {
+  mockFetch({ "hospital_roads.geojson": { features } })
+  return loadDrivingGraph(HOSPITAL_ROADS)
+}
+
+const at = (coord: Coord) => ({ lng: coord[0], lat: coord[1] })
+
+describe("computeDrivingRoute", () => {
+  it("drives across an intermediate node at 70% of the speed limit", async () => {
+    const graph = await drivingGraph([
+      transportFeature("A", "B", [A, B], { maxspeed: 50 }),
+      transportFeature("B", "C", [B, C], { maxspeed: 50 }),
+    ])
+
+    const route = computeDrivingRoute(graph, at(A), at(C))!
+
+    const expectedKm = (distanceMeters(A, B) + distanceMeters(B, C)) / 1000
+    expect(route.distanceKm).toBeCloseTo(expectedKm, 6)
+    expect(route.timeMin).toBeCloseTo((expectedKm / 35) * 60, 6)
+    expect(route.line.geometry.coordinates).toEqual([A, B, C])
+  })
+
+  it("assumes 40 km/h where a road has no speed limit", async () => {
+    const graph = await drivingGraph([transportFeature("A", "B", [A, B])])
+    const route = computeDrivingRoute(graph, at(A), at(B))!
+    expect(route.timeMin).toBeCloseTo((distanceMeters(A, B) / 1000 / 28) * 60, 6)
+  })
+
+  it("takes the road detour rather than a shorter cycleway", async () => {
+    const graph = await drivingGraph([
+      transportFeature("A", "C", [A, C], { highway: "cycleway" }),
+      transportFeature("A", "D", [A, D], { highway: "residential", maxspeed: 50 }),
+      transportFeature("D", "C", [D, C], { highway: "residential", maxspeed: 50 }),
+    ])
+
+    const route = computeDrivingRoute(graph, at(A), at(C))!
+
+    expect(route.line.geometry.coordinates).toEqual([A, D, C])
+    expect(route.distanceKm * 1000).toBeGreaterThan(distanceMeters(A, C))
+  })
+
+  it("returns null when only non-drivable ways connect the points", async () => {
+    const graph = await drivingGraph([
+      transportFeature("A", "B", [A, B], { highway: "steps" }),
+      transportFeature("B", "C", [B, C], { highway: "footway" }),
+    ])
+    expect(computeDrivingRoute(graph, at(A), at(C))).toBeNull()
   })
 })

@@ -11,9 +11,9 @@ An in-browser Dijkstra router over GeoJSON networks, with no routing server. It'
 | `graph.ts` | Fetch a network and build the graph (`appendEdge` / `finalizeGraph` shared by both builders) |
 | `cost.ts` | Direction-dependent edge travel time per mode - what Dijkstra minimises |
 | `min-heap.ts` | Priority queue |
-| `path.ts` | Nearest-node snapping, `shortestPath` |
+| `path.ts` | Nearest-node snapping; `shortestPathByCost` (the one Dijkstra, cost passed in, `null` = edge unusable) and `shortestPath` (planner cost for a mode) |
 | `summary.ts` | Leg-by-leg route → `RouteSummary` (distance, times, elevation, surfaces, profile) |
-| `driving.ts` | Separate car-only Dijkstra for the hospital route |
+| `driving.ts` | Car-only route for the hospital page: driving cost over `shortestPathByCost`, own result type |
 | `route-export.ts` | GeoJSON / GPX / KML / CSV download |
 | `geo.ts`, `types.ts` | Haversine distance, coordinate keys, shared types |
 
@@ -68,5 +68,6 @@ It returns `null` when any leg can't be connected.
 ## Tests
 
 `lib/routing/routing.test.ts` covers geo helpers, the cost model, the heap, both graph builders,
-snapping and pathfinding, and `buildRouteSummary`. `components/route-planner/format.test.ts` covers
-distance/time formatting and point colors. Not covered: `driving.ts`, `route-export.ts`.
+snapping and pathfinding, `buildRouteSummary`, and `computeDrivingRoute` (speed-limit cost, the
+40 km/h fallback, non-drivable ways skipped even when shorter). `components/route-planner/format.test.ts`
+covers distance/time formatting and point colors. Not covered: `route-export.ts`.

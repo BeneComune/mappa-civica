@@ -1,10 +1,15 @@
 // lib\routing\path.ts
 // Snapping input points to graph nodes, and the Dijkstra search between them.
 
-import type { Coord, NodeId, RoutingGraph, RoutingInputPoint, RoutingMode } from "./types"
+import type { Coord, GraphEdge, NodeId, RoutingGraph, RoutingInputPoint, RoutingMode } from "./types"
 import { distanceMeters } from "./geo"
 import { edgeTravelTimeMinutes } from "./cost"
 import { MinHeap } from "./min-heap"
+
+// Cost of traversing `edge` starting at `fromNode`, or null if the edge can't be used at all.
+type EdgeCost = (edge: GraphEdge, fromNode: NodeId) => number | null
+
+type GraphPath = { nodePath: NodeId[]; edgePath: number[] }
 
 export function findNearestNodeId(graph: RoutingGraph, point: RoutingInputPoint): NodeId | null {
   let bestId: NodeId | null = null
@@ -22,12 +27,25 @@ export function findNearestNodeId(graph: RoutingGraph, point: RoutingInputPoint)
   return bestId
 }
 
+// The planners' search: minimises travel time for the page's mode.
 export function shortestPath(
   graph: RoutingGraph,
   startId: NodeId,
   endId: NodeId,
   mode: RoutingMode
-): { nodePath: NodeId[]; edgePath: number[] } | null {
+): GraphPath | null {
+  return shortestPathByCost(graph, startId, endId, (edge, fromNode) =>
+    edgeTravelTimeMinutes(edge, mode, fromNode)
+  )
+}
+
+// Dijkstra over any edge cost; shared by the planners and the driving route.
+export function shortestPathByCost(
+  graph: RoutingGraph,
+  startId: NodeId,
+  endId: NodeId,
+  edgeCost: EdgeCost
+): GraphPath | null {
   const distances = new Map<NodeId, number>()
   const previousNode = new Map<NodeId, NodeId>()
   const previousEdge = new Map<NodeId, number>()
@@ -58,8 +76,13 @@ export function shortestPath(
 
     for (const edgeIndex of node.edges) {
       const edge = graph.edges[edgeIndex]
+      const cost = edgeCost(edge, current.node)
+      if (cost === null) {
+        continue
+      }
+
       const neighbor = edge.from === current.node ? edge.to : edge.from
-      const nextCost = current.cost + edgeTravelTimeMinutes(edge, mode, current.node)
+      const nextCost = current.cost + cost
       const previousBest = distances.get(neighbor)
 
       if (previousBest !== undefined && previousBest <= nextCost) {
