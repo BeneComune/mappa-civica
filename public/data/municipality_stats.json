@@ -3,7 +3,7 @@
     "description": "Dati comunali per il pannello home. Campi null = da compilare manualmente. Scope 'municipal' = dato comunale, 'provincial' = dato provinciale (PN) usato in assenza di dato comunale.",
     "istat_source": "https://esploradati.istat.it/SDMXWS/rest",
     "pipeline_generated": "2026-06-09",
-    "istat_fetched": "2026-10-01"
+    "istat_fetched": "2026-11-01"
   },
   "municipality": {
     "name": "Montereale Valcellina",
