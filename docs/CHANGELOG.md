@@ -8,6 +8,14 @@ From 2026-10-23 on, each commit adds its own entry (subject, then what/why bulle
 commit. Everything before that was backfilled from `git log` as subject lines only - run
 `git show <hash>` for the full message.
 
+## 2026-11-14
+
+### Run CI on Node 26
+
+- `ci.yml` moves `actions/setup-node` from Node 24 to 26, in line with the other pipelines.
+  `refresh-data.yml` is Python-only and has no Node step.
+- README and CONTRIBUTING name Node 26 LTS as what CI uses.
+
 ## 2026-10-23
 
 ### Suppress the intentional graph.ts clone in fallow:dupes

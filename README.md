@@ -69,7 +69,7 @@ docs/         extended documentation and ADRs
 
 ## Getting started
 
-Prerequisites: Node 24 LTS (what CI uses; 22.12+ also works), pnpm, and
+Prerequisites: Node 26 LTS (what CI uses; 22.12+ also works), pnpm, and
 Python ≥ 3.11 for the data pipeline only.
 
 ```bash
